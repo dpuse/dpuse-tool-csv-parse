@@ -1,12 +1,12 @@
 {
-  "id": "datapos-tool-csv-parse",
-  "label": {
-    "en-gb": "CSV Parse"
-  },
-  "description": {
-    "en-gb": "..."
-  },
-  "statusId": "alpha",
-  "typeId": "tool",
-  "version": "0.0.001"
+    "id": "datapos-tool-csv-parse",
+    "label": {
+        "en-gb": "CSV Parse"
+    },
+    "description": {
+        "en-gb": "..."
+    },
+    "statusId": "alpha",
+    "typeId": "tool",
+    "version": "0.0.3"
 }
