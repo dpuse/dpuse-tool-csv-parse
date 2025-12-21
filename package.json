@@ -1,6 +1,6 @@
 {
     "name": "@datapos/datapos-tool-csv-parse",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "",
     "license": "MIT",
     "private": false,
@@ -57,13 +57,13 @@
         "vite-plugin-dts": "^4.5.4"
     },
     "scripts": {
-        "audit": "node -e \"import('@datapos/datapos-development').then(m => m.auditDependencies())\"",
+        "audit": "op run --env-file=.env -- node -e \"import('@datapos/datapos-development').then(m => m.auditDependencies())\"",
         "build": "node -e \"import('@datapos/datapos-development').then(m => m.buildProject())\"",
         "check": "node -e \"import('@datapos/datapos-development').then(m => m.checkDependencies())\"",
-        "document": "node -e \"import('@datapos/datapos-development').then(m => m.documentDependencies(['CC0-1.0','MIT']))\"",
+        "document": "op run --env-file=.env -- node -e \"import('@datapos/datapos-development').then(m => m.documentDependencies(['CC0-1.0','MIT']))\"",
         "format": "node -e \"import('@datapos/datapos-development').then(m => m.formatCode())\"",
         "lint": "node -e \"import('@datapos/datapos-development').then(m => m.lintCode())\"",
-        "release": "node -e \"import('@datapos/datapos-development').then(m => m.releaseProject())\"",
+        "release": "op run --env-file=.env -- node -e \"import('@datapos/datapos-development').then(m => m.releaseProject())\"",
         "sync": "node -e \"import('@datapos/datapos-development').then(m => m.syncProjectWithGitHub())\"",
         "test": "node -e \"import('@datapos/datapos-development').then(m => m.testProject())\"",
         "update": "node -e \"import('@datapos/datapos-development').then(m => m.updateDataPosDependencies(['development']))\""
