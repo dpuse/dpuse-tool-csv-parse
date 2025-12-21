@@ -5,12 +5,15 @@
 /** Dependencies - Vendor. */
 import { parse } from 'csv-parse/browser/esm';
 
+/** Interfaces/Types */
+type CSVParse = typeof parse;
+
 /** Classes - CSV Parse tool. */
 class CSVParseTool {
-    getParser(): any {
+    getParser(): typeof parse {
         return parse;
     }
 }
 
 /** Exposures */
-export { CSVParseTool };
+export { type CSVParse, CSVParseTool };
