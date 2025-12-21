@@ -3,17 +3,16 @@
  */
 
 /** Dependencies - Vendor. */
-import { parse } from 'csv-parse/browser/esm';
-
-/** Interfaces/Types */
-type CSVParse = typeof parse;
+import { type Options, parse, type Parser } from 'csv-parse/browser/esm';
 
 /** Classes - CSV Parse tool. */
 class CSVParseTool {
-    getParser(): typeof parse {
-        return parse;
+    /** Operations - Build parser. */
+    buildParser(options: Options): Parser {
+        return parse(options);
     }
 }
 
 /** Exposures */
-export { type CSVParse, CSVParseTool };
+export type { Options, Parser } from 'csv-parse/browser/esm';
+export { CSVParseTool };

@@ -3331,8 +3331,9 @@ const qn = function() {
   return n;
 };
 class zn {
-  getParser() {
-    return qn;
+  /** Operations - Build parser. */
+  buildParser(e) {
+    return qn(e);
   }
 }
 export {

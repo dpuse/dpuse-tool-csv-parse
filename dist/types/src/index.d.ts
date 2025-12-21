@@ -1,9 +1,9 @@
-import { parse } from 'csv-parse/browser/esm';
-/** Interfaces/Types */
-type CSVParse = typeof parse;
+import { Options, Parser } from 'csv-parse/browser/esm';
 /** Classes - CSV Parse tool. */
 declare class CSVParseTool {
-    getParser(): typeof parse;
+    /** Operations - Build parser. */
+    buildParser(options: Options): Parser;
 }
 /** Exposures */
-export { type CSVParse, CSVParseTool };
+export type { Options, Parser } from 'csv-parse/browser/esm';
+export { CSVParseTool };
