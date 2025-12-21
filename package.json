@@ -1,6 +1,6 @@
 {
     "name": "@datapos/datapos-tool-csv-parse",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "",
     "license": "MIT",
     "private": false,
@@ -8,16 +8,16 @@
     "homepage": "https://www.datapos.app",
     "repository": {
         "type": "git",
-        "url": "https://github.com/data-positioning/datapos-tool-micromark.git"
+        "url": "https://github.com/data-positioning/datapos-tool-csv-parse.git"
     },
     "bugs": {
-        "url": "https://github.com/data-positioning/datapos-tool-micromark/issues"
+        "url": "https://github.com/data-positioning/datapos-tool-csv-parse/issues"
     },
-    "module": "./dist/datapos-tool-micromark.es.js",
+    "module": "./dist/datapos-tool-csv-parse.es.js",
     "types": "./dist/types/src/index.d.ts",
     "exports": {
         ".": {
-            "import": "./dist/datapos-tool-micromark.es.js",
+            "import": "./dist/datapos-tool-csv-parse.es.js",
             "types": "./dist/types/src/index.d.ts"
         }
     },
