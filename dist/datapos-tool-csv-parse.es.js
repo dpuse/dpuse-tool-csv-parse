@@ -3333,7 +3333,8 @@ const qn = function() {
 class zn {
   /** Operations - Build parser. */
   buildParser(e) {
-    return qn(e);
+    const r = void 0;
+    return console.log(r), qn(e);
   }
 }
 export {
