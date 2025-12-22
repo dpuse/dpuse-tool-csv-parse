@@ -11,7 +11,7 @@ import { extractExtensionFromPath } from '@datapos/datapos-shared/utilities';
 class Tool {
     /** Operations - Build parser. */
     buildParser(options: Options): Parser {
-        const xxxx = extractExtensionFromPath('');
+        const xxxx = extractExtensionFromPath('abcde.xyz');
         console.log(xxxx);
         return parse(options);
     }
