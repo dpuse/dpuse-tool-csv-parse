@@ -1,9 +1,9 @@
 import { Options, Parser } from 'csv-parse/browser/esm';
 /** Classes - CSV Parse tool. */
-declare class CSVParseTool {
+declare class Tool {
     /** Operations - Build parser. */
     buildParser(options: Options): Parser;
 }
 /** Exposures */
 export type { Options, Parser } from 'csv-parse/browser/esm';
-export { CSVParseTool };
+export { Tool };
