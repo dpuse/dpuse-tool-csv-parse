@@ -50,6 +50,7 @@ class Tool {
         };
 
         try {
+            console.log(2222);
             parser = parse(parseOptions);
             rowBuffer = this.constructRowBuffer({ chunk: retrieveRecordsOptions.chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
             parser.on('readable', () => {
@@ -84,8 +85,10 @@ class Tool {
                 result = await reader.read();
             }
 
+            console.log(7777);
             parser.end();
         } catch (error) {
+            console.log(8888);
             handleError(error, true);
         }
     }

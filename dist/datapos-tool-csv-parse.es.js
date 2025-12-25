@@ -3386,7 +3386,7 @@ class Gn {
       h || (h = !0, u?.cancel(), l?.flush(), g && f?.destroy(p), o(p));
     };
     try {
-      f = ut(e), l = this.constructRowBuffer({ chunk: r.chunk, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {
+      console.log(2222), f = ut(e), l = this.constructRowBuffer({ chunk: r.chunk, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {
         try {
           if (f == null || l == null) return;
           let x;
@@ -3405,9 +3405,9 @@ class Gn {
       let g = await u.read();
       for (; !g.done; )
         i.throwIfAborted(), await this.writeToParser(f, g.value), g = await u.read();
-      f.end();
+      console.log(7777), f.end();
     } catch (p) {
-      c(p, !0);
+      console.log(8888), c(p, !0);
     }
   }
   /** Parse string. */
