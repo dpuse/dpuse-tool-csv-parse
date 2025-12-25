@@ -1,6 +1,6 @@
 {
     "name": "@datapos/datapos-tool-csv-parse",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "description": "",
     "license": "MIT",
     "private": false,
@@ -27,8 +27,7 @@
     "prettier": "@datapos/datapos-development/prettierrc",
     "dependencies": {
         "@datapos/datapos-shared": "^0.3.343",
-        "csv-parse": "^6.1.0",
-        "vitest": "^4.0.16"
+        "csv-parse": "^6.1.0"
     },
     "devDependencies": {
         "@datapos/datapos-development": "^0.3.424",
@@ -47,7 +46,6 @@
         "license-report": "^6.8.1",
         "license-report-check": "^0.1.2",
         "license-report-recursive": "^6.8.2",
-        "nanoid": "^5.1.6",
         "npm-check-updates": "^19.2.0",
         "owasp-dependency-check": "^1.0.0",
         "prettier": "^3.7.4",
@@ -55,7 +53,8 @@
         "sonda": "^0.10.1",
         "typescript": "^5.9.3",
         "vite": "^7.3.0",
-        "vite-plugin-dts": "^4.5.4"
+        "vite-plugin-dts": "^4.5.4",
+        "vitest": "^4.0.16"
     },
     "scripts": {
         "audit": "op run --env-file=.env -- node -e \"import('@datapos/datapos-development').then(m => m.auditDependencies())\"",
