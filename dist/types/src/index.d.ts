@@ -1,11 +1,11 @@
 import { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
-import { RetrieveRecordsSettings, RetrieveRecordsSummary } from '@datapos/datapos-shared';
+import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 /** Tool. */
 declare class Tool {
     /** Build parser. */
     buildParser(options: ParseOptions): Parser;
     /** Parse stream. */
-    parseStream(parseOptions: ParseOptions, retrieveSettings: RetrieveRecordsSettings, url: string, signal: AbortSignal, onError: (error: unknown) => void, onComplete: (summary: RetrieveRecordsSummary) => void): Promise<void>;
+    parseStream(parseOptions: ParseOptions, retrieveRecordsOptions: RetrieveRecordsOptions, url: string, signal: AbortSignal, onError: (error: unknown) => void, onComplete: (summary: RetrieveRecordsSummary) => void): Promise<void>;
     /** Parse string. */
     parseString(): void;
     /** Construct row buffer. */

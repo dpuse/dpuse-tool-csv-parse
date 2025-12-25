@@ -6,7 +6,8 @@
 import { parse, type Options as ParseOptions, type Parser } from 'csv-parse/browser/esm';
 
 /** Framework dependencies. */
-import { buildFetchError, type RetrieveRecordsSettings, type RetrieveRecordsSummary } from '@datapos/datapos-shared';
+import { buildFetchError } from '@datapos/datapos-shared/errors';
+import type { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 
 /** Row and row buffer. */
 type Row = string[];
@@ -28,7 +29,7 @@ class Tool {
     /** Parse stream. */
     async parseStream(
         parseOptions: ParseOptions,
-        retrieveSettings: RetrieveRecordsSettings,
+        retrieveRecordsOptions: RetrieveRecordsOptions,
         url: string,
         signal: AbortSignal,
         onError: (error: unknown) => void,
@@ -50,7 +51,7 @@ class Tool {
 
         try {
             parser = parse(parseOptions);
-            rowBuffer = this.constructRowBuffer({ chunk: () => void 0, chunkSize: retrieveSettings.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
+            rowBuffer = this.constructRowBuffer({ chunk: retrieveRecordsOptions.chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
             parser.on('readable', () => {
                 try {
                     if (parser == null || rowBuffer == null) return;
@@ -75,7 +76,7 @@ class Tool {
                 throw await buildFetchError(response, `Failed to fetch '${url}' file.`, 'datapos-connector-file-store-emulator|Connector|retrieve');
             }
 
-            reader = response.body.pipeThrough(new TextDecoderStream(retrieveSettings.encodingId)).getReader();
+            reader = response.body.pipeThrough(new TextDecoderStream(retrieveRecordsOptions.encodingId)).getReader();
             let result = await reader.read();
             while (!result.done) {
                 signal.throwIfAborted();

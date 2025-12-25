@@ -10,7 +10,8 @@ export default [
     ...datapos,
     {
         rules: {
-            '@typescript-eslint/no-confusing-void-expression': 'off'
+            '@typescript-eslint/no-confusing-void-expression': 'off',
+            'sonarjs/void-use': 'off'
         }
     }
 ];
