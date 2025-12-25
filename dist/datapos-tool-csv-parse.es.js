@@ -3407,7 +3407,7 @@ class Gn {
         i.throwIfAborted(), await this.writeToParser(f, g.value), g = await u.read();
       console.log(7777), f.end();
     } catch (p) {
-      console.log(8888), c(p, !0);
+      console.log(8888, p), c(p, !0);
     }
   }
   /** Parse string. */
