@@ -48,6 +48,7 @@ class Tool {
                 rowBuffer = this.constructRowBuffer({ chunk: retrieveRecordsOptions.chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
                 parser.on('readable', () => {
                     try {
+                        console.log(2222);
                         if (parser == null || rowBuffer == null) return;
                         let row: Row | null;
                         while ((row = parser.read() as Row | null) != null) {
@@ -74,6 +75,7 @@ class Tool {
                 reader = response.body.pipeThrough(new TextDecoderStream(retrieveRecordsOptions.encodingId)).getReader();
                 let result = await reader.read();
                 while (!result.done) {
+                    console.log(1111);
                     if (hasErrored) return;
                     abortController.signal.throwIfAborted();
                     await this.writeToParser(parser, result.value);
