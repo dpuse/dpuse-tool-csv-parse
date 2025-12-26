@@ -36,11 +36,16 @@ class Tool {
 
             const handleError = (error: unknown): void => {
                 if (hasErrored) return;
+                console.log('handleError 1');
 
                 hasErrored = true;
+                console.log('handleError 2');
                 if (!abortController.signal.aborted) abortController.abort(error);
+                console.log('handleError 3');
                 this.ignoreErrors(() => void reader?.cancel());
+                console.log('handleError 4');
                 reject(error as Error);
+                console.log('handleError 5');
             };
 
             const run = async (): Promise<void> => {
