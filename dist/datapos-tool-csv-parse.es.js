@@ -3383,13 +3383,8 @@ class Gn {
   async parseStream(e, r, n, i, o, s) {
     let f, l, u, h = !1;
     const c = (p, g = !1) => {
-      try {
-        if (console.log(3333, h), h) return;
-        h = !0, l?.cancel(), u?.flush(), console.log(4444, g), g && f?.destroy(p);
-      } catch (x) {
-        console.log("4444a", x);
-      }
-      throw p;
+      if (console.log(3333, h), !h)
+        throw h = !0, l?.cancel(), u?.flush(), console.log(4444, g), g && f?.destroy(p), p;
     };
     try {
       console.log(2222), f = lt(e), u = this.constructRowBuffer({ chunk: r.chunk, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {
@@ -3413,7 +3408,7 @@ class Gn {
         i.throwIfAborted(), await this.writeToParser(f, g.value), g = await l.read();
       console.log(7777), f.end();
     } catch (p) {
-      throw console.log(8888, p), p;
+      console.log(8888, p), c(p, !0);
     }
   }
   /** Parse string. */
