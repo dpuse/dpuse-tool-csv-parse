@@ -57,6 +57,7 @@ class Tool {
                         if (parser == null || rowBuffer == null) return;
                         let row: Row | null;
                         while ((row = parser.read() as Row | null) != null) {
+                            console.log(9999);
                             if (hasErrored) return;
                             abortController.signal.throwIfAborted();
                             rowBuffer.push(row);

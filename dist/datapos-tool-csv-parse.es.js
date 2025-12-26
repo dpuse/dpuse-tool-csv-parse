@@ -3394,7 +3394,7 @@ class Gn {
             if (console.log(2222), f == null || u == null) return;
             let m;
             for (; (m = f.read()) != null; ) {
-              if (h) return;
+              if (console.log(9999), h) return;
               i.signal.throwIfAborted(), u.push(m);
             }
           } catch (m) {
