@@ -42,13 +42,11 @@ class Tool {
             let hasErrored = false;
 
             const handleError = (error: unknown): void => {
-                console.log(5555, error);
+                console.log(4444, error);
                 if (hasErrored) return;
                 hasErrored = true;
 
-                // rowBuffer?.flush();
                 void reader?.cancel();
-                // parser?.destroy();
 
                 console.log(7777, error);
                 reject(error as Error);

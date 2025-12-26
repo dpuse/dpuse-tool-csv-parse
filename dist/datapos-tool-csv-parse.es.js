@@ -3384,7 +3384,7 @@ class Gn {
     return new Promise((o, s) => {
       let f, u, l, h = !1;
       const c = (p) => {
-        console.log(5555, p), !h && (h = !0, u?.cancel(), console.log(7777, p), s(p));
+        console.log(4444, p), !h && (h = !0, u?.cancel(), console.log(7777, p), s(p));
       };
       (async () => {
         console.log(1111), f = ut(e), l = this.constructRowBuffer({ chunk: r.chunk, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {
