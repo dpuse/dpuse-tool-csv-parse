@@ -41,11 +41,12 @@ class Tool {
         let hasErrored = false;
 
         const handleError = (error: unknown, destroyParser = false): void => {
+            console.log(3333, hasErrored);
             if (hasErrored) return;
             hasErrored = true;
             void reader?.cancel();
             rowBuffer?.flush();
-            console.log(3333, destroyParser);
+            console.log(4444, destroyParser);
             if (destroyParser) parser?.destroy(error as Error);
             throw error;
         };
