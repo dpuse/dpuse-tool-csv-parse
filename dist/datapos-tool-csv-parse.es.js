@@ -3383,7 +3383,8 @@ class Gn {
   async parseStream(e, r, n, i, o, s) {
     let f, u, l, h = !1;
     const c = (p, g = !1) => {
-      h || (h = !0, u?.cancel(), l?.flush(), g && f?.destroy(p), o(p));
+      if (!h)
+        throw h = !0, u?.cancel(), l?.flush(), console.log(3333, g), g && f?.destroy(p), p;
     };
     try {
       console.log(2222), f = ut(e), l = this.constructRowBuffer({ chunk: r.chunk, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {

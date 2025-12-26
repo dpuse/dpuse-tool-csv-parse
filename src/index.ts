@@ -45,8 +45,9 @@ class Tool {
             hasErrored = true;
             void reader?.cancel();
             rowBuffer?.flush();
+            console.log(3333, destroyParser);
             if (destroyParser) parser?.destroy(error as Error);
-            onError(error);
+            throw error;
         };
 
         try {
