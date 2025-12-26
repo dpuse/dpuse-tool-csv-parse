@@ -61,6 +61,7 @@ class Tool {
                         if (parser == null || rowBuffer == null) return;
                         let row: Row | null;
                         while ((row = parser.read() as Row | null) != null) {
+                            if (hasErrored) return;
                             abortController.signal.throwIfAborted();
                             rowBuffer.push(row);
                         }
@@ -84,6 +85,7 @@ class Tool {
                 reader = response.body.pipeThrough(new TextDecoderStream(retrieveRecordsOptions.encodingId)).getReader();
                 let result = await reader.read();
                 while (!result.done) {
+                    if (hasErrored) return;
                     abortController.signal.throwIfAborted();
                     await this.writeToParser(parser, result.value);
                     result = await reader.read();

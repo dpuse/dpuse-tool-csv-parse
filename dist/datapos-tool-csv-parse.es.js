@@ -3398,8 +3398,10 @@ class Gn {
           try {
             if (f == null || l == null) return;
             let g;
-            for (; (g = f.read()) != null; )
+            for (; (g = f.read()) != null; ) {
+              if (h) return;
               i.signal.throwIfAborted(), l.push(g);
+            }
           } catch (g) {
             c(g);
           }
@@ -3411,8 +3413,10 @@ class Gn {
           throw await Yn(p, `Failed to fetch '${n}' file.`, "datapos-connector-file-store-emulator|Connector|retrieve");
         u = p.body.pipeThrough(new TextDecoderStream(r.encodingId)).getReader();
         let I = await u.read();
-        for (; !I.done; )
+        for (; !I.done; ) {
+          if (h) return;
           i.signal.throwIfAborted(), await this.writeToParser(f, I.value), I = await u.read();
+        }
         f.end();
       })().catch((p) => c(p));
     });
