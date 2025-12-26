@@ -42,6 +42,7 @@ class Tool {
             let hasErrored = false;
 
             const handleError = (error: unknown): void => {
+                console.log(7777, error);
                 if (hasErrored) return;
                 hasErrored = true;
 
@@ -49,10 +50,12 @@ class Tool {
                 void reader?.cancel();
                 parser?.destroy();
 
+                console.log(7777, error);
                 reject(error as Error);
             };
 
             const run = async (): Promise<void> => {
+                console.log(1111);
                 parser = parse(parseOptions);
                 rowBuffer = this.constructRowBuffer({ chunk: retrieveRecordsOptions.chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
                 parser.on('readable', () => {
@@ -71,6 +74,7 @@ class Tool {
                 parser.on('end', () => {
                     if (hasErrored) return;
                     rowBuffer?.flush();
+                    console.log(8888, this.constructSummary(parser));
                     resolve(this.constructSummary(parser));
                 });
 

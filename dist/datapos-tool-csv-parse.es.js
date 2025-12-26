@@ -3384,10 +3384,10 @@ class Gn {
     return new Promise((o, s) => {
       let f, u, l, h = !1;
       const c = (p) => {
-        h || (h = !0, u?.cancel(), f?.destroy(), s(p));
+        console.log(7777, p), !h && (h = !0, u?.cancel(), f?.destroy(), console.log(7777, p), s(p));
       };
       (async () => {
-        f = ut(e), l = this.constructRowBuffer({ chunk: r.chunk, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {
+        console.log(1111), f = ut(e), l = this.constructRowBuffer({ chunk: r.chunk, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {
           try {
             if (f == null || l == null) return;
             let g;
@@ -3397,7 +3397,7 @@ class Gn {
             c(g);
           }
         }), f.on("error", (g) => c(g)), f.on("end", () => {
-          h || (l?.flush(), o(this.constructSummary(f)));
+          h || (l?.flush(), console.log(8888, this.constructSummary(f)), o(this.constructSummary(f)));
         });
         const p = await fetch(encodeURI(n), { signal: i });
         if (!p.ok || p.body == null)
