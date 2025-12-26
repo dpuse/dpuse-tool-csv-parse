@@ -31,68 +31,67 @@ class Tool {
         parseOptions: ParseOptions,
         retrieveRecordsOptions: RetrieveRecordsOptions,
         url: string,
-        signal: AbortSignal,
-        onError: (error: unknown) => void,
-        onComplete: (summary: RetrieveRecordsSummary) => void
-    ): Promise<void> {
-        let parser: Parser | undefined;
-        let reader: ReadableStreamDefaultReader<string> | undefined;
-        let rowBuffer: RowBuffer | undefined;
-        let hasErrored = false;
+        signal: AbortSignal
+        // onError: (error: unknown) => void,
+        // onComplete: (summary: RetrieveRecordsSummary) => void
+    ): Promise<RetrieveRecordsSummary> {
+        return new Promise<RetrieveRecordsSummary>((resolve, reject) => {
+            let parser: Parser | undefined;
+            let reader: ReadableStreamDefaultReader<string> | undefined;
+            let rowBuffer: RowBuffer | undefined;
+            let hasErrored = false;
 
-        const handleError = (error: unknown, destroyParser = false): void => {
-            console.log(3333, hasErrored);
-            if (hasErrored) return;
-            hasErrored = true;
-            void reader?.cancel();
-            rowBuffer?.flush();
-            console.log(4444, destroyParser);
-            if (destroyParser) parser?.destroy(error as Error);
-            throw error;
-        };
-
-        try {
-            console.log(2222);
-            parser = parse(parseOptions);
-            rowBuffer = this.constructRowBuffer({ chunk: retrieveRecordsOptions.chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
-            parser.on('readable', () => {
-                try {
-                    if (parser == null || rowBuffer == null) return;
-                    let row: Row | null;
-                    while ((row = parser.read() as Row | null) != null) {
-                        signal.throwIfAborted();
-                        rowBuffer.push(row);
-                    }
-                } catch (error) {
-                    handleError(error, true);
-                }
-            });
-            parser.on('error', (error) => handleError(error));
-            parser.on('end', () => {
+            const handleError = (error: unknown): void => {
                 if (hasErrored) return;
-                rowBuffer?.flush();
-                onComplete(this.constructSummary(parser));
-            });
+                hasErrored = true;
 
-            const response = await fetch(encodeURI(url), { signal });
-            if (!response.ok || response.body == null) {
-                throw await buildFetchError(response, `Failed to fetch '${url}' file.`, 'datapos-connector-file-store-emulator|Connector|retrieve');
-            }
+                // rowBuffer?.flush();
+                void reader?.cancel();
+                parser?.destroy();
 
-            reader = response.body.pipeThrough(new TextDecoderStream(retrieveRecordsOptions.encodingId)).getReader();
-            let result = await reader.read();
-            while (!result.done) {
-                signal.throwIfAborted();
-                await this.writeToParser(parser, result.value);
-                result = await reader.read();
-            }
+                reject(error as Error);
+            };
 
-            console.log(7777);
-            parser.end();
-        } catch (error) {
-            console.log(8888, error);
-            handleError(error, true);
-        }
+            const run = async (): Promise<void> => {
+                parser = parse(parseOptions);
+                rowBuffer = this.constructRowBuffer({ chunk: retrieveRecordsOptions.chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
+                parser.on('readable', () => {
+                    try {
+                        if (parser == null || rowBuffer == null) return;
+                        let row: Row | null;
+                        while ((row = parser.read() as Row | null) != null) {
+                            signal.throwIfAborted();
+                            rowBuffer.push(row);
+                        }
+                    } catch (error) {
+                        handleError(error);
+                    }
+                });
+                parser.on('error', (error) => handleError(error));
+                parser.on('end', () => {
+                    if (hasErrored) return;
+                    rowBuffer?.flush();
+                    resolve(this.constructSummary(parser));
+                });
+
+                const response = await fetch(encodeURI(url), { signal });
+                if (!response.ok || response.body == null) {
+                    throw await buildFetchError(response, `Failed to fetch '${url}' file.`, 'datapos-connector-file-store-emulator|Connector|retrieve');
+                }
+
+                reader = response.body.pipeThrough(new TextDecoderStream(retrieveRecordsOptions.encodingId)).getReader();
+                let result = await reader.read();
+                while (!result.done) {
+                    signal.throwIfAborted();
+                    await this.writeToParser(parser, result.value);
+                    result = await reader.read();
+                }
+
+                parser.end();
+            };
+
+            void run().catch((error: unknown) => handleError(error));
+        });
     }
 
     /** Parse string. */
