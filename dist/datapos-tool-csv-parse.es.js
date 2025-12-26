@@ -3418,7 +3418,7 @@ class Gn {
         let S = await u.read();
         for (; !S.done; ) {
           if (h) return;
-          i.signal.throwIfAborted(), console.log("CHUNK", S.value), f.write(S.value), S = await u.read();
+          i.signal.throwIfAborted(), console.log("CHUNK", S.value.length), f.write(S.value), S = await u.read();
         }
         h || f.end();
       })().catch((x) => O(x));

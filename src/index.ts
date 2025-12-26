@@ -99,7 +99,7 @@ class Tool {
                 while (!result.done) {
                     if (hasErrored) return;
                     abortController.signal.throwIfAborted();
-                    console.log('CHUNK', result.value);
+                    console.log('CHUNK', result.value.length);
                     parser.write(result.value);
                     result = await reader.read();
                 }
