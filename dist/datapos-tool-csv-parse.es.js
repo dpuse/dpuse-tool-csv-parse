@@ -3394,7 +3394,7 @@ class Zn {
         c || (c = !0, y(), i.signal.aborted || i.abort(x), f(x));
       };
       i.signal.addEventListener("abort", y, { once: !0 }), (async () => {
-        u = ut(e), h = this.constructRowBuffer({ chunk: o, chunkSize: r.chunkSize ?? Hn }), u.on("readable", () => {
+        u = ut(r), h = this.constructRowBuffer({ chunk: o, chunkSize: e.chunkSize ?? Hn }), u.on("readable", () => {
           try {
             if (u == null || h == null) return;
             let R;
@@ -3412,7 +3412,7 @@ class Zn {
         if (!x.ok || x.body == null)
           throw await Yn(x, `Failed to fetch '${n}' file.`, "datapos-connector-file-store-emulator|Connector|retrieve");
         l = x.body.getReader();
-        const S = new TextDecoder(r.encodingId);
+        const S = new TextDecoder(e.encodingId);
         let w = await l.read();
         for (; !w.done; ) {
           if (c) return;

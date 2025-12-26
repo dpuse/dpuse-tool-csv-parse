@@ -29,8 +29,8 @@ class Tool {
 
     /** Parse stream. */
     async parseStream(
-        parseOptions: ParseOptions,
         retrieveRecordsOptions: RetrieveRecordsOptions,
+        parseOptions: ParseOptions,
         url: string,
         abortController: AbortController,
         chunk: (records: (string[] | Record<string, unknown>)[]) => void
