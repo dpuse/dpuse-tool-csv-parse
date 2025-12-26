@@ -17,7 +17,7 @@ interface RowBuffer {
 }
 
 /** Constants. */
-const DEFAULT_RETRIEVE_CHUNK_SIZE = 40_096;
+const DEFAULT_RETRIEVE_CHUNK_SIZE = 65_536; // 64KB.
 
 /** Tool. */
 class Tool {
@@ -33,7 +33,6 @@ class Tool {
             let reader: ReadableStreamDefaultReader<string> | undefined;
             let rowBuffer: RowBuffer | undefined;
             let hasErrored = false;
-            let rowCount = 0;
             let hasStoppedProcessing = false;
 
             const stopProcessing = (): void => {
@@ -68,16 +67,13 @@ class Tool {
                 rowBuffer = this.constructRowBuffer({ chunk: () => void 0, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
                 parser.on('readable', () => {
                     try {
-                        const myCount = rowCount;
                         if (parser == null || rowBuffer == null) return;
                         let row: Row | null;
                         while ((row = parser.read() as Row | null) != null) {
-                            rowCount++;
                             if (hasErrored) return;
                             abortController.signal.throwIfAborted();
                             rowBuffer.push(row);
                         }
-                        console.log('ROWS', rowCount - myCount);
                     } catch (error) {
                         handleError(error);
                     }
@@ -99,7 +95,6 @@ class Tool {
                 while (!result.done) {
                     if (hasErrored) return;
                     abortController.signal.throwIfAborted();
-                    console.log('CHUNK', result.value.length);
                     parser.write(result.value);
                     result = await reader.read();
                 }

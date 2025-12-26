@@ -31,27 +31,27 @@ function Qe(t) {
   return n === 1 ? (e = t[r - 1], i += P[e >> 2], i += P[e << 4 & 63], i += "==") : n === 2 && (e = (t[r - 2] << 8) + t[r - 1], i += P[e >> 10], i += P[e >> 4 & 63], i += P[e << 2 & 63], i += "="), o.push(i), o.join("");
 }
 function ve(t, e, r, n, i) {
-  var o, s, f = i * 8 - n - 1, u = (1 << f) - 1, l = u >> 1, h = -7, c = r ? i - 1 : 0, g = r ? -1 : 1, y = t[e + c];
-  for (c += g, o = y & (1 << -h) - 1, y >>= -h, h += f; h > 0; o = o * 256 + t[e + c], c += g, h -= 8)
+  var o, s, f = i * 8 - n - 1, u = (1 << f) - 1, l = u >> 1, h = -7, c = r ? i - 1 : 0, m = r ? -1 : 1, w = t[e + c];
+  for (c += m, o = w & (1 << -h) - 1, w >>= -h, h += f; h > 0; o = o * 256 + t[e + c], c += m, h -= 8)
     ;
-  for (s = o & (1 << -h) - 1, o >>= -h, h += n; h > 0; s = s * 256 + t[e + c], c += g, h -= 8)
+  for (s = o & (1 << -h) - 1, o >>= -h, h += n; h > 0; s = s * 256 + t[e + c], c += m, h -= 8)
     ;
   if (o === 0)
     o = 1 - l;
   else {
     if (o === u)
-      return s ? NaN : (y ? -1 : 1) * (1 / 0);
+      return s ? NaN : (w ? -1 : 1) * (1 / 0);
     s = s + Math.pow(2, n), o = o - l;
   }
-  return (y ? -1 : 1) * s * Math.pow(2, o - n);
+  return (w ? -1 : 1) * s * Math.pow(2, o - n);
 }
 function ht(t, e, r, n, i, o) {
-  var s, f, u, l = o * 8 - i - 1, h = (1 << l) - 1, c = h >> 1, g = i === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0, y = n ? 0 : o - 1, O = n ? 1 : -1, E = e < 0 || e === 0 && 1 / e < 0 ? 1 : 0;
-  for (e = Math.abs(e), isNaN(e) || e === 1 / 0 ? (f = isNaN(e) ? 1 : 0, s = h) : (s = Math.floor(Math.log(e) / Math.LN2), e * (u = Math.pow(2, -s)) < 1 && (s--, u *= 2), s + c >= 1 ? e += g / u : e += g * Math.pow(2, 1 - c), e * u >= 2 && (s++, u /= 2), s + c >= h ? (f = 0, s = h) : s + c >= 1 ? (f = (e * u - 1) * Math.pow(2, i), s = s + c) : (f = e * Math.pow(2, c - 1) * Math.pow(2, i), s = 0)); i >= 8; t[r + y] = f & 255, y += O, f /= 256, i -= 8)
+  var s, f, u, l = o * 8 - i - 1, h = (1 << l) - 1, c = h >> 1, m = i === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0, w = n ? 0 : o - 1, C = n ? 1 : -1, p = e < 0 || e === 0 && 1 / e < 0 ? 1 : 0;
+  for (e = Math.abs(e), isNaN(e) || e === 1 / 0 ? (f = isNaN(e) ? 1 : 0, s = h) : (s = Math.floor(Math.log(e) / Math.LN2), e * (u = Math.pow(2, -s)) < 1 && (s--, u *= 2), s + c >= 1 ? e += m / u : e += m * Math.pow(2, 1 - c), e * u >= 2 && (s++, u /= 2), s + c >= h ? (f = 0, s = h) : s + c >= 1 ? (f = (e * u - 1) * Math.pow(2, i), s = s + c) : (f = e * Math.pow(2, c - 1) * Math.pow(2, i), s = 0)); i >= 8; t[r + w] = f & 255, w += C, f /= 256, i -= 8)
     ;
-  for (s = s << i | f, l += i; l > 0; t[r + y] = s & 255, y += O, s /= 256, l -= 8)
+  for (s = s << i | f, l += i; l > 0; t[r + w] = s & 255, w += C, s /= 256, l -= 8)
     ;
-  t[r + y - O] |= E * 128;
+  t[r + w - C] |= p * 128;
 }
 var Kt = {}.toString, ct = Array.isArray || function(t) {
   return Kt.call(t) == "[object Array]";
@@ -348,8 +348,8 @@ function Ge(t, e, r, n, i) {
       return -1;
     o = 2, s /= 2, f /= 2, r /= 2;
   }
-  function u(y, O) {
-    return o === 1 ? y[O] : y.readUInt16BE(O * o);
+  function u(w, C) {
+    return o === 1 ? w[C] : w.readUInt16BE(C * o);
   }
   var l;
   if (i) {
@@ -361,8 +361,8 @@ function Ge(t, e, r, n, i) {
         h !== -1 && (l -= l - h), h = -1;
   } else
     for (r + f > s && (r = s - f), l = r; l >= 0; l--) {
-      for (var c = !0, g = 0; g < f; g++)
-        if (u(t, l + g) !== u(e, g)) {
+      for (var c = !0, m = 0; m < f; m++)
+        if (u(t, l + m) !== u(e, m)) {
           c = !1;
           break;
         }
@@ -532,79 +532,79 @@ a.prototype.slice = function(e, r) {
   }
   return i;
 };
-function A(t, e, r) {
+function O(t, e, r) {
   if (t % 1 !== 0 || t < 0) throw new RangeError("offset is not uint");
   if (t + e > r) throw new RangeError("Trying to access beyond buffer length");
 }
 a.prototype.readUIntLE = function(e, r, n) {
-  e = e | 0, r = r | 0, n || A(e, r, this.length);
+  e = e | 0, r = r | 0, n || O(e, r, this.length);
   for (var i = this[e], o = 1, s = 0; ++s < r && (o *= 256); )
     i += this[e + s] * o;
   return i;
 };
 a.prototype.readUIntBE = function(e, r, n) {
-  e = e | 0, r = r | 0, n || A(e, r, this.length);
+  e = e | 0, r = r | 0, n || O(e, r, this.length);
   for (var i = this[e + --r], o = 1; r > 0 && (o *= 256); )
     i += this[e + --r] * o;
   return i;
 };
 a.prototype.readUInt8 = function(e, r) {
-  return r || A(e, 1, this.length), this[e];
+  return r || O(e, 1, this.length), this[e];
 };
 a.prototype.readUInt16LE = function(e, r) {
-  return r || A(e, 2, this.length), this[e] | this[e + 1] << 8;
+  return r || O(e, 2, this.length), this[e] | this[e + 1] << 8;
 };
 a.prototype.readUInt16BE = function(e, r) {
-  return r || A(e, 2, this.length), this[e] << 8 | this[e + 1];
+  return r || O(e, 2, this.length), this[e] << 8 | this[e + 1];
 };
 a.prototype.readUInt32LE = function(e, r) {
-  return r || A(e, 4, this.length), (this[e] | this[e + 1] << 8 | this[e + 2] << 16) + this[e + 3] * 16777216;
+  return r || O(e, 4, this.length), (this[e] | this[e + 1] << 8 | this[e + 2] << 16) + this[e + 3] * 16777216;
 };
 a.prototype.readUInt32BE = function(e, r) {
-  return r || A(e, 4, this.length), this[e] * 16777216 + (this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3]);
+  return r || O(e, 4, this.length), this[e] * 16777216 + (this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3]);
 };
 a.prototype.readIntLE = function(e, r, n) {
-  e = e | 0, r = r | 0, n || A(e, r, this.length);
+  e = e | 0, r = r | 0, n || O(e, r, this.length);
   for (var i = this[e], o = 1, s = 0; ++s < r && (o *= 256); )
     i += this[e + s] * o;
   return o *= 128, i >= o && (i -= Math.pow(2, 8 * r)), i;
 };
 a.prototype.readIntBE = function(e, r, n) {
-  e = e | 0, r = r | 0, n || A(e, r, this.length);
+  e = e | 0, r = r | 0, n || O(e, r, this.length);
   for (var i = r, o = 1, s = this[e + --i]; i > 0 && (o *= 256); )
     s += this[e + --i] * o;
   return o *= 128, s >= o && (s -= Math.pow(2, 8 * r)), s;
 };
 a.prototype.readInt8 = function(e, r) {
-  return r || A(e, 1, this.length), this[e] & 128 ? (255 - this[e] + 1) * -1 : this[e];
+  return r || O(e, 1, this.length), this[e] & 128 ? (255 - this[e] + 1) * -1 : this[e];
 };
 a.prototype.readInt16LE = function(e, r) {
-  r || A(e, 2, this.length);
+  r || O(e, 2, this.length);
   var n = this[e] | this[e + 1] << 8;
   return n & 32768 ? n | 4294901760 : n;
 };
 a.prototype.readInt16BE = function(e, r) {
-  r || A(e, 2, this.length);
+  r || O(e, 2, this.length);
   var n = this[e + 1] | this[e] << 8;
   return n & 32768 ? n | 4294901760 : n;
 };
 a.prototype.readInt32LE = function(e, r) {
-  return r || A(e, 4, this.length), this[e] | this[e + 1] << 8 | this[e + 2] << 16 | this[e + 3] << 24;
+  return r || O(e, 4, this.length), this[e] | this[e + 1] << 8 | this[e + 2] << 16 | this[e + 3] << 24;
 };
 a.prototype.readInt32BE = function(e, r) {
-  return r || A(e, 4, this.length), this[e] << 24 | this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3];
+  return r || O(e, 4, this.length), this[e] << 24 | this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3];
 };
 a.prototype.readFloatLE = function(e, r) {
-  return r || A(e, 4, this.length), ve(this, e, !0, 23, 4);
+  return r || O(e, 4, this.length), ve(this, e, !0, 23, 4);
 };
 a.prototype.readFloatBE = function(e, r) {
-  return r || A(e, 4, this.length), ve(this, e, !1, 23, 4);
+  return r || O(e, 4, this.length), ve(this, e, !1, 23, 4);
 };
 a.prototype.readDoubleLE = function(e, r) {
-  return r || A(e, 8, this.length), ve(this, e, !0, 52, 8);
+  return r || O(e, 8, this.length), ve(this, e, !0, 52, 8);
 };
 a.prototype.readDoubleBE = function(e, r) {
-  return r || A(e, 8, this.length), ve(this, e, !1, 52, 8);
+  return r || O(e, 8, this.length), ve(this, e, !1, 52, 8);
 };
 function D(t, e, r, n, i, o) {
   if (!$(t)) throw new TypeError('"buffer" argument must be a Buffer instance');
@@ -859,27 +859,27 @@ var Oe;
 function Q() {
 }
 Q.prototype = /* @__PURE__ */ Object.create(null);
-function p() {
-  p.init.call(this);
+function g() {
+  g.init.call(this);
 }
-p.EventEmitter = p;
-p.usingDomains = !1;
-p.prototype.domain = void 0;
-p.prototype._events = void 0;
-p.prototype._maxListeners = void 0;
-p.defaultMaxListeners = 10;
-p.init = function() {
-  this.domain = null, p.usingDomains && Oe.active && !(this instanceof Oe.Domain) && (this.domain = Oe.active), (!this._events || this._events === Object.getPrototypeOf(this)._events) && (this._events = new Q(), this._eventsCount = 0), this._maxListeners = this._maxListeners || void 0;
+g.EventEmitter = g;
+g.usingDomains = !1;
+g.prototype.domain = void 0;
+g.prototype._events = void 0;
+g.prototype._maxListeners = void 0;
+g.defaultMaxListeners = 10;
+g.init = function() {
+  this.domain = null, g.usingDomains && Oe.active && !(this instanceof Oe.Domain) && (this.domain = Oe.active), (!this._events || this._events === Object.getPrototypeOf(this)._events) && (this._events = new Q(), this._eventsCount = 0), this._maxListeners = this._maxListeners || void 0;
 };
-p.prototype.setMaxListeners = function(e) {
+g.prototype.setMaxListeners = function(e) {
   if (typeof e != "number" || e < 0 || isNaN(e))
     throw new TypeError('"n" argument must be a positive number');
   return this._maxListeners = e, this;
 };
 function St(t) {
-  return t._maxListeners === void 0 ? p.defaultMaxListeners : t._maxListeners;
+  return t._maxListeners === void 0 ? g.defaultMaxListeners : t._maxListeners;
 }
-p.prototype.getMaxListeners = function() {
+g.prototype.getMaxListeners = function() {
   return St(this);
 };
 function Rr(t, e, r) {
@@ -917,7 +917,7 @@ function Ar(t, e, r, n) {
     for (var i = t.length, o = ae(t, i), s = 0; s < i; ++s)
       o[s].apply(r, n);
 }
-p.prototype.emit = function(e) {
+g.prototype.emit = function(e) {
   var r, n, i, o, s, f, u, l = e === "error";
   if (f = this._events, f)
     l = l && f.error == null;
@@ -979,11 +979,11 @@ function Rt(t, e, r, n) {
 function Tr(t) {
   typeof console.warn == "function" ? console.warn(t) : console.log(t);
 }
-p.prototype.addListener = function(e, r) {
+g.prototype.addListener = function(e, r) {
   return Rt(this, e, r, !1);
 };
-p.prototype.on = p.prototype.addListener;
-p.prototype.prependListener = function(e, r) {
+g.prototype.on = g.prototype.addListener;
+g.prototype.prependListener = function(e, r) {
   return Rt(this, e, r, !0);
 };
 function It(t, e, r) {
@@ -993,17 +993,17 @@ function It(t, e, r) {
   }
   return i.listener = r, i;
 }
-p.prototype.once = function(e, r) {
+g.prototype.once = function(e, r) {
   if (typeof r != "function")
     throw new TypeError('"listener" argument must be a function');
   return this.on(e, It(this, e, r)), this;
 };
-p.prototype.prependOnceListener = function(e, r) {
+g.prototype.prependOnceListener = function(e, r) {
   if (typeof r != "function")
     throw new TypeError('"listener" argument must be a function');
   return this.prependListener(e, It(this, e, r)), this;
 };
-p.prototype.removeListener = function(e, r) {
+g.prototype.removeListener = function(e, r) {
   var n, i, o, s, f;
   if (typeof r != "function")
     throw new TypeError('"listener" argument must be a function');
@@ -1031,7 +1031,7 @@ p.prototype.removeListener = function(e, r) {
   }
   return this;
 };
-p.prototype.removeAllListeners = function(e) {
+g.prototype.removeAllListeners = function(e) {
   var r, n;
   if (n = this._events, !n)
     return this;
@@ -1050,14 +1050,14 @@ p.prototype.removeAllListeners = function(e) {
     while (r[0]);
   return this;
 };
-p.prototype.listeners = function(e) {
+g.prototype.listeners = function(e) {
   var r, n, i = this._events;
   return i ? (r = i[e], r ? typeof r == "function" ? n = [r.listener || r] : n = Nr(r) : n = []) : n = [], n;
 };
-p.listenerCount = function(t, e) {
+g.listenerCount = function(t, e) {
   return typeof t.listenerCount == "function" ? t.listenerCount(e) : Ot.call(t, e);
 };
-p.prototype.listenerCount = Ot;
+g.prototype.listenerCount = Ot;
 function Ot(t) {
   var e = this._events;
   if (e) {
@@ -1069,7 +1069,7 @@ function Ot(t) {
   }
   return 0;
 }
-p.prototype.eventNames = function() {
+g.prototype.eventNames = function() {
   return this._eventsCount > 0 ? Reflect.ownKeys(this._events) : [];
 };
 function Lr(t, e) {
@@ -1316,10 +1316,10 @@ function ye(t, e, r) {
   if (r < 0)
     return Te(e) ? t.stylize(RegExp.prototype.toString.call(e), "regexp") : t.stylize("[Object]", "special");
   t.seen.push(e);
-  var g;
-  return l ? g = zr(t, e, r, s, o) : g = o.map(function(y) {
-    return ke(t, e, r, s, y, l);
-  }), t.seen.pop(), Vr(g, u, h);
+  var m;
+  return l ? m = zr(t, e, r, s, o) : m = o.map(function(w) {
+    return ke(t, e, r, s, w, l);
+  }), t.seen.pop(), Vr(m, u, h);
 }
 function qr(t, e) {
   if (H(e))
@@ -1565,9 +1565,9 @@ function Zr(t) {
 function Xr(t) {
   this.charReceived = t.length % 3, this.charLength = this.charReceived ? 3 : 0;
 }
-R.ReadableState = Bt;
+S.ReadableState = Bt;
 var b = kr("stream");
-oe(R, p);
+oe(S, g);
 function Kr(t, e, r) {
   if (typeof t.prependListener == "function")
     return t.prependListener(e, r);
@@ -1581,19 +1581,19 @@ function Bt(t, e) {
   var r = t.highWaterMark, n = this.objectMode ? 16 : 16 * 1024;
   this.highWaterMark = r || r === 0 ? r : n, this.highWaterMark = ~~this.highWaterMark, this.buffer = new te(), this.length = 0, this.pipes = null, this.pipesCount = 0, this.flowing = null, this.ended = !1, this.endEmitted = !1, this.reading = !1, this.sync = !0, this.needReadable = !1, this.emittedReadable = !1, this.readableListening = !1, this.resumeScheduled = !1, this.defaultEncoding = t.defaultEncoding || "utf8", this.ranOut = !1, this.awaitDrain = 0, this.readingMore = !1, this.decoder = null, this.encoding = null, t.encoding && (this.decoder = new le(t.encoding), this.encoding = t.encoding);
 }
-function R(t) {
-  if (!(this instanceof R)) return new R(t);
-  this._readableState = new Bt(t, this), this.readable = !0, t && typeof t.read == "function" && (this._read = t.read), p.call(this);
+function S(t) {
+  if (!(this instanceof S)) return new S(t);
+  this._readableState = new Bt(t, this), this.readable = !0, t && typeof t.read == "function" && (this._read = t.read), g.call(this);
 }
-R.prototype.push = function(t, e) {
+S.prototype.push = function(t, e) {
   var r = this._readableState;
   return !r.objectMode && typeof t == "string" && (e = e || r.defaultEncoding, e !== r.encoding && (t = a.from(t, e), e = "")), Ut(this, r, t, e, !1);
 };
-R.prototype.unshift = function(t) {
+S.prototype.unshift = function(t) {
   var e = this._readableState;
   return Ut(this, e, t, "", !0);
 };
-R.prototype.isPaused = function() {
+S.prototype.isPaused = function() {
   return this._readableState.flowing === !1;
 };
 function Ut(t, e, r, n, i) {
@@ -1619,7 +1619,7 @@ function Ut(t, e, r, n, i) {
 function tn(t) {
   return !t.ended && (t.needReadable || t.length < t.highWaterMark || t.length === 0);
 }
-R.prototype.setEncoding = function(t) {
+S.prototype.setEncoding = function(t) {
   return this._readableState.decoder = new le(t), this._readableState.encoding = t, this;
 };
 var Ke = 8388608;
@@ -1629,7 +1629,7 @@ function rn(t) {
 function et(t, e) {
   return t <= 0 || e.length === 0 && e.ended ? 0 : e.objectMode ? 1 : t !== t ? e.flowing && e.length ? e.buffer.head.data.length : e.length : (t > e.highWaterMark && (e.highWaterMark = rn(t)), t <= e.length ? t : e.ended ? e.length : (e.needReadable = !0, 0));
 }
-R.prototype.read = function(t) {
+S.prototype.read = function(t) {
   b("read", t), t = parseInt(t, 10);
   var e = this._readableState, r = t;
   if (t !== 0 && (e.emittedReadable = !1), t === 0 && e.needReadable && (e.length >= e.highWaterMark || e.ended))
@@ -1669,10 +1669,10 @@ function fn(t, e) {
     r = e.length;
   e.readingMore = !1;
 }
-R.prototype._read = function(t) {
+S.prototype._read = function(t) {
   this.emit("error", new Error("not implemented"));
 };
-R.prototype.pipe = function(t, e) {
+S.prototype.pipe = function(t, e) {
   var r = this, n = this._readableState;
   switch (n.pipesCount) {
     case 0:
@@ -1688,8 +1688,8 @@ R.prototype.pipe = function(t, e) {
   n.pipesCount += 1, b("pipe count=%d opts=%j", n.pipesCount, e);
   var i = !e || e.end !== !1, o = i ? f : h;
   n.endEmitted ? B(o) : r.once("end", o), t.on("unpipe", s);
-  function s(S) {
-    b("onunpipe"), S === r && h();
+  function s(E) {
+    b("onunpipe"), E === r && h();
   }
   function f() {
     b("onend"), t.end();
@@ -1698,28 +1698,28 @@ R.prototype.pipe = function(t, e) {
   t.on("drain", u);
   var l = !1;
   function h() {
-    b("cleanup"), t.removeListener("close", O), t.removeListener("finish", E), t.removeListener("drain", u), t.removeListener("error", y), t.removeListener("unpipe", s), r.removeListener("end", f), r.removeListener("end", h), r.removeListener("data", g), l = !0, n.awaitDrain && (!t._writableState || t._writableState.needDrain) && u();
+    b("cleanup"), t.removeListener("close", C), t.removeListener("finish", p), t.removeListener("drain", u), t.removeListener("error", w), t.removeListener("unpipe", s), r.removeListener("end", f), r.removeListener("end", h), r.removeListener("data", m), l = !0, n.awaitDrain && (!t._writableState || t._writableState.needDrain) && u();
   }
   var c = !1;
-  r.on("data", g);
-  function g(S) {
+  r.on("data", m);
+  function m(E) {
     b("ondata"), c = !1;
-    var m = t.write(S);
-    m === !1 && !c && ((n.pipesCount === 1 && n.pipes === t || n.pipesCount > 1 && Pt(n.pipes, t) !== -1) && !l && (b("false write response, pause", r._readableState.awaitDrain), r._readableState.awaitDrain++, c = !0), r.pause());
+    var x = t.write(E);
+    x === !1 && !c && ((n.pipesCount === 1 && n.pipes === t || n.pipesCount > 1 && Pt(n.pipes, t) !== -1) && !l && (b("false write response, pause", r._readableState.awaitDrain), r._readableState.awaitDrain++, c = !0), r.pause());
   }
-  function y(S) {
-    b("onerror", S), x(), t.removeListener("error", y), en(t, "error") === 0 && t.emit("error", S);
+  function w(E) {
+    b("onerror", E), A(), t.removeListener("error", w), en(t, "error") === 0 && t.emit("error", E);
   }
-  Kr(t, "error", y);
-  function O() {
-    t.removeListener("finish", E), x();
+  Kr(t, "error", w);
+  function C() {
+    t.removeListener("finish", p), A();
   }
-  t.once("close", O);
-  function E() {
-    b("onfinish"), t.removeListener("close", O), x();
+  t.once("close", C);
+  function p() {
+    b("onfinish"), t.removeListener("close", C), A();
   }
-  t.once("finish", E);
-  function x() {
+  t.once("finish", p);
+  function A() {
     b("unpipe"), r.unpipe(t);
   }
   return t.emit("pipe", r), n.flowing || (b("pipe resume"), r.resume()), t;
@@ -1730,7 +1730,7 @@ function an(t) {
     b("pipeOnDrain", e.awaitDrain), e.awaitDrain && e.awaitDrain--, e.awaitDrain === 0 && t.listeners("data").length && (e.flowing = !0, Ye(t));
   };
 }
-R.prototype.unpipe = function(t) {
+S.prototype.unpipe = function(t) {
   var e = this._readableState;
   if (e.pipesCount === 0) return this;
   if (e.pipesCount === 1)
@@ -1745,8 +1745,8 @@ R.prototype.unpipe = function(t) {
   var o = Pt(e.pipes, t);
   return o === -1 ? this : (e.pipes.splice(o, 1), e.pipesCount -= 1, e.pipesCount === 1 && (e.pipes = e.pipes[0]), t.emit("unpipe", this), this);
 };
-R.prototype.on = function(t, e) {
-  var r = p.prototype.on.call(this, t, e);
+S.prototype.on = function(t, e) {
+  var r = g.prototype.on.call(this, t, e);
   if (t === "data")
     this._readableState.flowing !== !1 && this.resume();
   else if (t === "readable") {
@@ -1755,11 +1755,11 @@ R.prototype.on = function(t, e) {
   }
   return r;
 };
-R.prototype.addListener = R.prototype.on;
+S.prototype.addListener = S.prototype.on;
 function un(t) {
   b("readable nexttick read 0"), t.read(0);
 }
-R.prototype.resume = function() {
+S.prototype.resume = function() {
   var t = this._readableState;
   return t.flowing || (b("resume"), t.flowing = !0, ln(this, t)), this;
 };
@@ -1769,7 +1769,7 @@ function ln(t, e) {
 function hn(t, e) {
   e.reading || (b("resume read 0"), t.read(0)), e.resumeScheduled = !1, e.awaitDrain = 0, t.emit("resume"), Ye(t), e.flowing && !e.reading && t.read(0);
 }
-R.prototype.pause = function() {
+S.prototype.pause = function() {
   return b("call pause flowing=%j", this._readableState.flowing), this._readableState.flowing !== !1 && (b("pause"), this._readableState.flowing = !1, this.emit("pause")), this;
 };
 function Ye(t) {
@@ -1777,7 +1777,7 @@ function Ye(t) {
   for (b("flow", e.flowing); e.flowing && t.read() !== null; )
     ;
 }
-R.prototype.wrap = function(t) {
+S.prototype.wrap = function(t) {
   var e = this._readableState, r = !1, n = this;
   t.on("end", function() {
     if (b("wrapped end"), e.decoder && !e.ended) {
@@ -1804,7 +1804,7 @@ R.prototype.wrap = function(t) {
     b("wrapped _read", s), r && (r = !1, t.resume());
   }, n;
 };
-R._fromList = kt;
+S._fromList = kt;
 function kt(t, e) {
   if (e.length === 0) return null;
   var r;
@@ -1856,7 +1856,7 @@ function Pt(t, e) {
   return -1;
 }
 T.WritableState = We;
-oe(T, p);
+oe(T, g);
 function _n() {
 }
 function wn(t, e, r) {
@@ -1882,7 +1882,7 @@ We.prototype.getBuffer = function() {
 };
 function T(t) {
   if (!(this instanceof T) && !(this instanceof M)) return new T(t);
-  this._writableState = new We(t, this), this.writable = !0, t && (typeof t.write == "function" && (this._write = t.write), typeof t.writev == "function" && (this._writev = t.writev)), p.call(this);
+  this._writableState = new We(t, this), this.writable = !0, t && (typeof t.write == "function" && (this._write = t.write), typeof t.writev == "function" && (this._writev = t.writev)), g.call(this);
 }
 T.prototype.pipe = function() {
   this.emit("error", new Error("Cannot pipe, not readable"));
@@ -2000,7 +2000,7 @@ function zt(t) {
     t.corkedRequestsFree ? t.corkedRequestsFree.next = e : t.corkedRequestsFree = e;
   };
 }
-oe(M, R);
+oe(M, S);
 var it = Object.keys(T.prototype);
 for (var Fe = 0; Fe < it.length; Fe++) {
   var Me = it[Fe];
@@ -2008,7 +2008,7 @@ for (var Fe = 0; Fe < it.length; Fe++) {
 }
 function M(t) {
   if (!(this instanceof M)) return new M(t);
-  R.call(this, t), T.call(this, t), t && t.readable === !1 && (this.readable = !1), t && t.writable === !1 && (this.writable = !1), this.allowHalfOpen = !0, t && t.allowHalfOpen === !1 && (this.allowHalfOpen = !1), this.once("end", Cn);
+  S.call(this, t), T.call(this, t), t && t.readable === !1 && (this.readable = !1), t && t.writable === !1 && (this.writable = !1), this.allowHalfOpen = !0, t && t.allowHalfOpen === !1 && (this.allowHalfOpen = !1), this.once("end", Cn);
 }
 function Cn() {
   this.allowHalfOpen || this._writableState.ended || B(An, this);
@@ -2073,15 +2073,15 @@ function fe(t) {
 fe.prototype._transform = function(t, e, r) {
   r(null, t);
 };
-oe(V, p);
-V.Readable = R;
+oe(V, g);
+V.Readable = S;
 V.Writable = T;
 V.Duplex = M;
 V.Transform = k;
 V.PassThrough = fe;
 V.Stream = V;
 function V() {
-  p.call(this);
+  g.call(this);
 }
 V.prototype.pipe = function(t, e) {
   var r = this;
@@ -2101,7 +2101,7 @@ V.prototype.pipe = function(t, e) {
     o || (o = !0, typeof t.destroy == "function" && t.destroy());
   }
   function u(h) {
-    if (l(), p.listenerCount(this, "error") === 0)
+    if (l(), g.listenerCount(this, "error") === 0)
       throw h;
   }
   r.on("error", u), t.on("error", u);
@@ -2113,9 +2113,9 @@ V.prototype.pipe = function(t, e) {
 const Vt = function(t) {
   return typeof t == "object" && t !== null && !Array.isArray(t);
 };
-class w extends Error {
+class _ extends Error {
   constructor(e, r, n, ...i) {
-    Array.isArray(r) && (r = r.join(" ").trim()), super(r), Error.captureStackTrace !== void 0 && Error.captureStackTrace(this, w), this.code = e;
+    Array.isArray(r) && (r = r.join(" ").trim()), super(r), Error.captureStackTrace !== void 0 && Error.captureStackTrace(this, _), this.code = e;
     for (const o of i)
       for (const s in o) {
         const f = o[s];
@@ -2133,14 +2133,14 @@ const Jt = function(t) {
       e[r] = { name: i };
     else if (Vt(i)) {
       if (typeof i.name != "string")
-        throw new w("CSV_OPTION_COLUMNS_MISSING_NAME", [
+        throw new _("CSV_OPTION_COLUMNS_MISSING_NAME", [
           "Option columns missing name:",
           `property "name" is required at position ${r}`,
           "when column is an object literal"
         ]);
       e[r] = i;
     } else
-      throw new w("CSV_INVALID_COLUMN_DEFINITION", [
+      throw new _("CSV_INVALID_COLUMN_DEFINITION", [
         "Invalid column definition:",
         "expect a string or a literal object,",
         `got ${JSON.stringify(i)} at position ${r}`
@@ -2246,7 +2246,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
   else if (e.encoding === null || e.encoding === !1)
     e.encoding = null;
   else if (typeof e.encoding != "string" && e.encoding !== null)
-    throw new w(
+    throw new _(
       "CSV_INVALID_OPTION_ENCODING",
       [
         "Invalid option encoding:",
@@ -2258,7 +2258,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
   if (e.bom === void 0 || e.bom === null || e.bom === !1)
     e.bom = !1;
   else if (e.bom !== !0)
-    throw new w(
+    throw new _(
       "CSV_INVALID_OPTION_BOM",
       [
         "Invalid option bom:",
@@ -2272,7 +2272,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
   else if (typeof e.cast == "function")
     e.cast_function = e.cast, e.cast = !0;
   else if (e.cast !== !0)
-    throw new w(
+    throw new _(
       "CSV_INVALID_OPTION_CAST",
       [
         "Invalid option cast:",
@@ -2289,7 +2289,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
       return isNaN(i) ? n : new Date(i);
     };
   else if (typeof e.cast_date != "function")
-    throw new w(
+    throw new _(
       "CSV_INVALID_OPTION_CAST_DATE",
       [
         "Invalid option cast_date:",
@@ -2307,7 +2307,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
   else if (e.columns === void 0 || e.columns === null || e.columns === !1)
     e.columns = !1;
   else
-    throw new w(
+    throw new _(
       "CSV_INVALID_OPTION_COLUMNS",
       [
         "Invalid option columns:",
@@ -2320,7 +2320,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
     e.group_columns_by_name = !1;
   else {
     if (e.group_columns_by_name !== !0)
-      throw new w(
+      throw new _(
         "CSV_INVALID_OPTION_GROUP_COLUMNS_BY_NAME",
         [
           "Invalid option group_columns_by_name:",
@@ -2330,7 +2330,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
         e
       );
     if (e.columns === !1)
-      throw new w(
+      throw new _(
         "CSV_INVALID_OPTION_GROUP_COLUMNS_BY_NAME",
         [
           "Invalid option group_columns_by_name:",
@@ -2342,7 +2342,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
   if (e.comment === void 0 || e.comment === null || e.comment === !1 || e.comment === "")
     e.comment = null;
   else if (typeof e.comment == "string" && (e.comment = a.from(e.comment, e.encoding)), !N(e.comment))
-    throw new w(
+    throw new _(
       "CSV_INVALID_OPTION_COMMENT",
       [
         "Invalid option comment:",
@@ -2354,7 +2354,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
   if (e.comment_no_infix === void 0 || e.comment_no_infix === null || e.comment_no_infix === !1)
     e.comment_no_infix = !1;
   else if (e.comment_no_infix !== !0)
-    throw new w(
+    throw new _(
       "CSV_INVALID_OPTION_COMMENT",
       [
         "Invalid option comment_no_infix:",
@@ -2365,7 +2365,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
     );
   const r = JSON.stringify(e.delimiter);
   if (Array.isArray(e.delimiter) || (e.delimiter = [e.delimiter]), e.delimiter.length === 0)
-    throw new w(
+    throw new _(
       "CSV_INVALID_OPTION_DELIMITER",
       [
         "Invalid option delimiter:",
@@ -2378,7 +2378,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
     if (n == null || n === !1)
       return a.from(",", e.encoding);
     if (typeof n == "string" && (n = a.from(n, e.encoding)), !N(n) || n.length === 0)
-      throw new w(
+      throw new _(
         "CSV_INVALID_OPTION_DELIMITER",
         [
           "Invalid option delimiter:",
@@ -2419,7 +2419,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
   else if (typeof e.ignore_last_delimiters == "number")
     e.ignore_last_delimiters = Math.floor(e.ignore_last_delimiters), e.ignore_last_delimiters === 0 && (e.ignore_last_delimiters = !1);
   else if (typeof e.ignore_last_delimiters != "boolean")
-    throw new w(
+    throw new _(
       "CSV_INVALID_OPTION_IGNORE_LAST_DELIMITERS",
       [
         "Invalid option `ignore_last_delimiters`:",
@@ -2429,7 +2429,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
       e
     );
   if (e.ignore_last_delimiters === !0 && e.columns === !1)
-    throw new w(
+    throw new _(
       "CSV_IGNORE_LAST_DELIMITERS_REQUIRES_COLUMNS",
       [
         "The option `ignore_last_delimiters`",
@@ -2477,7 +2477,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
   if (e.on_record === void 0 || e.on_record === null)
     e.on_record = void 0;
   else if (typeof e.on_record != "function")
-    throw new w(
+    throw new _(
       "CSV_INVALID_OPTION_ON_RECORD",
       [
         "Invalid option `on_record`:",
@@ -2506,7 +2506,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
     e.record_delimiter = [];
   else if (typeof e.record_delimiter == "string" || N(e.record_delimiter)) {
     if (e.record_delimiter.length === 0)
-      throw new w(
+      throw new _(
         "CSV_INVALID_OPTION_RECORD_DELIMITER",
         [
           "Invalid option `record_delimiter`:",
@@ -2517,7 +2517,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
       );
     e.record_delimiter = [e.record_delimiter];
   } else if (!Array.isArray(e.record_delimiter))
-    throw new w(
+    throw new _(
       "CSV_INVALID_OPTION_RECORD_DELIMITER",
       [
         "Invalid option `record_delimiter`:",
@@ -2528,7 +2528,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
     );
   if (e.record_delimiter = e.record_delimiter.map(function(n, i) {
     if (typeof n != "string" && !N(n))
-      throw new w(
+      throw new _(
         "CSV_INVALID_OPTION_RECORD_DELIMITER",
         [
           "Invalid option `record_delimiter`:",
@@ -2539,7 +2539,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
         e
       );
     if (n.length === 0)
-      throw new w(
+      throw new _(
         "CSV_INVALID_OPTION_RECORD_DELIMITER",
         [
           "Invalid option `record_delimiter`:",
@@ -2665,7 +2665,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
     state: Un(r),
     __needMoreData: function(n, i, o) {
       if (o) return !1;
-      const { encoding: s, escape: f, quote: u } = this.options, { quoting: l, needMoreDataSize: h, recordDelimiterMaxLength: c } = this.state, g = i - n - 1, y = Math.max(
+      const { encoding: s, escape: f, quote: u } = this.options, { quoting: l, needMoreDataSize: h, recordDelimiterMaxLength: c } = this.state, m = i - n - 1, w = Math.max(
         h,
         // Skip if the remaining buffer smaller than record delimiter
         // If "record_delimiter" is yet to be discovered:
@@ -2680,7 +2680,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
         // Skip if remaining buffer can be record delimiter following the closing quote
         l ? u.length + c : 0
       );
-      return g < y;
+      return m < w;
     },
     // Central parser implementation
     parse: function(n, i, o, s) {
@@ -2690,15 +2690,15 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
         encoding: l,
         from_line: h,
         ltrim: c,
-        max_record_size: g,
-        raw: y,
-        relax_quotes: O,
-        rtrim: E,
-        skip_empty_lines: x,
-        to: S,
-        to_line: m
+        max_record_size: m,
+        raw: w,
+        relax_quotes: C,
+        rtrim: p,
+        skip_empty_lines: A,
+        to: E,
+        to_line: x
       } = this.options;
-      let { comment: _, escape: L, quote: U, record_delimiter: Re } = this.options;
+      let { comment: y, escape: L, quote: U, record_delimiter: Re } = this.options;
       const { bomSkipped: Yt, previousBuf: he, rawBuffer: Wt, escapeIsQuote: Ht } = this.state;
       let v;
       if (he === void 0)
@@ -2717,17 +2717,17 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
             return;
           }
         } else {
-          for (const I in re)
-            if (re[I].compare(v, 0, re[I].length) === 0) {
-              const J = re[I].length;
+          for (const R in re)
+            if (re[R].compare(v, 0, re[R].length) === 0) {
+              const J = re[R].length;
               this.state.bufBytesStart += J, v = v.slice(J);
               const ce = ft({
                 ...this.original_options,
-                encoding: I
+                encoding: R
               });
-              for (const C in ce)
-                this.options[C] = ce[C];
-              ({ comment: _, escape: L, quote: U } = this.options);
+              for (const I in ce)
+                this.options[I] = ce[I];
+              ({ comment: y, escape: L, quote: U } = this.options);
               break;
             }
           this.state.bomSkipped = !0;
@@ -2735,7 +2735,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
       const Ie = v.length;
       let d;
       for (d = 0; d < Ie && !this.__needMoreData(d, Ie, i); d++) {
-        if (this.state.wasRowDelimiter === !0 && (this.info.lines++, this.state.wasRowDelimiter = !1), m !== -1 && this.info.lines > m) {
+        if (this.state.wasRowDelimiter === !0 && (this.info.lines++, this.state.wasRowDelimiter = !1), x !== -1 && this.info.lines > x) {
           this.state.stop = !0, s();
           return;
         }
@@ -2743,11 +2743,11 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
           v,
           d
         ) && (Re = this.options.record_delimiter);
-        const I = v[d];
-        if (y === !0 && Wt.append(I), (I === Pn || I === $n) && this.state.wasRowDelimiter === !1 && (this.state.wasRowDelimiter = !0), this.state.escaping === !0)
+        const R = v[d];
+        if (w === !0 && Wt.append(R), (R === Pn || R === $n) && this.state.wasRowDelimiter === !1 && (this.state.wasRowDelimiter = !0), this.state.escaping === !0)
           this.state.escaping = !1;
         else {
-          if (L !== null && this.state.quoting === !0 && this.__isEscape(v, d, I) && d + L.length < Ie)
+          if (L !== null && this.state.quoting === !0 && this.__isEscape(v, d, R) && d + L.length < Ie)
             if (Ht) {
               if (this.__isQuote(v, d + L.length)) {
                 this.state.escaping = !0, d += L.length - 1;
@@ -2759,23 +2759,23 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
             }
           if (this.state.commenting === !1 && this.__isQuote(v, d))
             if (this.state.quoting === !0) {
-              const C = v[d + U.length], Z = E && this.__isCharTrimable(v, d + U.length), j = _ !== null && this.__compareBytes(_, v, d + U.length, C), X = this.__isDelimiter(
+              const I = v[d + U.length], Z = p && this.__isCharTrimable(v, d + U.length), j = y !== null && this.__compareBytes(y, v, d + U.length, I), X = this.__isDelimiter(
                 v,
                 d + U.length,
-                C
-              ), de = Re.length === 0 ? this.__autoDiscoverRecordDelimiter(v, d + U.length) : this.__isRecordDelimiter(C, v, d + U.length);
-              if (L !== null && this.__isEscape(v, d, I) && this.__isQuote(v, d + L.length))
+                I
+              ), de = Re.length === 0 ? this.__autoDiscoverRecordDelimiter(v, d + U.length) : this.__isRecordDelimiter(I, v, d + U.length);
+              if (L !== null && this.__isEscape(v, d, R) && this.__isQuote(v, d + L.length))
                 d += L.length - 1;
-              else if (!C || X || de || j || Z) {
+              else if (!I || X || de || j || Z) {
                 this.state.quoting = !1, this.state.wasQuoting = !0, d += U.length - 1;
                 continue;
-              } else if (O === !1) {
+              } else if (C === !1) {
                 const He = this.__error(
-                  new w(
+                  new _(
                     "CSV_INVALID_CLOSING_QUOTE",
                     [
                       "Invalid Closing Quote:",
-                      `got "${String.fromCharCode(C)}"`,
+                      `got "${String.fromCharCode(I)}"`,
                       `at line ${this.info.lines}`,
                       "instead of delimiter, record delimiter, trimable character",
                       "(if activated) or comment"
@@ -2788,19 +2788,19 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
               } else
                 this.state.quoting = !1, this.state.wasQuoting = !0, this.state.field.prepend(U), d += U.length - 1;
             } else if (this.state.field.length !== 0) {
-              if (O === !1) {
-                const C = this.__infoField(), Z = Object.keys(re).map(
+              if (C === !1) {
+                const I = this.__infoField(), Z = Object.keys(re).map(
                   (X) => re[X].equals(this.state.field.toString()) ? X : !1
                 ).filter(Boolean)[0], j = this.__error(
-                  new w(
+                  new _(
                     "INVALID_OPENING_QUOTE",
                     [
                       "Invalid Opening Quote:",
-                      `a quote is found on field ${JSON.stringify(C.column)} at line ${C.lines}, value is ${JSON.stringify(this.state.field.toString(l))}`,
+                      `a quote is found on field ${JSON.stringify(I.column)} at line ${I.lines}, value is ${JSON.stringify(this.state.field.toString(l))}`,
                       Z ? `(${Z} bom)` : void 0
                     ],
                     this.options,
-                    C,
+                    I,
                     {
                       field: this.state.field
                     }
@@ -2813,44 +2813,44 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
               continue;
             }
           if (this.state.quoting === !1) {
-            const C = this.__isRecordDelimiter(
-              I,
+            const I = this.__isRecordDelimiter(
+              R,
               v,
               d
             );
-            if (C !== 0) {
+            if (I !== 0) {
               if (this.state.commenting && this.state.wasQuoting === !1 && this.state.record.length === 0 && this.state.field.length === 0)
                 this.info.comment_lines++;
               else {
                 if (this.state.enabled === !1 && this.info.lines + (this.state.wasRowDelimiter === !0 ? 1 : 0) >= h) {
-                  this.state.enabled = !0, this.__resetField(), this.__resetRecord(), d += C - 1;
+                  this.state.enabled = !0, this.__resetField(), this.__resetRecord(), d += I - 1;
                   continue;
                 }
-                if (x === !0 && this.state.wasQuoting === !1 && this.state.record.length === 0 && this.state.field.length === 0) {
-                  this.info.empty_lines++, d += C - 1;
+                if (A === !0 && this.state.wasQuoting === !1 && this.state.record.length === 0 && this.state.field.length === 0) {
+                  this.info.empty_lines++, d += I - 1;
                   continue;
                 }
                 this.info.bytes = this.state.bufBytesStart + d;
                 const X = this.__onField();
                 if (X !== void 0) return X;
-                this.info.bytes = this.state.bufBytesStart + d + C;
+                this.info.bytes = this.state.bufBytesStart + d + I;
                 const de = this.__onRecord(o);
                 if (de !== void 0) return de;
-                if (S !== -1 && this.info.records >= S) {
+                if (E !== -1 && this.info.records >= E) {
                   this.state.stop = !0, s();
                   return;
                 }
               }
-              this.state.commenting = !1, d += C - 1;
+              this.state.commenting = !1, d += I - 1;
               continue;
             }
             if (this.state.commenting)
               continue;
-            if (_ !== null && (u === !1 || this.state.record.length === 0 && this.state.field.length === 0) && this.__compareBytes(_, v, d, I) !== 0) {
+            if (y !== null && (u === !1 || this.state.record.length === 0 && this.state.field.length === 0) && this.__compareBytes(y, v, d, R) !== 0) {
               this.state.commenting = !0;
               continue;
             }
-            const Z = this.__isDelimiter(v, d, I);
+            const Z = this.__isDelimiter(v, d, R);
             if (Z !== 0) {
               this.info.bytes = this.state.bufBytesStart + d;
               const j = this.__onField();
@@ -2860,27 +2860,27 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
             }
           }
         }
-        if (this.state.commenting === !1 && g !== 0 && this.state.record_length + this.state.field.length > g)
+        if (this.state.commenting === !1 && m !== 0 && this.state.record_length + this.state.field.length > m)
           return this.__error(
-            new w(
+            new _(
               "CSV_MAX_RECORD_SIZE",
               [
                 "Max Record Size:",
                 "record exceed the maximum number of tolerated bytes",
-                `of ${g}`,
+                `of ${m}`,
                 `at line ${this.info.lines}`
               ],
               this.options,
               this.__infoField()
             )
           );
-        const J = c === !1 || this.state.quoting === !0 || this.state.field.length !== 0 || !this.__isCharTrimable(v, d), ce = E === !1 || this.state.wasQuoting === !1;
+        const J = c === !1 || this.state.quoting === !0 || this.state.field.length !== 0 || !this.__isCharTrimable(v, d), ce = p === !1 || this.state.wasQuoting === !1;
         if (J === !0 && ce === !0)
-          this.state.field.append(I);
+          this.state.field.append(R);
         else {
-          if (E === !0 && !this.__isCharTrimable(v, d))
+          if (p === !0 && !this.__isCharTrimable(v, d))
             return this.__error(
-              new w(
+              new _(
                 "CSV_NON_TRIMABLE_CHAR_AFTER_CLOSING_QUOTE",
                 [
                   "Invalid Closing Quote:",
@@ -2897,8 +2897,8 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
       }
       if (i === !0)
         if (this.state.quoting === !0) {
-          const I = this.__error(
-            new w(
+          const R = this.__error(
+            new _(
               "CSV_QUOTE_NOT_CLOSED",
               [
                 "Quote Not Closed:",
@@ -2908,11 +2908,11 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
               this.__infoField()
             )
           );
-          if (I !== void 0) return I;
+          if (R !== void 0) return R;
         } else if (this.state.wasQuoting === !0 || this.state.record.length !== 0 || this.state.field.length !== 0) {
           this.info.bytes = this.state.bufBytesStart + d;
-          const I = this.__onField();
-          if (I !== void 0) return I;
+          const R = this.__onField();
+          if (R !== void 0) return R;
           const J = this.__onRecord(o);
           if (J !== void 0) return J;
         } else this.state.wasRowDelimiter === !0 ? this.info.empty_lines++ : this.state.commenting === !0 && this.info.comment_lines++;
@@ -2930,54 +2930,54 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
         relax_column_count: l,
         relax_column_count_less: h,
         relax_column_count_more: c,
-        raw: g,
-        skip_records_with_empty_values: y
-      } = this.options, { enabled: O, record: E } = this.state;
-      if (O === !1)
+        raw: m,
+        skip_records_with_empty_values: w
+      } = this.options, { enabled: C, record: p } = this.state;
+      if (C === !1)
         return this.__resetRecord();
-      const x = E.length;
+      const A = p.length;
       if (i === !0) {
-        if (y === !0 && at(E)) {
+        if (w === !0 && at(p)) {
           this.__resetRecord();
           return;
         }
-        return this.__firstLineToColumns(E);
+        return this.__firstLineToColumns(p);
       }
-      if (i === !1 && this.info.records === 0 && (this.state.expectedRecordLength = x), x !== this.state.expectedRecordLength) {
-        const S = i === !1 ? new w(
+      if (i === !1 && this.info.records === 0 && (this.state.expectedRecordLength = A), A !== this.state.expectedRecordLength) {
+        const E = i === !1 ? new _(
           "CSV_RECORD_INCONSISTENT_FIELDS_LENGTH",
           [
             "Invalid Record Length:",
             `expect ${this.state.expectedRecordLength},`,
-            `got ${x} on line ${this.info.lines}`
+            `got ${A} on line ${this.info.lines}`
           ],
           this.options,
           this.__infoField(),
           {
-            record: E
+            record: p
           }
-        ) : new w(
+        ) : new _(
           "CSV_RECORD_INCONSISTENT_COLUMNS",
           [
             "Invalid Record Length:",
             `columns length is ${i.length},`,
             // rename columns
-            `got ${x} on line ${this.info.lines}`
+            `got ${A} on line ${this.info.lines}`
           ],
           this.options,
           this.__infoField(),
           {
-            record: E
+            record: p
           }
         );
-        if (l === !0 || h === !0 && x < this.state.expectedRecordLength || c === !0 && x > this.state.expectedRecordLength)
-          this.info.invalid_field_length++, this.state.error = S;
+        if (l === !0 || h === !0 && A < this.state.expectedRecordLength || c === !0 && A > this.state.expectedRecordLength)
+          this.info.invalid_field_length++, this.state.error = E;
         else {
-          const m = this.__error(S);
-          if (m) return m;
+          const x = this.__error(E);
+          if (x) return x;
         }
       }
-      if (y === !0 && at(E)) {
+      if (w === !0 && at(p)) {
         this.__resetRecord();
         return;
       }
@@ -2986,48 +2986,48 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
         return;
       }
       if (this.info.records++, u === 1 || this.info.records >= u) {
-        const { objname: S } = this.options;
+        const { objname: E } = this.options;
         if (i !== !1) {
-          const m = {};
-          for (let _ = 0, L = E.length; _ < L; _++)
-            i[_] === void 0 || i[_].disabled || (o === !0 && m[i[_].name] !== void 0 ? Array.isArray(m[i[_].name]) ? m[i[_].name] = m[i[_].name].concat(E[_]) : m[i[_].name] = [m[i[_].name], E[_]] : m[i[_].name] = E[_]);
-          if (g === !0 || f === !0) {
-            const _ = Object.assign(
-              { record: m },
-              g === !0 ? { raw: this.state.rawBuffer.toString(s) } : {},
+          const x = {};
+          for (let y = 0, L = p.length; y < L; y++)
+            i[y] === void 0 || i[y].disabled || (o === !0 && x[i[y].name] !== void 0 ? Array.isArray(x[i[y].name]) ? x[i[y].name] = x[i[y].name].concat(p[y]) : x[i[y].name] = [x[i[y].name], p[y]] : x[i[y].name] = p[y]);
+          if (m === !0 || f === !0) {
+            const y = Object.assign(
+              { record: x },
+              m === !0 ? { raw: this.state.rawBuffer.toString(s) } : {},
               f === !0 ? { info: this.__infoRecord() } : {}
             ), L = this.__push(
-              S === void 0 ? _ : [m[S], _],
+              E === void 0 ? y : [x[E], y],
               n
             );
             if (L)
               return L;
           } else {
-            const _ = this.__push(
-              S === void 0 ? m : [m[S], m],
+            const y = this.__push(
+              E === void 0 ? x : [x[E], x],
               n
             );
-            if (_)
-              return _;
+            if (y)
+              return y;
           }
-        } else if (g === !0 || f === !0) {
-          const m = Object.assign(
-            { record: E },
-            g === !0 ? { raw: this.state.rawBuffer.toString(s) } : {},
+        } else if (m === !0 || f === !0) {
+          const x = Object.assign(
+            { record: p },
+            m === !0 ? { raw: this.state.rawBuffer.toString(s) } : {},
             f === !0 ? { info: this.__infoRecord() } : {}
-          ), _ = this.__push(
-            S === void 0 ? m : [E[S], m],
+          ), y = this.__push(
+            E === void 0 ? x : [p[E], x],
             n
           );
-          if (_)
-            return _;
+          if (y)
+            return y;
         } else {
-          const m = this.__push(
-            S === void 0 ? E : [E[S], E],
+          const x = this.__push(
+            E === void 0 ? p : [p[E], p],
             n
           );
-          if (m)
-            return m;
+          if (x)
+            return x;
         }
       }
       this.__resetRecord();
@@ -3038,7 +3038,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
         const o = i === void 0 ? n : i.call(null, n);
         if (!Array.isArray(o))
           return this.__error(
-            new w(
+            new _(
               "CSV_INVALID_COLUMN_MAPPING",
               [
                 "Invalid Column Mapping:",
@@ -3303,7 +3303,7 @@ const ut = function() {
     else if (r === void 0 && s === "function")
       r = o;
     else
-      throw new w(
+      throw new _(
         "CSV_INVALID_ARGUMENT",
         ["Invalid argument:", `got ${JSON.stringify(o)} at index ${i}`],
         e || {}
@@ -3373,7 +3373,7 @@ function Hn(t) {
   if (!(t == null || t === ""))
     return t.length > 2048 ? `${t.slice(0, 2048)}... [truncated]` : t;
 }
-const Qn = 40096;
+const Qn = 65536;
 class Gn {
   /** Build parser. */
   buildParser(e) {
@@ -3382,46 +3382,44 @@ class Gn {
   /** Parse stream. */
   async parseStream(e, r, n, i) {
     return new Promise((o, s) => {
-      let f, u, l, h = !1, c = 0, g = !1;
-      const y = () => {
-        if (g) return;
-        g = !0;
-        const x = f;
-        f = void 0, l = void 0, x != null && (this.ignoreErrors(() => x.removeAllListeners()), this.ignoreErrors(() => x.end())), this.ignoreErrors(() => {
+      let f, u, l, h = !1, c = !1;
+      const m = () => {
+        if (c) return;
+        c = !0;
+        const p = f;
+        f = void 0, l = void 0, p != null && (this.ignoreErrors(() => p.removeAllListeners()), this.ignoreErrors(() => p.end())), this.ignoreErrors(() => {
           u?.cancel();
         }), u = void 0;
-      }, O = (x) => {
-        h || (h = !0, y(), i.signal.aborted || i.abort(x), s(x));
+      }, w = (p) => {
+        h || (h = !0, m(), i.signal.aborted || i.abort(p), s(p));
       };
-      i.signal.addEventListener("abort", y, { once: !0 }), (async () => {
+      i.signal.addEventListener("abort", m, { once: !0 }), (async () => {
         f = ut(e), l = this.constructRowBuffer({ chunk: () => {
         }, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {
           try {
-            const m = c;
             if (f == null || l == null) return;
-            let _;
-            for (; (_ = f.read()) != null; ) {
-              if (c++, h) return;
-              i.signal.throwIfAborted(), l.push(_);
+            let E;
+            for (; (E = f.read()) != null; ) {
+              if (h) return;
+              i.signal.throwIfAborted(), l.push(E);
             }
-            console.log("ROWS", c - m);
-          } catch (m) {
-            O(m);
+          } catch (E) {
+            w(E);
           }
-        }), f.on("error", (m) => O(m)), f.on("end", () => {
+        }), f.on("error", (E) => w(E)), f.on("end", () => {
           h || (l?.flush(), o(this.constructSummary(f)));
         });
-        const x = await fetch(encodeURI(n), { signal: i.signal });
-        if (!x.ok || x.body == null)
-          throw await Yn(x, `Failed to fetch '${n}' file.`, "datapos-connector-file-store-emulator|Connector|retrieve");
-        u = x.body.pipeThrough(new TextDecoderStream(r.encodingId)).getReader();
-        let S = await u.read();
-        for (; !S.done; ) {
+        const p = await fetch(encodeURI(n), { signal: i.signal });
+        if (!p.ok || p.body == null)
+          throw await Yn(p, `Failed to fetch '${n}' file.`, "datapos-connector-file-store-emulator|Connector|retrieve");
+        u = p.body.pipeThrough(new TextDecoderStream(r.encodingId)).getReader();
+        let A = await u.read();
+        for (; !A.done; ) {
           if (h) return;
-          i.signal.throwIfAborted(), console.log("CHUNK", S.value.length), f.write(S.value), S = await u.read();
+          i.signal.throwIfAborted(), f.write(A.value), A = await u.read();
         }
         h || f.end();
-      })().catch((x) => O(x));
+      })().catch((p) => w(p));
     });
   }
   /** Parse string. */
