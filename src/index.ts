@@ -48,7 +48,7 @@ class Tool {
 
                 // rowBuffer?.flush();
                 void reader?.cancel();
-                parser?.destroy();
+                // parser?.destroy();
 
                 console.log(7777, error);
                 reject(error as Error);
