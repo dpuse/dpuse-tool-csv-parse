@@ -69,10 +69,11 @@ class Tool {
 
             const run = async (): Promise<void> => {
                 parser = parse(parseOptions);
-                rowBuffer = this.constructRowBuffer({ chunk: retrieveRecordsOptions.chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
+                // rowBuffer = this.constructRowBuffer({ chunk: retrieveRecordsOptions.chunk , chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
+                rowBuffer = this.constructRowBuffer({ chunk: () => void 0, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
                 parser.on('readable', () => {
                     try {
-                        console.log(2222, rowCount);
+                        const myCount = rowCount;
                         if (parser == null || rowBuffer == null) return;
                         let row: Row | null;
                         while ((row = parser.read() as Row | null) != null) {
@@ -81,7 +82,7 @@ class Tool {
                             abortController.signal.throwIfAborted();
                             rowBuffer.push(row);
                         }
-                        console.log(3333, rowCount);
+                        console.log(3333, rowCount - myCount);
                     } catch (error) {
                         handleError(error);
                     }
