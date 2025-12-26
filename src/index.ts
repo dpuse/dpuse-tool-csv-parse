@@ -37,6 +37,7 @@ class Tool {
     ): Promise<RetrieveRecordsSummary> {
         return new Promise<RetrieveRecordsSummary>((resolve, reject) => {
             let parser: Parser | undefined;
+            let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
             let rowBuffer: RowBuffer | undefined;
             let hasErrored = false;
             let hasStoppedProcessing = false;
@@ -52,6 +53,8 @@ class Tool {
                     this.ignoreErrors(() => activeParser.removeAllListeners());
                     this.ignoreErrors(() => activeParser.end());
                 }
+                this.ignoreErrors(() => void reader?.cancel());
+                reader = undefined;
             };
 
             const handleError = (error: unknown): void => {
@@ -93,25 +96,22 @@ class Tool {
                     throw await buildFetchError(response, `Failed to fetch '${url}' file.`, 'datapos-connector-file-store-emulator|Connector|retrieve');
                 }
 
-                const decodedStream = response.body; //.pipeThrough(new TextDecoderStream(retrieveRecordsOptions.encodingId));
-                const writable = new WritableStream<string>({
-                    write: (chunkText): void => {
-                        if (hasErrored) return;
-                        if (chunkText.length === 0) return;
-                        abortController.signal.throwIfAborted();
-                        parser?.write(chunkText);
-                    },
-                    close: (): void => {
-                        if (hasErrored) return;
-                        parser?.end();
-                    },
-                    abort: (error): void => {
-                        if (hasErrored) return;
-                        handleError(error);
-                    }
-                });
+                reader = response.body.getReader();
+                const decoder = new TextDecoder(retrieveRecordsOptions.encodingId);
+                let result = await reader.read();
+                while (!result.done) {
+                    if (hasErrored) return;
+                    abortController.signal.throwIfAborted();
+                    const decodedChunk = decoder.decode(result.value, { stream: true });
+                    if (decodedChunk.length > 0) parser?.write(decodedChunk);
+                    result = await reader.read();
+                }
 
-                await decodedStream.pipeTo(writable, { signal: abortController.signal });
+                if (hasErrored) return;
+
+                const finalChunk = decoder.decode();
+                if (finalChunk.length > 0) parser?.write(finalChunk);
+                parser?.end();
             };
 
             void run().catch((error: unknown) => handleError(error));
