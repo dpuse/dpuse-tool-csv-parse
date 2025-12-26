@@ -33,6 +33,7 @@ class Tool {
             let reader: ReadableStreamDefaultReader<string> | undefined;
             let rowBuffer: RowBuffer | undefined;
             let hasErrored = false;
+            let rowCount = 0;
 
             const handleError = (error: unknown): void => {
                 if (hasErrored) return;
@@ -53,15 +54,16 @@ class Tool {
                 rowBuffer = this.constructRowBuffer({ chunk: retrieveRecordsOptions.chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
                 parser.on('readable', () => {
                     try {
-                        console.log(2222);
+                        console.log(2222, rowCount);
                         if (parser == null || rowBuffer == null) return;
                         let row: Row | null;
                         while ((row = parser.read() as Row | null) != null) {
-                            console.log(9999);
+                            rowCount++;
                             if (hasErrored) return;
                             abortController.signal.throwIfAborted();
                             rowBuffer.push(row);
                         }
+                        console.log(3333, rowCount);
                     } catch (error) {
                         handleError(error);
                     }
