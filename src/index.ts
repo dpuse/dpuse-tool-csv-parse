@@ -42,7 +42,7 @@ class Tool {
             let hasErrored = false;
 
             const handleError = (error: unknown): void => {
-                console.log(7777, error);
+                console.log(5555, error);
                 if (hasErrored) return;
                 hasErrored = true;
 
