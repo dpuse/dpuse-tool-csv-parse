@@ -154,7 +154,7 @@ class Tool {
                 return pooled;
             }
 
-            const allocated = new Array<Row>(rowsPerChunk);
+            const allocated = Array.from<Row>({ length: rowsPerChunk });
             allocated.length = 0;
             return allocated;
         }

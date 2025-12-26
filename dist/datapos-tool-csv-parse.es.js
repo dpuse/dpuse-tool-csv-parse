@@ -3445,7 +3445,7 @@ class Zn {
       const l = n.pop();
       if (l != null)
         return l.length = 0, l;
-      const h = new Array(r);
+      const h = Array.from({ length: r });
       return h.length = 0, h;
     }
   }
