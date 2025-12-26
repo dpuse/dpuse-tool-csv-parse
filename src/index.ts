@@ -63,8 +63,8 @@ class Tool {
 
             const run = async (): Promise<void> => {
                 parser = parse(parseOptions);
-                // rowBuffer = this.constructRowBuffer({ chunk: retrieveRecordsOptions.chunk , chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
-                rowBuffer = this.constructRowBuffer({ chunk: () => void 0, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
+                rowBuffer = this.constructRowBuffer({ chunk: retrieveRecordsOptions.chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
+                // rowBuffer = this.constructRowBuffer({ chunk: () => void 0, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
                 parser.on('readable', () => {
                     try {
                         if (parser == null || rowBuffer == null) return;

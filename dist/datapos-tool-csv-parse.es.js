@@ -3394,8 +3394,7 @@ class Gn {
         h || (h = !0, m(), i.signal.aborted || i.abort(p), s(p));
       };
       i.signal.addEventListener("abort", m, { once: !0 }), (async () => {
-        f = ut(e), l = this.constructRowBuffer({ chunk: () => {
-        }, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {
+        f = ut(e), l = this.constructRowBuffer({ chunk: r.chunk, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {
           try {
             if (f == null || l == null) return;
             let E;
