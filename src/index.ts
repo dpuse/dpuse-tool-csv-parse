@@ -77,7 +77,7 @@ class Tool {
                             abortController.signal.throwIfAborted();
                             rowBuffer.push(row);
                         }
-                        // console.log(3333, rowCount - myCount);
+                        console.log(3333, rowCount - myCount);
                     } catch (error) {
                         handleError(error);
                     }

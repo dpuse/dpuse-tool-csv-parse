@@ -1704,8 +1704,8 @@ R.prototype.pipe = function(t, e) {
   r.on("data", g);
   function g(S) {
     b("ondata"), c = !1;
-    var _ = t.write(S);
-    _ === !1 && !c && ((n.pipesCount === 1 && n.pipes === t || n.pipesCount > 1 && Pt(n.pipes, t) !== -1) && !l && (b("false write response, pause", r._readableState.awaitDrain), r._readableState.awaitDrain++, c = !0), r.pause());
+    var m = t.write(S);
+    m === !1 && !c && ((n.pipesCount === 1 && n.pipes === t || n.pipesCount > 1 && Pt(n.pipes, t) !== -1) && !l && (b("false write response, pause", r._readableState.awaitDrain), r._readableState.awaitDrain++, c = !0), r.pause());
   }
   function y(S) {
     b("onerror", S), x(), t.removeListener("error", y), en(t, "error") === 0 && t.emit("error", S);
@@ -2696,9 +2696,9 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
         rtrim: E,
         skip_empty_lines: x,
         to: S,
-        to_line: _
+        to_line: m
       } = this.options;
-      let { comment: m, escape: L, quote: U, record_delimiter: Re } = this.options;
+      let { comment: _, escape: L, quote: U, record_delimiter: Re } = this.options;
       const { bomSkipped: Yt, previousBuf: he, rawBuffer: Wt, escapeIsQuote: Ht } = this.state;
       let v;
       if (he === void 0)
@@ -2727,7 +2727,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
               });
               for (const C in ce)
                 this.options[C] = ce[C];
-              ({ comment: m, escape: L, quote: U } = this.options);
+              ({ comment: _, escape: L, quote: U } = this.options);
               break;
             }
           this.state.bomSkipped = !0;
@@ -2735,7 +2735,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
       const Ie = v.length;
       let d;
       for (d = 0; d < Ie && !this.__needMoreData(d, Ie, i); d++) {
-        if (this.state.wasRowDelimiter === !0 && (this.info.lines++, this.state.wasRowDelimiter = !1), _ !== -1 && this.info.lines > _) {
+        if (this.state.wasRowDelimiter === !0 && (this.info.lines++, this.state.wasRowDelimiter = !1), m !== -1 && this.info.lines > m) {
           this.state.stop = !0, s();
           return;
         }
@@ -2759,7 +2759,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
             }
           if (this.state.commenting === !1 && this.__isQuote(v, d))
             if (this.state.quoting === !0) {
-              const C = v[d + U.length], Z = E && this.__isCharTrimable(v, d + U.length), j = m !== null && this.__compareBytes(m, v, d + U.length, C), X = this.__isDelimiter(
+              const C = v[d + U.length], Z = E && this.__isCharTrimable(v, d + U.length), j = _ !== null && this.__compareBytes(_, v, d + U.length, C), X = this.__isDelimiter(
                 v,
                 d + U.length,
                 C
@@ -2846,7 +2846,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
             }
             if (this.state.commenting)
               continue;
-            if (m !== null && (u === !1 || this.state.record.length === 0 && this.state.field.length === 0) && this.__compareBytes(m, v, d, I) !== 0) {
+            if (_ !== null && (u === !1 || this.state.record.length === 0 && this.state.field.length === 0) && this.__compareBytes(_, v, d, I) !== 0) {
               this.state.commenting = !0;
               continue;
             }
@@ -2973,8 +2973,8 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
         if (l === !0 || h === !0 && x < this.state.expectedRecordLength || c === !0 && x > this.state.expectedRecordLength)
           this.info.invalid_field_length++, this.state.error = S;
         else {
-          const _ = this.__error(S);
-          if (_) return _;
+          const m = this.__error(S);
+          if (m) return m;
         }
       }
       if (y === !0 && at(E)) {
@@ -2988,46 +2988,46 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
       if (this.info.records++, u === 1 || this.info.records >= u) {
         const { objname: S } = this.options;
         if (i !== !1) {
-          const _ = {};
-          for (let m = 0, L = E.length; m < L; m++)
-            i[m] === void 0 || i[m].disabled || (o === !0 && _[i[m].name] !== void 0 ? Array.isArray(_[i[m].name]) ? _[i[m].name] = _[i[m].name].concat(E[m]) : _[i[m].name] = [_[i[m].name], E[m]] : _[i[m].name] = E[m]);
+          const m = {};
+          for (let _ = 0, L = E.length; _ < L; _++)
+            i[_] === void 0 || i[_].disabled || (o === !0 && m[i[_].name] !== void 0 ? Array.isArray(m[i[_].name]) ? m[i[_].name] = m[i[_].name].concat(E[_]) : m[i[_].name] = [m[i[_].name], E[_]] : m[i[_].name] = E[_]);
           if (g === !0 || f === !0) {
-            const m = Object.assign(
-              { record: _ },
+            const _ = Object.assign(
+              { record: m },
               g === !0 ? { raw: this.state.rawBuffer.toString(s) } : {},
               f === !0 ? { info: this.__infoRecord() } : {}
             ), L = this.__push(
-              S === void 0 ? m : [_[S], m],
+              S === void 0 ? _ : [m[S], _],
               n
             );
             if (L)
               return L;
           } else {
-            const m = this.__push(
-              S === void 0 ? _ : [_[S], _],
+            const _ = this.__push(
+              S === void 0 ? m : [m[S], m],
               n
             );
-            if (m)
-              return m;
+            if (_)
+              return _;
           }
         } else if (g === !0 || f === !0) {
-          const _ = Object.assign(
+          const m = Object.assign(
             { record: E },
             g === !0 ? { raw: this.state.rawBuffer.toString(s) } : {},
             f === !0 ? { info: this.__infoRecord() } : {}
-          ), m = this.__push(
-            S === void 0 ? _ : [E[S], _],
-            n
-          );
-          if (m)
-            return m;
-        } else {
-          const _ = this.__push(
-            S === void 0 ? E : [E[S], E],
+          ), _ = this.__push(
+            S === void 0 ? m : [E[S], m],
             n
           );
           if (_)
             return _;
+        } else {
+          const m = this.__push(
+            S === void 0 ? E : [E[S], E],
+            n
+          );
+          if (m)
+            return m;
         }
       }
       this.__resetRecord();
@@ -3397,17 +3397,18 @@ class Gn {
         f = ut(e), l = this.constructRowBuffer({ chunk: () => {
         }, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {
           try {
-            const _ = c;
+            const m = c;
             if (f == null || l == null) return;
-            let m;
-            for (; (m = f.read()) != null; ) {
+            let _;
+            for (; (_ = f.read()) != null; ) {
               if (c++, h) return;
-              i.signal.throwIfAborted(), l.push(m);
+              i.signal.throwIfAborted(), l.push(_);
             }
-          } catch (_) {
-            O(_);
+            console.log(3333, c - m);
+          } catch (m) {
+            O(m);
           }
-        }), f.on("error", (_) => O(_)), f.on("end", () => {
+        }), f.on("error", (m) => O(m)), f.on("end", () => {
           h || (l?.flush(), o(this.constructSummary(f)));
         });
         const x = await fetch(encodeURI(n), { signal: i.signal });
