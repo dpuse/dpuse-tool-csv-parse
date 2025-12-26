@@ -77,7 +77,7 @@ class Tool {
                             abortController.signal.throwIfAborted();
                             rowBuffer.push(row);
                         }
-                        console.log(3333, rowCount - myCount);
+                        console.log('ROWS', rowCount - myCount);
                     } catch (error) {
                         handleError(error);
                     }
@@ -99,6 +99,7 @@ class Tool {
                 while (!result.done) {
                     if (hasErrored) return;
                     abortController.signal.throwIfAborted();
+                    console.log('CHUNK', result.value);
                     parser.write(result.value);
                     result = await reader.read();
                 }

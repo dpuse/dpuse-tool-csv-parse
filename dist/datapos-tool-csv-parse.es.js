@@ -3404,7 +3404,7 @@ class Gn {
               if (c++, h) return;
               i.signal.throwIfAborted(), l.push(_);
             }
-            console.log(3333, c - m);
+            console.log("ROWS", c - m);
           } catch (m) {
             O(m);
           }
@@ -3418,7 +3418,7 @@ class Gn {
         let S = await u.read();
         for (; !S.done; ) {
           if (h) return;
-          i.signal.throwIfAborted(), f.write(S.value), S = await u.read();
+          i.signal.throwIfAborted(), console.log("CHUNK", S.value), f.write(S.value), S = await u.read();
         }
         h || f.end();
       })().catch((x) => O(x));
