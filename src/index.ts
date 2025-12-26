@@ -93,19 +93,19 @@ class Tool {
                     throw await buildFetchError(response, `Failed to fetch '${url}' file.`, 'datapos-connector-file-store-emulator|Connector|retrieve');
                 }
 
-                const decodedStream = response.body.pipeThrough(new TextDecoderStream(retrieveRecordsOptions.encodingId));
+                const decodedStream = response.body; //.pipeThrough(new TextDecoderStream(retrieveRecordsOptions.encodingId));
                 const writable = new WritableStream<string>({
-                    write: (chunkText) => {
+                    write: (chunkText): void => {
                         if (hasErrored) return;
                         if (chunkText.length === 0) return;
                         abortController.signal.throwIfAborted();
                         parser?.write(chunkText);
                     },
-                    close: () => {
+                    close: (): void => {
                         if (hasErrored) return;
                         parser?.end();
                     },
-                    abort: (error) => {
+                    abort: (error): void => {
                         if (hasErrored) return;
                         handleError(error);
                     }

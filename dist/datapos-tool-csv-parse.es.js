@@ -3409,7 +3409,7 @@ class Zn {
         const p = await fetch(encodeURI(n), { signal: i.signal });
         if (!p.ok || p.body == null)
           throw await Yn(p, `Failed to fetch '${n}' file.`, "datapos-connector-file-store-emulator|Connector|retrieve");
-        const T = p.body.pipeThrough(new TextDecoderStream(e.encodingId)), x = new WritableStream({
+        const T = p.body, x = new WritableStream({
           write: (g) => {
             h || g.length !== 0 && (i.signal.throwIfAborted(), u?.write(g));
           },
