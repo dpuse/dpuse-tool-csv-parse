@@ -532,79 +532,79 @@ a.prototype.slice = function(e, r) {
   }
   return i;
 };
-function O(t, e, r) {
+function C(t, e, r) {
   if (t % 1 !== 0 || t < 0) throw new RangeError("offset is not uint");
   if (t + e > r) throw new RangeError("Trying to access beyond buffer length");
 }
 a.prototype.readUIntLE = function(e, r, n) {
-  e = e | 0, r = r | 0, n || O(e, r, this.length);
+  e = e | 0, r = r | 0, n || C(e, r, this.length);
   for (var i = this[e], o = 1, s = 0; ++s < r && (o *= 256); )
     i += this[e + s] * o;
   return i;
 };
 a.prototype.readUIntBE = function(e, r, n) {
-  e = e | 0, r = r | 0, n || O(e, r, this.length);
+  e = e | 0, r = r | 0, n || C(e, r, this.length);
   for (var i = this[e + --r], o = 1; r > 0 && (o *= 256); )
     i += this[e + --r] * o;
   return i;
 };
 a.prototype.readUInt8 = function(e, r) {
-  return r || O(e, 1, this.length), this[e];
+  return r || C(e, 1, this.length), this[e];
 };
 a.prototype.readUInt16LE = function(e, r) {
-  return r || O(e, 2, this.length), this[e] | this[e + 1] << 8;
+  return r || C(e, 2, this.length), this[e] | this[e + 1] << 8;
 };
 a.prototype.readUInt16BE = function(e, r) {
-  return r || O(e, 2, this.length), this[e] << 8 | this[e + 1];
+  return r || C(e, 2, this.length), this[e] << 8 | this[e + 1];
 };
 a.prototype.readUInt32LE = function(e, r) {
-  return r || O(e, 4, this.length), (this[e] | this[e + 1] << 8 | this[e + 2] << 16) + this[e + 3] * 16777216;
+  return r || C(e, 4, this.length), (this[e] | this[e + 1] << 8 | this[e + 2] << 16) + this[e + 3] * 16777216;
 };
 a.prototype.readUInt32BE = function(e, r) {
-  return r || O(e, 4, this.length), this[e] * 16777216 + (this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3]);
+  return r || C(e, 4, this.length), this[e] * 16777216 + (this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3]);
 };
 a.prototype.readIntLE = function(e, r, n) {
-  e = e | 0, r = r | 0, n || O(e, r, this.length);
+  e = e | 0, r = r | 0, n || C(e, r, this.length);
   for (var i = this[e], o = 1, s = 0; ++s < r && (o *= 256); )
     i += this[e + s] * o;
   return o *= 128, i >= o && (i -= Math.pow(2, 8 * r)), i;
 };
 a.prototype.readIntBE = function(e, r, n) {
-  e = e | 0, r = r | 0, n || O(e, r, this.length);
+  e = e | 0, r = r | 0, n || C(e, r, this.length);
   for (var i = r, o = 1, s = this[e + --i]; i > 0 && (o *= 256); )
     s += this[e + --i] * o;
   return o *= 128, s >= o && (s -= Math.pow(2, 8 * r)), s;
 };
 a.prototype.readInt8 = function(e, r) {
-  return r || O(e, 1, this.length), this[e] & 128 ? (255 - this[e] + 1) * -1 : this[e];
+  return r || C(e, 1, this.length), this[e] & 128 ? (255 - this[e] + 1) * -1 : this[e];
 };
 a.prototype.readInt16LE = function(e, r) {
-  r || O(e, 2, this.length);
+  r || C(e, 2, this.length);
   var n = this[e] | this[e + 1] << 8;
   return n & 32768 ? n | 4294901760 : n;
 };
 a.prototype.readInt16BE = function(e, r) {
-  r || O(e, 2, this.length);
+  r || C(e, 2, this.length);
   var n = this[e + 1] | this[e] << 8;
   return n & 32768 ? n | 4294901760 : n;
 };
 a.prototype.readInt32LE = function(e, r) {
-  return r || O(e, 4, this.length), this[e] | this[e + 1] << 8 | this[e + 2] << 16 | this[e + 3] << 24;
+  return r || C(e, 4, this.length), this[e] | this[e + 1] << 8 | this[e + 2] << 16 | this[e + 3] << 24;
 };
 a.prototype.readInt32BE = function(e, r) {
-  return r || O(e, 4, this.length), this[e] << 24 | this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3];
+  return r || C(e, 4, this.length), this[e] << 24 | this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3];
 };
 a.prototype.readFloatLE = function(e, r) {
-  return r || O(e, 4, this.length), be(this, e, !0, 23, 4);
+  return r || C(e, 4, this.length), be(this, e, !0, 23, 4);
 };
 a.prototype.readFloatBE = function(e, r) {
-  return r || O(e, 4, this.length), be(this, e, !1, 23, 4);
+  return r || C(e, 4, this.length), be(this, e, !1, 23, 4);
 };
 a.prototype.readDoubleLE = function(e, r) {
-  return r || O(e, 8, this.length), be(this, e, !0, 52, 8);
+  return r || C(e, 8, this.length), be(this, e, !0, 52, 8);
 };
 a.prototype.readDoubleBE = function(e, r) {
-  return r || O(e, 8, this.length), be(this, e, !1, 52, 8);
+  return r || C(e, 8, this.length), be(this, e, !1, 52, 8);
 };
 function N(t, e, r, n, i, o) {
   if (!$(t)) throw new TypeError('"buffer" argument must be a Buffer instance');
@@ -855,7 +855,7 @@ function xt(t) {
 function Sr(t) {
   return typeof t.readFloatLE == "function" && typeof t.slice == "function" && xt(t.slice(0, 0));
 }
-var Ce;
+var Oe;
 function Q() {
 }
 Q.prototype = /* @__PURE__ */ Object.create(null);
@@ -869,7 +869,7 @@ m.prototype._events = void 0;
 m.prototype._maxListeners = void 0;
 m.defaultMaxListeners = 10;
 m.init = function() {
-  this.domain = null, m.usingDomains && Ce.active && !(this instanceof Ce.Domain) && (this.domain = Ce.active), (!this._events || this._events === Object.getPrototypeOf(this)._events) && (this._events = new Q(), this._eventsCount = 0), this._maxListeners = this._maxListeners || void 0;
+  this.domain = null, m.usingDomains && Oe.active && !(this instanceof Oe.Domain) && (this.domain = Oe.active), (!this._events || this._events === Object.getPrototypeOf(this)._events) && (this._events = new Q(), this._eventsCount = 0), this._maxListeners = this._maxListeners || void 0;
 };
 m.prototype.setMaxListeners = function(e) {
   if (typeof e != "number" || e < 0 || isNaN(e))
@@ -896,14 +896,14 @@ function Ir(t, e, r, n) {
     for (var i = t.length, o = ae(t, i), s = 0; s < i; ++s)
       o[s].call(r, n);
 }
-function Cr(t, e, r, n, i) {
+function Or(t, e, r, n, i) {
   if (e)
     t.call(r, n, i);
   else
     for (var o = t.length, s = ae(t, o), f = 0; f < o; ++f)
       s[f].call(r, n, i);
 }
-function Or(t, e, r, n, i, o) {
+function Cr(t, e, r, n, i, o) {
   if (e)
     t.call(r, n, i, o);
   else
@@ -946,10 +946,10 @@ m.prototype.emit = function(e) {
       Ir(n, c, this, arguments[1]);
       break;
     case 3:
-      Cr(n, c, this, arguments[1], arguments[2]);
+      Or(n, c, this, arguments[1], arguments[2]);
       break;
     case 4:
-      Or(n, c, this, arguments[1], arguments[2], arguments[3]);
+      Cr(n, c, this, arguments[1], arguments[2], arguments[3]);
       break;
     // slower
     default:
@@ -1055,10 +1055,10 @@ m.prototype.listeners = function(e) {
   return i ? (r = i[e], r ? typeof r == "function" ? n = [r.listener || r] : n = Nr(r) : n = []) : n = [], n;
 };
 m.listenerCount = function(t, e) {
-  return typeof t.listenerCount == "function" ? t.listenerCount(e) : Ct.call(t, e);
+  return typeof t.listenerCount == "function" ? t.listenerCount(e) : Ot.call(t, e);
 };
-m.prototype.listenerCount = Ct;
-function Ct(t) {
+m.prototype.listenerCount = Ot;
+function Ot(t) {
   var e = this._events;
   if (e) {
     var r = e[t];
@@ -1087,19 +1087,19 @@ function Nr(t) {
     e[r] = t[r].listener || t[r];
   return e;
 }
-function Ot() {
+function Ct() {
   throw new Error("setTimeout has not been defined");
 }
 function Tt() {
   throw new Error("clearTimeout has not been defined");
 }
-var Y = Ot, W = Tt;
+var Y = Ct, W = Tt;
 typeof ie.setTimeout == "function" && (Y = setTimeout);
 typeof ie.clearTimeout == "function" && (W = clearTimeout);
 function At(t) {
   if (Y === setTimeout)
     return setTimeout(t, 0);
-  if ((Y === Ot || !Y) && setTimeout)
+  if ((Y === Ct || !Y) && setTimeout)
     return Y = setTimeout, setTimeout(t, 0);
   try {
     return Y(t, 0);
@@ -1221,10 +1221,10 @@ function Dt(t, e) {
   }
   return n;
 }
-var pe = {}, Oe;
+var pe = {}, Ce;
 function kr(t) {
-  if (H(Oe) && (Oe = ge.env.NODE_DEBUG || ""), t = t.toUpperCase(), !pe[t])
-    if (new RegExp("\\b" + t + "\\b", "i").test(Oe)) {
+  if (H(Ce) && (Ce = ge.env.NODE_DEBUG || ""), t = t.toUpperCase(), !pe[t])
+    if (new RegExp("\\b" + t + "\\b", "i").test(Ce)) {
       var e = 0;
       pe[t] = function() {
         var r = Ur.apply(null, arguments);
@@ -1974,7 +1974,7 @@ T.prototype._write = function(t, e, r) {
 T.prototype._writev = null;
 T.prototype.end = function(t, e, r) {
   var n = this._writableState;
-  typeof t == "function" ? (r = t, t = null, e = null) : typeof e == "function" && (r = e, e = null), t != null && this.write(t, e), n.corked && (n.corked = 1, this.uncork()), !n.ending && !n.finished && Cn(this, n, r);
+  typeof t == "function" ? (r = t, t = null, e = null) : typeof e == "function" && (r = e, e = null), t != null && this.write(t, e), n.corked && (n.corked = 1, this.uncork()), !n.ending && !n.finished && On(this, n, r);
 };
 function jt(t) {
   return t.ending && t.length === 0 && t.bufferedRequest === null && !t.finished && !t.writing;
@@ -1986,7 +1986,7 @@ function qt(t, e) {
   var r = jt(e);
   return r && (e.pendingcb === 0 ? (nt(t, e), e.finished = !0, t.emit("finish")) : nt(t, e)), r;
 }
-function Cn(t, e, r) {
+function On(t, e, r) {
   e.ending = !0, qt(t, e), r && (e.finished ? B(r) : t.once("finish", r)), e.ended = !0, t.writable = !1;
 }
 function zt(t) {
@@ -2008,9 +2008,9 @@ for (var Fe = 0; Fe < it.length; Fe++) {
 }
 function M(t) {
   if (!(this instanceof M)) return new M(t);
-  x.call(this, t), T.call(this, t), t && t.readable === !1 && (this.readable = !1), t && t.writable === !1 && (this.writable = !1), this.allowHalfOpen = !0, t && t.allowHalfOpen === !1 && (this.allowHalfOpen = !1), this.once("end", On);
+  x.call(this, t), T.call(this, t), t && t.readable === !1 && (this.readable = !1), t && t.writable === !1 && (this.writable = !1), this.allowHalfOpen = !0, t && t.allowHalfOpen === !1 && (this.allowHalfOpen = !1), this.once("end", Cn);
 }
-function On() {
+function Cn() {
   this.allowHalfOpen || this._writableState.ended || B(Tn, this);
 }
 function Tn(t) {
@@ -2725,8 +2725,8 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
                 ...this.original_options,
                 encoding: R
               });
-              for (const C in ce)
-                this.options[C] = ce[C];
+              for (const O in ce)
+                this.options[O] = ce[O];
               ({ comment: y, escape: A, quote: U } = this.options);
               break;
             }
@@ -2759,14 +2759,14 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
             }
           if (this.state.commenting === !1 && this.__isQuote(b, d))
             if (this.state.quoting === !0) {
-              const C = b[d + U.length], Z = g && this.__isCharTrimable(b, d + U.length), j = y !== null && this.__compareBytes(y, b, d + U.length, C), X = this.__isDelimiter(
+              const O = b[d + U.length], Z = g && this.__isCharTrimable(b, d + U.length), j = y !== null && this.__compareBytes(y, b, d + U.length, O), X = this.__isDelimiter(
                 b,
                 d + U.length,
-                C
-              ), de = Re.length === 0 ? this.__autoDiscoverRecordDelimiter(b, d + U.length) : this.__isRecordDelimiter(C, b, d + U.length);
+                O
+              ), de = Re.length === 0 ? this.__autoDiscoverRecordDelimiter(b, d + U.length) : this.__isRecordDelimiter(O, b, d + U.length);
               if (A !== null && this.__isEscape(b, d, R) && this.__isQuote(b, d + A.length))
                 d += A.length - 1;
-              else if (!C || X || de || j || Z) {
+              else if (!O || X || de || j || Z) {
                 this.state.quoting = !1, this.state.wasQuoting = !0, d += U.length - 1;
                 continue;
               } else if (I === !1) {
@@ -2775,7 +2775,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
                     "CSV_INVALID_CLOSING_QUOTE",
                     [
                       "Invalid Closing Quote:",
-                      `got "${String.fromCharCode(C)}"`,
+                      `got "${String.fromCharCode(O)}"`,
                       `at line ${this.info.lines}`,
                       "instead of delimiter, record delimiter, trimable character",
                       "(if activated) or comment"
@@ -2789,18 +2789,18 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
                 this.state.quoting = !1, this.state.wasQuoting = !0, this.state.field.prepend(U), d += U.length - 1;
             } else if (this.state.field.length !== 0) {
               if (I === !1) {
-                const C = this.__infoField(), Z = Object.keys(re).map(
+                const O = this.__infoField(), Z = Object.keys(re).map(
                   (X) => re[X].equals(this.state.field.toString()) ? X : !1
                 ).filter(Boolean)[0], j = this.__error(
                   new _(
                     "INVALID_OPENING_QUOTE",
                     [
                       "Invalid Opening Quote:",
-                      `a quote is found on field ${JSON.stringify(C.column)} at line ${C.lines}, value is ${JSON.stringify(this.state.field.toString(l))}`,
+                      `a quote is found on field ${JSON.stringify(O.column)} at line ${O.lines}, value is ${JSON.stringify(this.state.field.toString(l))}`,
                       Z ? `(${Z} bom)` : void 0
                     ],
                     this.options,
-                    C,
+                    O,
                     {
                       field: this.state.field
                     }
@@ -2813,27 +2813,27 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
               continue;
             }
           if (this.state.quoting === !1) {
-            const C = this.__isRecordDelimiter(
+            const O = this.__isRecordDelimiter(
               R,
               b,
               d
             );
-            if (C !== 0) {
+            if (O !== 0) {
               if (this.state.commenting && this.state.wasQuoting === !1 && this.state.record.length === 0 && this.state.field.length === 0)
                 this.info.comment_lines++;
               else {
                 if (this.state.enabled === !1 && this.info.lines + (this.state.wasRowDelimiter === !0 ? 1 : 0) >= h) {
-                  this.state.enabled = !0, this.__resetField(), this.__resetRecord(), d += C - 1;
+                  this.state.enabled = !0, this.__resetField(), this.__resetRecord(), d += O - 1;
                   continue;
                 }
                 if (D === !0 && this.state.wasQuoting === !1 && this.state.record.length === 0 && this.state.field.length === 0) {
-                  this.info.empty_lines++, d += C - 1;
+                  this.info.empty_lines++, d += O - 1;
                   continue;
                 }
                 this.info.bytes = this.state.bufBytesStart + d;
                 const X = this.__onField();
                 if (X !== void 0) return X;
-                this.info.bytes = this.state.bufBytesStart + d + C;
+                this.info.bytes = this.state.bufBytesStart + d + O;
                 const de = this.__onRecord(o);
                 if (de !== void 0) return de;
                 if (S !== -1 && this.info.records >= S) {
@@ -2841,7 +2841,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
                   return;
                 }
               }
-              this.state.commenting = !1, d += C - 1;
+              this.state.commenting = !1, d += O - 1;
               continue;
             }
             if (this.state.commenting)
@@ -3384,28 +3384,35 @@ class Gn {
     return new Promise((o, s) => {
       let f, u, l, h = !1;
       const c = (p) => {
-        console.log(4444, p), !h && (h = !0, u?.cancel(), console.log(7777, p), s(p));
+        if (console.log(1111, p), !h) {
+          h = !0, i.signal.aborted || i.abort(p instanceof Error ? p : new Error("Parser aborted due to an unknown error."));
+          try {
+            u?.cancel();
+          } catch {
+          }
+          console.log(2222, p), s(p);
+        }
       };
       (async () => {
-        console.log(1111), f = ut(e), l = this.constructRowBuffer({ chunk: r.chunk, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {
+        f = ut(e), l = this.constructRowBuffer({ chunk: r.chunk, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {
           try {
             if (f == null || l == null) return;
             let g;
             for (; (g = f.read()) != null; )
-              i.throwIfAborted(), l.push(g);
+              i.signal.throwIfAborted(), l.push(g);
           } catch (g) {
             c(g);
           }
         }), f.on("error", (g) => c(g)), f.on("end", () => {
-          h || (l?.flush(), console.log(8888, this.constructSummary(f)), o(this.constructSummary(f)));
+          h || (l?.flush(), console.log(3333, this.constructSummary(f)), o(this.constructSummary(f)));
         });
-        const p = await fetch(encodeURI(n), { signal: i });
+        const p = await fetch(encodeURI(n), { signal: i.signal });
         if (!p.ok || p.body == null)
           throw await Yn(p, `Failed to fetch '${n}' file.`, "datapos-connector-file-store-emulator|Connector|retrieve");
         u = p.body.pipeThrough(new TextDecoderStream(r.encodingId)).getReader();
         let I = await u.read();
         for (; !I.done; )
-          i.throwIfAborted(), await this.writeToParser(f, I.value), I = await u.read();
+          i.signal.throwIfAborted(), await this.writeToParser(f, I.value), I = await u.read();
         f.end();
       })().catch((p) => c(p));
     });
