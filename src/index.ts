@@ -52,12 +52,7 @@ class Tool {
         try {
             console.log(2222);
             parser = parse(parseOptions);
-            rowBuffer = this.constructRowBuffer({
-                chunk: (data) => {
-                    console.log(data);
-                },
-                chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE
-            });
+            rowBuffer = this.constructRowBuffer({ chunk: retrieveRecordsOptions.chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
             parser.on('readable', () => {
                 try {
                     if (parser == null || rowBuffer == null) return;
