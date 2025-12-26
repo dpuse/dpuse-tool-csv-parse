@@ -53,16 +53,11 @@ class Tool {
 
             const handleError = (error: unknown): void => {
                 if (hasErrored) return;
-                console.log('handleError 1');
 
                 hasErrored = true;
-                console.log('handleError 2');
                 stopProcessing();
                 if (!abortController.signal.aborted) abortController.abort(error);
-                console.log('handleError 3');
-                console.log('handleError 4');
                 reject(error as Error);
-                console.log('handleError 5');
             };
 
             abortController.signal.addEventListener('abort', stopProcessing, { once: true });
@@ -102,10 +97,9 @@ class Tool {
                 reader = response.body.pipeThrough(new TextDecoderStream(retrieveRecordsOptions.encodingId)).getReader();
                 let result = await reader.read();
                 while (!result.done) {
-                    console.log(1111.1);
                     if (hasErrored) return;
-                    console.log(1111.2);
                     abortController.signal.throwIfAborted();
+                    console.log(1111, result.value.length);
                     await this.writeToParser(parser, result.value);
                     result = await reader.read();
                 }
@@ -114,6 +108,16 @@ class Tool {
             };
 
             void run().catch((error: unknown) => handleError(error));
+        });
+    }
+
+    /** Write to parser. */
+    private writeToParser(parser: Parser, chunk: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            parser.write(chunk, (error) => {
+                if (error) reject(error);
+                else resolve();
+            });
         });
     }
 
@@ -150,16 +154,6 @@ class Tool {
             lineCount: parser?.info.lines ?? -1,
             recordCount: parser?.info.records ?? -1
         };
-    }
-
-    /** Write to parser. */
-    private writeToParser(parser: Parser, chunk: string): Promise<void> {
-        return new Promise((resolve, reject) => {
-            parser.write(chunk, (error) => {
-                if (error) reject(error);
-                else resolve();
-            });
-        });
     }
 
     /** Ignore best-effort cleanup errors to keep teardown noise-free. */
