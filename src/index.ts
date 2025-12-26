@@ -95,7 +95,8 @@ class Tool {
             parser.end();
         } catch (error) {
             console.log(8888, error);
-            handleError(error, true);
+            // handleError(error, true);
+            throw error;
         }
     }
 
