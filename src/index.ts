@@ -36,7 +36,7 @@ class Tool {
     ): Promise<RetrieveRecordsSummary> {
         return new Promise<RetrieveRecordsSummary>((resolve, reject) => {
             let parser: Parser | undefined;
-            let reader: ReadableStreamDefaultReader<string> | undefined;
+            let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
             let rowBuffer: RowBuffer | undefined;
             let hasErrored = false;
             let hasStoppedProcessing = false;
@@ -95,14 +95,20 @@ class Tool {
                     throw await buildFetchError(response, `Failed to fetch '${url}' file.`, 'datapos-connector-file-store-emulator|Connector|retrieve');
                 }
 
-                reader = response.body.pipeThrough(new TextDecoderStream(retrieveRecordsOptions.encodingId)).getReader();
+                reader = response.body.getReader();
+                const decoder = new TextDecoder(retrieveRecordsOptions.encodingId);
                 let result = await reader.read();
                 while (!result.done) {
                     if (hasErrored) return;
                     abortController.signal.throwIfAborted();
-                    parser.write(result.value);
+                    const decodedChunk = decoder.decode(result.value, { stream: true });
+                    if (decodedChunk.length > 0) parser.write(decodedChunk);
                     result = await reader.read();
                 }
+
+                if (hasErrored) return;
+                const finalChunk = decoder.decode();
+                if (finalChunk.length > 0) parser.write(finalChunk);
 
                 if (hasErrored) return;
                 parser.end();
