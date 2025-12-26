@@ -34,6 +34,24 @@ class Tool {
             let rowBuffer: RowBuffer | undefined;
             let hasErrored = false;
             let rowCount = 0;
+            let hasStoppedProcessing = false;
+
+            const stopProcessing = (): void => {
+                if (hasStoppedProcessing) return;
+                hasStoppedProcessing = true;
+
+                const activeParser = parser;
+                parser = undefined;
+                rowBuffer = undefined;
+
+                if (activeParser != null) {
+                    this.ignoreErrors(() => activeParser.removeAllListeners());
+                    this.ignoreErrors(() => activeParser.end());
+                }
+
+                this.ignoreErrors(() => void reader?.cancel());
+                reader = undefined;
+            };
 
             const handleError = (error: unknown): void => {
                 if (hasErrored) return;
@@ -41,13 +59,15 @@ class Tool {
 
                 hasErrored = true;
                 console.log('handleError 2');
+                stopProcessing();
                 if (!abortController.signal.aborted) abortController.abort(error);
                 console.log('handleError 3');
-                this.ignoreErrors(() => void reader?.cancel());
                 console.log('handleError 4');
                 reject(error as Error);
                 console.log('handleError 5');
             };
+
+            abortController.signal.addEventListener('abort', stopProcessing, { once: true });
 
             const run = async (): Promise<void> => {
                 parser = parse(parseOptions);
