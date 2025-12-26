@@ -17,7 +17,7 @@ interface RowBuffer {
 }
 
 /** Constants. */
-const DEFAULT_RETRIEVE_CHUNK_SIZE = 4096;
+const DEFAULT_RETRIEVE_CHUNK_SIZE = 40_096;
 
 /** Tool. */
 class Tool {
@@ -43,12 +43,10 @@ class Tool {
                 const activeParser = parser;
                 parser = undefined;
                 rowBuffer = undefined;
-
                 if (activeParser != null) {
                     this.ignoreErrors(() => activeParser.removeAllListeners());
                     this.ignoreErrors(() => activeParser.end());
                 }
-
                 this.ignoreErrors(() => void reader?.cancel());
                 reader = undefined;
             };

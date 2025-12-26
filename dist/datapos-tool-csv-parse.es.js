@@ -3373,7 +3373,7 @@ function Hn(t) {
   if (!(t == null || t === ""))
     return t.length > 2048 ? `${t.slice(0, 2048)}... [truncated]` : t;
 }
-const Qn = 4096;
+const Qn = 40096;
 class Gn {
   /** Build parser. */
   buildParser(e) {
