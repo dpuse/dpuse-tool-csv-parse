@@ -6,8 +6,6 @@ declare class Tool {
     buildParser(options: ParseOptions): Parser;
     /** Parse stream. */
     parseStream(parseOptions: ParseOptions, retrieveRecordsOptions: RetrieveRecordsOptions, url: string, abortController: AbortController): Promise<RetrieveRecordsSummary>;
-    /** Write to parser. */
-    private writeToParser;
     /** Parse string. */
     parseString(): void;
     /** Construct row buffer. */
