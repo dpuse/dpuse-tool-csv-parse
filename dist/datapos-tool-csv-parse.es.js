@@ -3418,11 +3418,11 @@ class Zn {
           if (c) return;
           i.signal.throwIfAborted();
           const R = S.decode(w.value, { stream: !0 });
-          R.length > 0 && u?.write(R), w = await l.read();
+          R.length > 0 && u.write(R), w = await l.read();
         }
         if (c) return;
         const m = S.decode();
-        m.length > 0 && u?.write(m), u?.end();
+        m.length > 0 && u.write(m), u.end();
       })().catch((x) => C(x));
     });
   }

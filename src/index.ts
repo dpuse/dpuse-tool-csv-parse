@@ -103,15 +103,15 @@ class Tool {
                     if (hasErrored) return;
                     abortController.signal.throwIfAborted();
                     const decodedChunk = decoder.decode(result.value, { stream: true });
-                    if (decodedChunk.length > 0) parser?.write(decodedChunk);
+                    if (decodedChunk.length > 0) parser.write(decodedChunk);
                     result = await reader.read();
                 }
 
                 if (hasErrored) return;
 
                 const finalChunk = decoder.decode();
-                if (finalChunk.length > 0) parser?.write(finalChunk);
-                parser?.end();
+                if (finalChunk.length > 0) parser.write(finalChunk);
+                parser.end();
             };
 
             void run().catch((error: unknown) => handleError(error));
