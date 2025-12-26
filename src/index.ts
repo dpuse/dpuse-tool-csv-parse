@@ -75,8 +75,9 @@ class Tool {
                 reader = response.body.pipeThrough(new TextDecoderStream(retrieveRecordsOptions.encodingId)).getReader();
                 let result = await reader.read();
                 while (!result.done) {
-                    console.log(1111);
+                    console.log(1111.1);
                     if (hasErrored) return;
+                    console.log(1111.2);
                     abortController.signal.throwIfAborted();
                     await this.writeToParser(parser, result.value);
                     result = await reader.read();

@@ -3409,8 +3409,8 @@ class Gn {
         u = p.body.pipeThrough(new TextDecoderStream(r.encodingId)).getReader();
         let I = await u.read();
         for (; !I.done; ) {
-          if (console.log(1111), h) return;
-          i.signal.throwIfAborted(), await this.writeToParser(f, I.value), I = await u.read();
+          if (console.log(1111.1), h) return;
+          console.log(1111.2), i.signal.throwIfAborted(), await this.writeToParser(f, I.value), I = await u.read();
         }
         f.end();
       })().catch((p) => c(p));
