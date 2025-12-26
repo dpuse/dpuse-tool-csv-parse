@@ -96,14 +96,29 @@ class Tool {
 
                 reader = response.body.pipeThrough(new TextDecoderStream(retrieveRecordsOptions.encodingId)).getReader();
                 let result = await reader.read();
+                let pendingWrite: Promise<void> = Promise.resolve();
+
+                const enqueueWrite = (chunk: string): void => {
+                    const targetParser = parser;
+                    pendingWrite = pendingWrite
+                        .then((): Promise<void> | undefined => {
+                            if (hasErrored || targetParser == null) return;
+                            return this.writeToParser(targetParser, chunk);
+                        })
+                        .catch((error: unknown) => {
+                            handleError(error);
+                        });
+                };
+
                 while (!result.done) {
                     if (hasErrored) return;
                     abortController.signal.throwIfAborted();
-                    console.log(1111, result.value.length);
-                    await this.writeToParser(parser, result.value);
+                    enqueueWrite(result.value);
                     result = await reader.read();
                 }
 
+                await pendingWrite;
+                if (hasErrored) return;
                 parser.end();
             };
 
