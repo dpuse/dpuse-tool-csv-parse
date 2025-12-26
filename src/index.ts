@@ -17,7 +17,7 @@ interface RowBuffer {
 }
 
 /** Constants. */
-const DEFAULT_RETRIEVE_CHUNK_SIZE = 65_536; // 64KB.
+const DEFAULT_RETRIEVE_CHUNK_SIZE = 10_000; // Row count.
 
 /** Tool. */
 class Tool {
@@ -107,10 +107,9 @@ class Tool {
                 }
 
                 if (hasErrored) return;
+
                 const finalChunk = decoder.decode();
                 if (finalChunk.length > 0) parser.write(finalChunk);
-
-                if (hasErrored) return;
                 parser.end();
             };
 

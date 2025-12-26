@@ -3373,7 +3373,7 @@ function Hn(t) {
   if (!(t == null || t === ""))
     return t.length > 2048 ? `${t.slice(0, 2048)}... [truncated]` : t;
 }
-const Qn = 65536;
+const Qn = 1e4;
 class Gn {
   /** Build parser. */
   buildParser(e) {
@@ -3422,7 +3422,7 @@ class Gn {
         }
         if (c) return;
         const m = S.decode();
-        m.length > 0 && u.write(m), !c && u.end();
+        m.length > 0 && u.write(m), u.end();
       })().catch((x) => C(x));
     });
   }
