@@ -35,21 +35,11 @@ class Tool {
             let hasErrored = false;
 
             const handleError = (error: unknown): void => {
-                console.log(1111, error);
                 if (hasErrored) return;
+
                 hasErrored = true;
-
-                if (!abortController.signal.aborted) {
-                    abortController.abort(error instanceof Error ? error : new Error('Parser aborted due to an unknown error.'));
-                }
-
-                try {
-                    void reader?.cancel();
-                } catch {
-                    /* Ignore errors. */
-                }
-
-                console.log(2222, error);
+                if (!abortController.signal.aborted) abortController.abort(error);
+                this.ignoreErrors(() => void reader?.cancel());
                 reject(error as Error);
             };
 
@@ -73,7 +63,6 @@ class Tool {
                 parser.on('end', () => {
                     if (hasErrored) return;
                     rowBuffer?.flush();
-                    console.log(3333, this.constructSummary(parser));
                     resolve(this.constructSummary(parser));
                 });
 
@@ -141,6 +130,15 @@ class Tool {
                 else resolve();
             });
         });
+    }
+
+    /** Ignore best-effort cleanup errors to keep teardown noise-free. */
+    private ignoreErrors(action: () => void): void {
+        try {
+            action();
+        } catch {
+            /* Intentionally ignore errors. */
+        }
     }
 }
 

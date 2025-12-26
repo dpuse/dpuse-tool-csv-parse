@@ -3384,14 +3384,9 @@ class Gn {
     return new Promise((o, s) => {
       let f, u, l, h = !1;
       const c = (p) => {
-        if (console.log(1111, p), !h) {
-          h = !0, i.signal.aborted || i.abort(p instanceof Error ? p : new Error("Parser aborted due to an unknown error."));
-          try {
-            u?.cancel();
-          } catch {
-          }
-          console.log(2222, p), s(p);
-        }
+        h || (h = !0, i.signal.aborted || i.abort(p), this.ignoreErrors(() => {
+          u?.cancel();
+        }), s(p));
       };
       (async () => {
         f = ut(e), l = this.constructRowBuffer({ chunk: r.chunk, chunkSize: r.chunkSize ?? Qn }), f.on("readable", () => {
@@ -3406,7 +3401,7 @@ class Gn {
             c(g);
           }
         }), f.on("error", (g) => c(g)), f.on("end", () => {
-          h || (l?.flush(), console.log(3333, this.constructSummary(f)), o(this.constructSummary(f)));
+          h || (l?.flush(), o(this.constructSummary(f)));
         });
         const p = await fetch(encodeURI(n), { signal: i.signal });
         if (!p.ok || p.body == null)
@@ -3452,6 +3447,13 @@ class Gn {
         o ? i(o) : n();
       });
     });
+  }
+  /** Ignore best-effort cleanup errors to keep teardown noise-free. */
+  ignoreErrors(e) {
+    try {
+      e();
+    } catch {
+    }
   }
 }
 export {

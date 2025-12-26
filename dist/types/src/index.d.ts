@@ -14,6 +14,8 @@ declare class Tool {
     private constructSummary;
     /** Write to parser. */
     private writeToParser;
+    /** Ignore best-effort cleanup errors to keep teardown noise-free. */
+    private ignoreErrors;
 }
 /** Exports */
 export type { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
