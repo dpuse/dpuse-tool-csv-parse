@@ -1,4 +1,4 @@
-var ie = typeof global < "u" ? global : typeof self < "u" ? self : typeof window < "u" ? window : {}, P = [], F = [], Qt = typeof Uint8Array < "u" ? Uint8Array : Array, $e = !1;
+var ie = typeof global < "u" ? global : typeof self < "u" ? self : typeof window < "u" ? window : {}, P = [], F = [], Ht = typeof Uint8Array < "u" ? Uint8Array : Array, $e = !1;
 function lt() {
   $e = !0;
   for (var t = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", e = 0, r = t.length; e < r; ++e)
@@ -10,7 +10,7 @@ function Gt(t) {
   var e, r, n, i, o, s, f = t.length;
   if (f % 4 > 0)
     throw new Error("Invalid string. Length must be a multiple of 4");
-  o = t[f - 2] === "=" ? 2 : t[f - 1] === "=" ? 1 : 0, s = new Qt(f * 3 / 4 - o), n = o > 0 ? f - 4 : f;
+  o = t[f - 2] === "=" ? 2 : t[f - 1] === "=" ? 1 : 0, s = new Ht(f * 3 / 4 - o), n = o > 0 ? f - 4 : f;
   var u = 0;
   for (e = 0, r = 0; e < n; e += 4, r += 3)
     i = F[t.charCodeAt(e)] << 18 | F[t.charCodeAt(e + 1)] << 12 | F[t.charCodeAt(e + 2)] << 6 | F[t.charCodeAt(e + 3)], s[u++] = i >> 16 & 255, s[u++] = i >> 8 & 255, s[u++] = i & 255;
@@ -24,7 +24,7 @@ function Xt(t, e, r) {
     n = (t[o] << 16) + (t[o + 1] << 8) + t[o + 2], i.push(Zt(n));
   return i.join("");
 }
-function Qe(t) {
+function He(t) {
   $e || lt();
   for (var e, r = t.length, n = r % 3, i = "", o = [], s = 16383, f = 0, u = r - n; f < u; f += s)
     o.push(Xt(t, f, f + s > u ? u : f + s));
@@ -454,7 +454,7 @@ a.prototype.toJSON = function() {
   };
 };
 function hr(t, e, r) {
-  return e === 0 && r === t.length ? Qe(t) : Qe(t.slice(e, r));
+  return e === 0 && r === t.length ? He(t) : He(t.slice(e, r));
 }
 function wt(t, e, r) {
   r = Math.min(t.length, r);
@@ -856,9 +856,9 @@ function Sr(t) {
   return typeof t.readFloatLE == "function" && typeof t.slice == "function" && xt(t.slice(0, 0));
 }
 var Oe;
-function Q() {
+function H() {
 }
-Q.prototype = /* @__PURE__ */ Object.create(null);
+H.prototype = /* @__PURE__ */ Object.create(null);
 function p() {
   p.init.call(this);
 }
@@ -869,7 +869,7 @@ p.prototype._events = void 0;
 p.prototype._maxListeners = void 0;
 p.defaultMaxListeners = 10;
 p.init = function() {
-  this.domain = null, p.usingDomains && Oe.active && !(this instanceof Oe.Domain) && (this.domain = Oe.active), (!this._events || this._events === Object.getPrototypeOf(this)._events) && (this._events = new Q(), this._eventsCount = 0), this._maxListeners = this._maxListeners || void 0;
+  this.domain = null, p.usingDomains && Oe.active && !(this instanceof Oe.Domain) && (this.domain = Oe.active), (!this._events || this._events === Object.getPrototypeOf(this)._events) && (this._events = new H(), this._eventsCount = 0), this._maxListeners = this._maxListeners || void 0;
 };
 p.prototype.setMaxListeners = function(e) {
   if (typeof e != "number" || e < 0 || isNaN(e))
@@ -967,7 +967,7 @@ function Rt(t, e, r, n) {
     "newListener",
     e,
     r.listener ? r.listener : r
-  ), o = t._events), s = o[e]) : (o = t._events = new Q(), t._eventsCount = 0), !s)
+  ), o = t._events), s = o[e]) : (o = t._events = new H(), t._eventsCount = 0), !s)
     s = o[e] = r, ++t._eventsCount;
   else if (typeof s == "function" ? s = o[e] = n ? [r, s] : [s, r] : n ? s.unshift(r) : s.push(r), !s.warned && (i = St(t), i && i > 0 && s.length > i)) {
     s.warned = !0;
@@ -1012,7 +1012,7 @@ p.prototype.removeListener = function(e, r) {
   if (n = i[e], !n)
     return this;
   if (n === r || n.listener && n.listener === r)
-    --this._eventsCount === 0 ? this._events = new Q() : (delete i[e], i.removeListener && this.emit("removeListener", e, n.listener || r));
+    --this._eventsCount === 0 ? this._events = new H() : (delete i[e], i.removeListener && this.emit("removeListener", e, n.listener || r));
   else if (typeof n != "function") {
     for (o = -1, s = n.length; s-- > 0; )
       if (n[s] === r || n[s].listener && n[s].listener === r) {
@@ -1023,7 +1023,7 @@ p.prototype.removeListener = function(e, r) {
       return this;
     if (n.length === 1) {
       if (n[0] = void 0, --this._eventsCount === 0)
-        return this._events = new Q(), this;
+        return this._events = new H(), this;
       delete i[e];
     } else
       Lr(n, o);
@@ -1036,11 +1036,11 @@ p.prototype.removeAllListeners = function(e) {
   if (n = this._events, !n)
     return this;
   if (!n.removeListener)
-    return arguments.length === 0 ? (this._events = new Q(), this._eventsCount = 0) : n[e] && (--this._eventsCount === 0 ? this._events = new Q() : delete n[e]), this;
+    return arguments.length === 0 ? (this._events = new H(), this._eventsCount = 0) : n[e] && (--this._eventsCount === 0 ? this._events = new H() : delete n[e]), this;
   if (arguments.length === 0) {
     for (var i = Object.keys(n), o = 0, s; o < i.length; ++o)
       s = i[o], s !== "removeListener" && this.removeAllListeners(s);
-    return this.removeAllListeners("removeListener"), this._events = new Q(), this._eventsCount = 0, this;
+    return this.removeAllListeners("removeListener"), this._events = new H(), this._eventsCount = 0, this;
   }
   if (r = n[e], typeof r == "function")
     this.removeListener(e, r);
@@ -1204,7 +1204,7 @@ function Ur(t) {
   return o;
 }
 function Dt(t, e) {
-  if (H(ie.process))
+  if (Q(ie.process))
     return function() {
       return Dt(t, e).apply(this, arguments);
     };
@@ -1223,7 +1223,7 @@ function Dt(t, e) {
 }
 var pe = {}, Ce;
 function kr(t) {
-  if (H(Ce) && (Ce = me.env.NODE_DEBUG || ""), t = t.toUpperCase(), !pe[t])
+  if (Q(Ce) && (Ce = me.env.NODE_DEBUG || ""), t = t.toUpperCase(), !pe[t])
     if (new RegExp("\\b" + t + "\\b", "i").test(Ce)) {
       var e = 0;
       pe[t] = function() {
@@ -1240,7 +1240,7 @@ function G(t, e) {
     seen: [],
     stylize: $r
   };
-  return arguments.length >= 3 && (r.depth = arguments[2]), arguments.length >= 4 && (r.colors = arguments[3]), Ft(e) ? r.showHidden = e : e && Wr(r, e), H(r.showHidden) && (r.showHidden = !1), H(r.depth) && (r.depth = 2), H(r.colors) && (r.colors = !1), H(r.customInspect) && (r.customInspect = !0), r.colors && (r.stylize = Pr), ye(r, t, r.depth);
+  return arguments.length >= 3 && (r.depth = arguments[2]), arguments.length >= 4 && (r.colors = arguments[3]), Ft(e) ? r.showHidden = e : e && Wr(r, e), Q(r.showHidden) && (r.showHidden = !1), Q(r.depth) && (r.depth = 2), Q(r.colors) && (r.colors = !1), Q(r.customInspect) && (r.customInspect = !0), r.colors && (r.stylize = Pr), ye(r, t, r.depth);
 }
 G.colors = {
   bold: [1, 22],
@@ -1322,7 +1322,7 @@ function ye(t, e, r) {
   }), t.seen.pop(), Vr(g, u, h);
 }
 function qr(t, e) {
-  if (H(e))
+  if (Q(e))
     return t.stylize("undefined", "undefined");
   if (Ve(e)) {
     var r = "'" + JSON.stringify(e).replace(/^"|"$/g, "").replace(/'/g, "\\'").replace(/\\"/g, '"') + "'";
@@ -1371,7 +1371,7 @@ function ke(t, e, r, n, i, o) {
 `).map(function(l) {
     return "   " + l;
   }).join(`
-`))) : f = t.stylize("[Circular]", "special")), H(s)) {
+`))) : f = t.stylize("[Circular]", "special")), Q(s)) {
     if (o && i.match(/^\d+$/))
       return f;
     s = JSON.stringify("" + i), s.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/) ? (s = s.substr(1, s.length - 2), s = t.stylize(s, "name")) : (s = s.replace(/'/g, "\\'").replace(/\\"/g, '"').replace(/(^"|"$)/g, "'"), s = t.stylize(s, "string"));
@@ -1402,7 +1402,7 @@ function Yr(t) {
 function Ve(t) {
   return typeof t == "string";
 }
-function H(t) {
+function Q(t) {
   return t === void 0;
 }
 function Te(t) {
@@ -1465,7 +1465,7 @@ te.prototype.concat = function(t) {
     r.data.copy(e, n), n += r.data.length, r = r.next;
   return e;
 };
-var Hr = a.isEncoding || function(t) {
+var Qr = a.isEncoding || function(t) {
   switch (t && t.toLowerCase()) {
     case "hex":
     case "utf8":
@@ -1483,12 +1483,12 @@ var Hr = a.isEncoding || function(t) {
       return !1;
   }
 };
-function Qr(t) {
-  if (t && !Hr(t))
+function Hr(t) {
+  if (t && !Qr(t))
     throw new Error("Unknown encoding: " + t);
 }
 function le(t) {
-  switch (this.encoding = (t || "utf8").toLowerCase().replace(/[-_]/, ""), Qr(t), this.encoding) {
+  switch (this.encoding = (t || "utf8").toLowerCase().replace(/[-_]/, ""), Hr(t), this.encoding) {
     case "utf8":
       this.surrogateSize = 3;
       break;
@@ -2699,7 +2699,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
         to_line: w
       } = this.options;
       let { comment: m, escape: R, quote: U, record_delimiter: Re } = this.options;
-      const { bomSkipped: Yt, previousBuf: he, rawBuffer: Wt, escapeIsQuote: Ht } = this.state;
+      const { bomSkipped: Yt, previousBuf: he, rawBuffer: Wt, escapeIsQuote: Qt } = this.state;
       let v;
       if (he === void 0)
         if (n === void 0) {
@@ -2748,7 +2748,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
           this.state.escaping = !1;
         else {
           if (R !== null && this.state.quoting === !0 && this.__isEscape(v, d, O) && d + R.length < Ie)
-            if (Ht) {
+            if (Qt) {
               if (this.__isQuote(v, d + R.length)) {
                 this.state.escaping = !0, d += R.length - 1;
                 continue;
@@ -2770,7 +2770,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
                 this.state.quoting = !1, this.state.wasQuoting = !0, d += U.length - 1;
                 continue;
               } else if (C === !1) {
-                const He = this.__error(
+                const Qe = this.__error(
                   new _(
                     "CSV_INVALID_CLOSING_QUOTE",
                     [
@@ -2784,7 +2784,7 @@ const Nn = 12, Dn = 13, Fn = 10, Mn = 32, Bn = 9, Un = function(t) {
                     this.__infoField()
                   )
                 );
-                if (He !== void 0) return He;
+                if (Qe !== void 0) return Qe;
               } else
                 this.state.quoting = !1, this.state.wasQuoting = !0, this.state.field.prepend(U), d += U.length - 1;
             } else if (this.state.field.length !== 0) {
@@ -3343,7 +3343,7 @@ class Jn extends Vn {
   body;
   /** Sanitized HTTP response body. */
   constructor(e, r, n, i) {
-    super(e, r, i), this.name = new.target.name, this.body = Hn(n ?? void 0);
+    super(e, r, i), this.name = new.target.name, this.body = Qn(n ?? void 0);
   }
 }
 async function Yn(t, e, r) {
@@ -3369,12 +3369,12 @@ function Wn(t) {
     }
   return new Error("Unknown error");
 }
-function Hn(t) {
+function Qn(t) {
   if (!(t == null || t === ""))
     return t.length > 2048 ? `${t.slice(0, 2048)}... [truncated]` : t;
 }
-const Qn = 1e4;
-class Gn {
+const Hn = 1e4, Gn = 4;
+class Zn {
   /** Build parser. */
   buildParser(e) {
     return ut(e);
@@ -3394,7 +3394,7 @@ class Gn {
         c || (c = !0, y(), i.signal.aborted || i.abort(x), f(x));
       };
       i.signal.addEventListener("abort", y, { once: !0 }), (async () => {
-        u = ut(e), h = this.constructRowBuffer({ chunk: o, chunkSize: r.chunkSize ?? Qn }), u.on("readable", () => {
+        u = ut(e), h = this.constructRowBuffer({ chunk: o, chunkSize: r.chunkSize ?? Hn }), u.on("readable", () => {
           try {
             if (u == null || h == null) return;
             let R;
@@ -3431,13 +3431,23 @@ class Gn {
   }
   /** Construct row buffer. */
   constructRowBuffer(e) {
-    let r = [];
-    const n = () => {
-      r.length !== 0 && (e.chunk(r), r = []);
+    const r = Math.max(1, Math.floor(e.chunkSize)), n = [];
+    let i = u(), o = 0;
+    const s = () => {
+      if (o === 0) return;
+      const l = i;
+      l.length = o, i = u(), o = 0, e.chunk(l), n.length < Gn && n.push(l);
     };
-    return { flush: n, push: (o) => {
-      r.push(o), r.length >= e.chunkSize && n();
+    return { flush: s, push: (l) => {
+      i[o++] = l, o >= r && s();
     } };
+    function u() {
+      const l = n.pop();
+      if (l != null)
+        return l.length = 0, l;
+      const h = new Array(r);
+      return h.length = 0, h;
+    }
   }
   /** Construct summary. */
   constructSummary(e) {
@@ -3459,5 +3469,5 @@ class Gn {
   }
 }
 export {
-  Gn as Tool
+  Zn as Tool
 };

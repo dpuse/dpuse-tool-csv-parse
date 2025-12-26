@@ -17,7 +17,8 @@ interface RowBuffer {
 }
 
 /** Constants. */
-const DEFAULT_RETRIEVE_CHUNK_SIZE = 10_000; // Row count.
+const DEFAULT_ROW_BUFFER_SIZE = 10_000; // Row count.
+const DEFAULT_ROW_BUFFER_POOL_SIZE = 4;
 
 /** Tool. */
 class Tool {
@@ -69,7 +70,7 @@ class Tool {
 
             const run = async (): Promise<void> => {
                 parser = parse(parseOptions);
-                rowBuffer = this.constructRowBuffer({ chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RETRIEVE_CHUNK_SIZE });
+                rowBuffer = this.constructRowBuffer({ chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_ROW_BUFFER_SIZE });
                 parser.on('readable', () => {
                     try {
                         if (parser == null || rowBuffer == null) return;
@@ -124,20 +125,39 @@ class Tool {
 
     /** Construct row buffer. */
     private constructRowBuffer(bufferOptions: { chunk: (rows: Row[]) => void; chunkSize: number }): RowBuffer {
-        let rows: Row[] = [];
+        const rowsPerChunk = Math.max(1, Math.floor(bufferOptions.chunkSize));
+        const pool: Row[][] = [];
+        let rows = allocateBuffer();
+        let rowCount = 0;
 
         const flush = (): void => {
-            if (rows.length === 0) return;
-            bufferOptions.chunk(rows);
-            rows = [];
+            if (rowCount === 0) return;
+            const rowsToEmit = rows;
+            rowsToEmit.length = rowCount; // Trim before handing off so consumers only see populated entries.
+            rows = allocateBuffer();
+            rowCount = 0;
+            bufferOptions.chunk(rowsToEmit);
+            if (pool.length < DEFAULT_ROW_BUFFER_POOL_SIZE) pool.push(rowsToEmit);
         };
 
         const push = (row: Row): void => {
-            rows.push(row);
-            if (rows.length >= bufferOptions.chunkSize) flush();
+            rows[rowCount++] = row;
+            if (rowCount >= rowsPerChunk) flush();
         };
 
         return { flush, push };
+
+        function allocateBuffer(): Row[] {
+            const pooled = pool.pop();
+            if (pooled != null) {
+                pooled.length = 0;
+                return pooled;
+            }
+
+            const allocated = new Array<Row>(rowsPerChunk);
+            allocated.length = 0;
+            return allocated;
+        }
     }
 
     /** Construct summary. */
