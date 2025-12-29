@@ -2,21 +2,31 @@
  * CSV Parse tool.
  */
 
-/** Vendor dependencies. */
+// Vendor dependencies.
 import { parse, type Options as ParseOptions, type Parser } from 'csv-parse/browser/esm';
 
-/** Framework dependencies. */
-import { buildFetchError } from '@datapos/datapos-shared/errors';
+// Framework dependencies.
+import type { RecordDelimiterId } from '@datapos/datapos-shared';
+import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
 import type { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 
-/** Row and row buffer. */
+/**
+ * Row and row buffer.
+ */
 type Row = string[];
 interface RowBuffer {
     push: (row: Row) => void;
     flush: () => void;
 }
 
-/** Constants. */
+/**
+ * Schema.
+ */
+interface SchemaConfig {
+    recordDelimiter: RecordDelimiterId;
+}
+
+// Constants.
 const DEFAULT_ROW_BUFFER_SIZE = 10_000; // Row count.
 const DEFAULT_ROW_BUFFER_POOL_SIZE = 4;
 
@@ -27,7 +37,20 @@ class Tool {
         return parse(options);
     }
 
-    /** Parse stream. */
+    /**
+     * Determine schema configuration.
+     */
+    determineSchemaConfig(text: string, delimiters: string[]): SchemaConfig {
+        const recordDelimiter = determineRecordDelimiter(text);
+
+        return {
+            recordDelimiter
+        };
+    }
+
+    /**
+     * Parse stream.
+     */
     async parseStream(
         retrieveRecordsOptions: RetrieveRecordsOptions,
         parseOptions: ParseOptions,
@@ -50,12 +73,14 @@ class Tool {
                 parser = undefined;
                 rowBuffer = undefined;
                 if (activeParser != null) {
-                    this.ignoreErrors(() => activeParser.removeAllListeners());
-                    this.ignoreErrors(() => activeParser.end());
+                    ignoreErrors(() => activeParser.removeAllListeners());
+                    ignoreErrors(() => activeParser.end());
                 }
-                this.ignoreErrors(() => void reader?.cancel());
+                ignoreErrors(() => void reader?.cancel());
                 reader = undefined;
             };
+
+            abortController.signal.addEventListener('abort', stopProcessing, { once: true });
 
             const handleError = (error: unknown): void => {
                 if (hasErrored) return;
@@ -66,11 +91,9 @@ class Tool {
                 reject(error as Error);
             };
 
-            abortController.signal.addEventListener('abort', stopProcessing, { once: true });
-
             const run = async (): Promise<void> => {
                 parser = parse(parseOptions);
-                rowBuffer = this.constructRowBuffer({ chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_ROW_BUFFER_SIZE });
+                rowBuffer = constructRowBuffer({ chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_ROW_BUFFER_SIZE });
                 parser.on('readable', () => {
                     try {
                         if (parser == null || rowBuffer == null) return;
@@ -88,7 +111,7 @@ class Tool {
                 parser.on('end', () => {
                     if (hasErrored) return;
                     rowBuffer?.flush();
-                    resolve(this.constructSummary(parser));
+                    resolve(constructSummary(parser));
                 });
 
                 const response = await fetch(encodeURI(url), { signal: abortController.signal });
@@ -117,71 +140,72 @@ class Tool {
             void run().catch((error: unknown) => handleError(error));
         });
     }
+}
 
-    /** Parse string. */
-    parseString(): void {
-        return void 0;
-    }
+/**
+ * Construct row buffer.
+ */
+function constructRowBuffer(bufferOptions: { chunk: (rows: Row[]) => void; chunkSize: number }): RowBuffer {
+    const rowsPerChunk = Math.max(1, Math.floor(bufferOptions.chunkSize));
+    const pool: Row[][] = [];
+    let rows = allocateBuffer();
+    let rowCount = 0;
 
-    /** Construct row buffer. */
-    private constructRowBuffer(bufferOptions: { chunk: (rows: Row[]) => void; chunkSize: number }): RowBuffer {
-        const rowsPerChunk = Math.max(1, Math.floor(bufferOptions.chunkSize));
-        const pool: Row[][] = [];
-        let rows = allocateBuffer();
-        let rowCount = 0;
+    const flush = (): void => {
+        if (rowCount === 0) return;
+        const rowsToEmit = rows;
+        rowsToEmit.length = rowCount; // Trim before handing off so consumers only see populated entries.
+        rows = allocateBuffer();
+        rowCount = 0;
+        bufferOptions.chunk(rowsToEmit);
+        if (pool.length < DEFAULT_ROW_BUFFER_POOL_SIZE) pool.push(rowsToEmit);
+    };
 
-        const flush = (): void => {
-            if (rowCount === 0) return;
-            const rowsToEmit = rows;
-            rowsToEmit.length = rowCount; // Trim before handing off so consumers only see populated entries.
-            rows = allocateBuffer();
-            rowCount = 0;
-            bufferOptions.chunk(rowsToEmit);
-            if (pool.length < DEFAULT_ROW_BUFFER_POOL_SIZE) pool.push(rowsToEmit);
-        };
+    const push = (row: Row): void => {
+        rows[rowCount++] = row;
+        if (rowCount >= rowsPerChunk) flush();
+    };
 
-        const push = (row: Row): void => {
-            rows[rowCount++] = row;
-            if (rowCount >= rowsPerChunk) flush();
-        };
+    return { flush, push };
 
-        return { flush, push };
-
-        function allocateBuffer(): Row[] {
-            const pooled = pool.pop();
-            if (pooled != null) {
-                pooled.length = 0;
-                return pooled;
-            }
-
-            const allocated = Array.from<Row>({ length: rowsPerChunk });
-            allocated.length = 0;
-            return allocated;
+    function allocateBuffer(): Row[] {
+        const pooled = pool.pop();
+        if (pooled != null) {
+            pooled.length = 0;
+            return pooled;
         }
-    }
 
-    /** Construct summary. */
-    private constructSummary(parser: Parser | undefined): RetrieveRecordsSummary {
-        return {
-            byteCount: parser?.info.bytes ?? -1,
-            commentLineCount: parser?.info.comment_lines ?? -1,
-            emptyLineCount: parser?.info.empty_lines ?? -1,
-            invalidFieldLengthCount: parser?.info.invalid_field_length ?? -1,
-            lineCount: parser?.info.lines ?? -1,
-            recordCount: parser?.info.records ?? -1
-        };
-    }
-
-    /** Ignore best-effort cleanup errors to keep teardown noise-free. */
-    private ignoreErrors(action: () => void): void {
-        try {
-            action();
-        } catch {
-            /* Intentionally ignore errors. */
-        }
+        const allocated = Array.from<Row>({ length: rowsPerChunk });
+        allocated.length = 0;
+        return allocated;
     }
 }
 
-/** Exports */
+/** Construct summary. */
+function constructSummary(parser: Parser | undefined): RetrieveRecordsSummary {
+    return {
+        byteCount: parser?.info.bytes ?? -1,
+        commentLineCount: parser?.info.comment_lines ?? -1,
+        emptyLineCount: parser?.info.empty_lines ?? -1,
+        invalidFieldLengthCount: parser?.info.invalid_field_length ?? -1,
+        lineCount: parser?.info.lines ?? -1,
+        recordCount: parser?.info.records ?? -1
+    };
+}
+
+/**
+ * Determine record delimiter.
+ */
+function determineRecordDelimiter(text: string): RecordDelimiterId {
+    const countCRLF = (text.match(/\r\n/g) ?? []).length; // Count all '\r\n'character sequences.
+    const countLF = (text.match(/(?<!\r)\n/g) ?? []).length; // Count all '\n' characters not preceded by '\r' character.
+    const countCR = (text.match(/\r(?!\n)/g) ?? []).length; // Count all '\r' characters not followed by '\n' character.
+    if (countCRLF >= countLF && countCRLF >= countCR) return '\r\n';
+    if (countLF >= countCRLF && countLF >= countCR) return '\n';
+    if (countCR >= countCRLF && countCR >= countLF) return '\r';
+    return '\n'; // Default to '\n' character if all counts are equal or zero.
+}
+
+// Exports.
 export type { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
-export { Tool };
+export { type SchemaConfig, Tool };
