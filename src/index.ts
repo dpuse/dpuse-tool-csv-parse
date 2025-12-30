@@ -11,11 +11,11 @@ import type { RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-share
 import type { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 
 /**
- * Row and row buffer.
+ * Parse record and parsed record buffer.
  */
-type Row = string[];
-interface RowBuffer {
-    push: (row: Row) => void;
+type ParsedRecord = string[];
+interface RecordBuffer {
+    push: (record: ParsedRecord) => void;
     flush: () => void;
 }
 
@@ -24,13 +24,13 @@ interface RowBuffer {
  */
 interface SchemaConfig {
     recordDelimiterId: RecordDelimiterId;
-    rows: Row[];
+    records: ParsedRecord[];
     valueDelimiterId: ValueDelimiterId;
 }
 
 // Constants.
-const DEFAULT_ROW_BUFFER_SIZE = 10_000;
-const DEFAULT_ROW_BUFFER_POOL_SIZE = 4;
+const DEFAULT_RECORD_BUFFER_SIZE = 10_000;
+const DEFAULT_RECORD_BUFFER_POOL_SIZE = 4;
 
 /** Tool. */
 class Tool {
@@ -44,11 +44,11 @@ class Tool {
      */
     async determineSchemaConfig(text: string, delimiters: ValueDelimiterId[]): Promise<SchemaConfig> {
         const recordDelimiterId = determineRecordDelimiter(text);
-        const { rows, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
+        const { records, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
 
         return {
             recordDelimiterId,
-            rows,
+            records,
             valueDelimiterId
         };
     }
@@ -66,7 +66,7 @@ class Tool {
         return new Promise<RetrieveRecordsSummary>((resolve, reject) => {
             let parser: Parser | undefined;
             let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
-            let rowBuffer: RowBuffer | undefined;
+            let recordBuffer: RecordBuffer | undefined;
             let hasErrored = false;
             let hasStoppedProcessing = false;
 
@@ -76,7 +76,7 @@ class Tool {
 
                 const activeParser = parser;
                 parser = undefined;
-                rowBuffer = undefined;
+                recordBuffer = undefined;
                 if (activeParser != null) {
                     ignoreErrors(() => activeParser.removeAllListeners());
                     ignoreErrors(() => activeParser.end());
@@ -98,15 +98,15 @@ class Tool {
 
             const run = async (): Promise<void> => {
                 parser = parse(parseOptions);
-                rowBuffer = constructRowBuffer({ chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_ROW_BUFFER_SIZE });
+                recordBuffer = constructRecordBuffer({ chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RECORD_BUFFER_SIZE });
                 parser.on('readable', () => {
                     try {
-                        if (parser == null || rowBuffer == null) return;
-                        let row: Row | null;
-                        while ((row = parser.read() as Row | null) != null) {
+                        if (parser == null || recordBuffer == null) return;
+                        let record: ParsedRecord | null;
+                        while ((record = parser.read() as ParsedRecord | null) != null) {
                             if (hasErrored) return;
                             abortController.signal.throwIfAborted();
-                            rowBuffer.push(row);
+                            recordBuffer.push(record);
                         }
                     } catch (error) {
                         handleError(error);
@@ -115,7 +115,7 @@ class Tool {
                 parser.on('error', (error) => handleError(error));
                 parser.on('end', () => {
                     if (hasErrored) return;
-                    rowBuffer?.flush();
+                    recordBuffer?.flush();
                     resolve(constructSummary(parser));
                 });
 
@@ -166,32 +166,32 @@ function determineRecordDelimiter(text: string): RecordDelimiterId {
 /**
  * Determine value delimiter.
  */
-async function determineValueDelimiter(text: string, delimiters: ValueDelimiterId[]): Promise<{ rows: Row[]; valueDelimiterId: ValueDelimiterId }> {
+async function determineValueDelimiter(text: string, delimiters: ValueDelimiterId[]): Promise<{ records: ParsedRecord[]; valueDelimiterId: ValueDelimiterId }> {
     let valueDelimiterId: ValueDelimiterId | undefined;
     let priorAverageCount: number;
     let priorSumCountDiffs: number;
-    let rows: Row[] = [];
+    let records: ParsedRecord[] = [];
 
     for (const delimiter of delimiters) {
         try {
             let totalValueCount = 0;
             let priorValueCount: number | undefined;
-            let rowCount = 0;
+            let recordCount = 0;
             let sumOfValueCountDiffs = 0;
 
             const parser = parse({ delimiter, relax_column_count: true });
             await new Promise<void>((resolve): void => {
                 try {
-                    const pendingRows: Row[] = [];
+                    const pendingRecords: ParsedRecord[] = [];
                     parser.on('readable', (): void => {
-                        let row;
-                        while ((row = parser.read() as Row | null) != null) {
-                            rowCount++;
-                            const valueCount = row.length;
+                        let record;
+                        while ((record = parser.read() as ParsedRecord | null) != null) {
+                            recordCount++;
+                            const valueCount = record.length;
                             if (priorValueCount != null) sumOfValueCountDiffs += Math.abs(valueCount - priorValueCount);
                             priorValueCount = valueCount;
                             totalValueCount += valueCount;
-                            pendingRows.push(row);
+                            pendingRecords.push(record);
                         }
                     });
                     parser.on('error', (error): void => {
@@ -199,12 +199,12 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
                         resolve();
                     });
                     parser.on('end', (): void => {
-                        const averageValueCount = totalValueCount / rowCount;
+                        const averageValueCount = totalValueCount / recordCount;
                         if ((!priorSumCountDiffs || sumOfValueCountDiffs <= priorSumCountDiffs) && (!priorAverageCount || averageValueCount > priorAverageCount)) {
                             valueDelimiterId = delimiter;
                             priorAverageCount = averageValueCount;
                             priorSumCountDiffs = sumOfValueCountDiffs;
-                            rows = [...pendingRows];
+                            records = [...pendingRecords];
                         }
                         resolve();
                     });
@@ -219,7 +219,7 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
         }
     }
 
-    return { rows, valueDelimiterId: valueDelimiterId ?? ',' };
+    return { records, valueDelimiterId: valueDelimiterId ?? ',' };
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -228,39 +228,39 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
 //#region: Parse stream helpers.
 
 /**
- * Construct row buffer.
+ * Construct record buffer.
  */
-function constructRowBuffer(bufferOptions: { chunk: (rows: Row[]) => void; chunkSize: number }): RowBuffer {
-    const rowsPerChunk = Math.max(1, Math.floor(bufferOptions.chunkSize));
-    const pool: Row[][] = [];
-    let rows = allocateBuffer();
-    let rowCount = 0;
+function constructRecordBuffer(bufferOptions: { chunk: (records: ParsedRecord[]) => void; chunkSize: number }): RecordBuffer {
+    const recordsPerChunk = Math.max(1, Math.floor(bufferOptions.chunkSize));
+    const pool: ParsedRecord[][] = [];
+    let records = allocateBuffer();
+    let recordCount = 0;
 
     const flush = (): void => {
-        if (rowCount === 0) return;
-        const rowsToEmit = rows;
-        rowsToEmit.length = rowCount; // Trim before handing off so consumers only see populated entries.
-        rows = allocateBuffer();
-        rowCount = 0;
-        bufferOptions.chunk(rowsToEmit);
-        if (pool.length < DEFAULT_ROW_BUFFER_POOL_SIZE) pool.push(rowsToEmit);
+        if (recordCount === 0) return;
+        const recordsToEmit = records;
+        recordsToEmit.length = recordCount; // Trim before handing off so consumers only see populated entries.
+        records = allocateBuffer();
+        recordCount = 0;
+        bufferOptions.chunk(recordsToEmit);
+        if (pool.length < DEFAULT_RECORD_BUFFER_POOL_SIZE) pool.push(recordsToEmit);
     };
 
-    const push = (row: Row): void => {
-        rows[rowCount++] = row;
-        if (rowCount >= rowsPerChunk) flush();
+    const push = (record: ParsedRecord): void => {
+        records[recordCount++] = record;
+        if (recordCount >= recordsPerChunk) flush();
     };
 
     return { flush, push };
 
-    function allocateBuffer(): Row[] {
+    function allocateBuffer(): ParsedRecord[] {
         const pooled = pool.pop();
         if (pooled != null) {
             pooled.length = 0;
             return pooled;
         }
 
-        const allocated = Array.from<Row>({ length: rowsPerChunk });
+        const allocated = Array.from<ParsedRecord>({ length: recordsPerChunk });
         allocated.length = 0;
         return allocated;
     }
@@ -282,4 +282,4 @@ function constructSummary(parser: Parser | undefined): RetrieveRecordsSummary {
 
 // Exports.
 export type { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
-export { type Row, type SchemaConfig, Tool };
+export { type ParsedRecord, type SchemaConfig, Tool };

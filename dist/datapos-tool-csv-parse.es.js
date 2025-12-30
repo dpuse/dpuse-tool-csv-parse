@@ -3389,10 +3389,10 @@ class ri {
    * Determine schema configuration.
    */
   async determineSchemaConfig(e, r) {
-    const n = Xn(e), { rows: i, valueDelimiterId: o } = await Kn(e, r);
+    const n = Xn(e), { records: i, valueDelimiterId: o } = await Kn(e, r);
     return {
       recordDelimiterId: n,
-      rows: i,
+      records: i,
       valueDelimiterId: o
     };
   }
@@ -3483,7 +3483,7 @@ async function Kn(t, e) {
       });
     } catch {
     }
-  return { rows: o, valueDelimiterId: r ?? "," };
+  return { records: o, valueDelimiterId: r ?? "," };
 }
 function ei(t) {
   const e = Math.max(1, Math.floor(t.chunkSize)), r = [];

@@ -2,15 +2,15 @@ import { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
 import { RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared';
 import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 /**
- * Row and row buffer.
+ * Parse record and parsed record buffer.
  */
-type Row = string[];
+type ParsedRecord = string[];
 /**
  * Schema configuration.
  */
 interface SchemaConfig {
     recordDelimiterId: RecordDelimiterId;
-    rows: Row[];
+    records: ParsedRecord[];
     valueDelimiterId: ValueDelimiterId;
 }
 /** Tool. */
@@ -27,4 +27,4 @@ declare class Tool {
     parseStream(retrieveRecordsOptions: RetrieveRecordsOptions, parseOptions: ParseOptions, url: string, abortController: AbortController, chunk: (records: (string[] | Record<string, unknown>)[]) => void): Promise<RetrieveRecordsSummary>;
 }
 export type { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
-export { type Row, type SchemaConfig, Tool };
+export { type ParsedRecord, type SchemaConfig, Tool };
