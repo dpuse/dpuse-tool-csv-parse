@@ -42,12 +42,12 @@ class Tool {
      * Determine schema configuration.
      */
     async determineSchemaConfig(text: string, delimiters: string[]): Promise<SchemaConfig> {
-        const recordDelimiter = determineRecordDelimiter(text);
-        const valueDelimiter = await determineValueDelimiter(text);
+        const recordDelimiterId = determineRecordDelimiter(text);
+        const valueDelimiterId = await determineValueDelimiter(text);
 
         return {
-            recordDelimiter,
-            valueDelimiter
+            recordDelimiterId,
+            valueDelimiterId
         };
     }
 

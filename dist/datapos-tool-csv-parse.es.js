@@ -3391,8 +3391,8 @@ class ri {
   async determineSchemaConfig(e, r) {
     const n = Xn(e), i = await Kn(e);
     return {
-      recordDelimiter: n,
-      valueDelimiter: i
+      recordDelimiterId: n,
+      valueDelimiterId: i
     };
   }
   /**
