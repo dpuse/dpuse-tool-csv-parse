@@ -172,6 +172,7 @@ async function determineValueDelimiter(text: string): Promise<ValueDelimiterId> 
 
     for (const delimiter of delimiters) {
         try {
+            console.log('0000', delimiter);
             let totalValueCount = 0;
             let priorValueCount: number | undefined;
             let rowCount = 0;
@@ -215,7 +216,7 @@ async function determineValueDelimiter(text: string): Promise<ValueDelimiterId> 
         }
     }
 
-    console.log(333, valueDelimiter);
+    console.log(3333, valueDelimiter);
     return valueDelimiter ?? ',';
 }
 

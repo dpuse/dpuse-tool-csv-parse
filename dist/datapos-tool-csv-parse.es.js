@@ -3459,6 +3459,7 @@ async function Kn(t) {
   let r, n, i;
   for (const o of e)
     try {
+      console.log("0000", o);
       let s = 0, f, a = 0, u = 0;
       const c = je({ delimiter: o, relax_column_count: !0 });
       await new Promise((h) => {
@@ -3481,7 +3482,7 @@ async function Kn(t) {
     } catch (s) {
       console.log(8888, s);
     }
-  return console.log(333, r), r ?? ",";
+  return console.log(3333, r), r ?? ",";
 }
 function ei(t) {
   const e = Math.max(1, Math.floor(t.chunkSize)), r = [];
