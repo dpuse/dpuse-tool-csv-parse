@@ -3472,7 +3472,7 @@ async function Kn(t) {
             }
           }), c.on("error", () => h()), c.on("end", () => {
             const p = s / a;
-            (!i || u <= i) && (!n || p > n) && (console.log(1111, r, n, i), r = o, n = p, i = u, console.log(2222, r, n, i)), h();
+            console.log(1111, r, n, i, p), (!i || u <= i) && (!n || p > n) && (r = o, n = p, i = u), console.log(2222, r, n, i), h();
           }), c.write(t), c.end();
         } catch {
           h();
@@ -3480,7 +3480,7 @@ async function Kn(t) {
       });
     } catch {
     }
-  return r ?? ",";
+  return console.log(333, r), r ?? ",";
 }
 function ei(t) {
   const e = Math.max(1, Math.floor(t.chunkSize)), r = [];

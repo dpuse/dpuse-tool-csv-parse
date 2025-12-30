@@ -193,13 +193,13 @@ async function determineValueDelimiter(text: string): Promise<ValueDelimiterId> 
                     parser.on('error', (): void => resolve());
                     parser.on('end', (): void => {
                         const averageValueCount = totalValueCount / rowCount;
+                        console.log(1111, valueDelimiter, priorAverageCount, priorSumCountDiffs, averageValueCount);
                         if ((!priorSumCountDiffs || sumOfValueCountDiffs <= priorSumCountDiffs) && (!priorAverageCount || averageValueCount > priorAverageCount)) {
-                            console.log(1111, valueDelimiter, priorAverageCount, priorSumCountDiffs);
                             valueDelimiter = delimiter;
                             priorAverageCount = averageValueCount;
                             priorSumCountDiffs = sumOfValueCountDiffs;
-                            console.log(2222, valueDelimiter, priorAverageCount, priorSumCountDiffs);
                         }
+                        console.log(2222, valueDelimiter, priorAverageCount, priorSumCountDiffs);
                         resolve();
                     });
                     parser.write(text);
@@ -213,6 +213,7 @@ async function determineValueDelimiter(text: string): Promise<ValueDelimiterId> 
         }
     }
 
+    console.log(333, valueDelimiter);
     return valueDelimiter ?? ',';
 }
 
