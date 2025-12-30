@@ -172,7 +172,6 @@ async function determineValueDelimiter(text: string): Promise<ValueDelimiterId> 
 
     for (const delimiter of delimiters) {
         try {
-            console.log('0000', delimiter);
             let totalValueCount = 0;
             let priorValueCount: number | undefined;
             let rowCount = 0;
@@ -184,6 +183,7 @@ async function determineValueDelimiter(text: string): Promise<ValueDelimiterId> 
                     parser.on('readable', (): void => {
                         let row;
                         while ((row = parser.read() as Row | null) != null) {
+                            console.log('ROW', row);
                             rowCount++;
                             const valueCount = row.length;
                             if (priorValueCount != null) sumOfValueCountDiffs += Math.abs(valueCount - priorValueCount);
@@ -191,35 +191,27 @@ async function determineValueDelimiter(text: string): Promise<ValueDelimiterId> 
                             totalValueCount += valueCount;
                         }
                     });
-                    parser.on('error', (error): void => {
-                        console.log(7777, error);
-                        resolve();
-                    });
+                    parser.on('error', (): void => resolve());
                     parser.on('end', (): void => {
                         const averageValueCount = totalValueCount / rowCount;
-                        console.log(1111, valueDelimiter, priorAverageCount, priorSumCountDiffs, averageValueCount);
                         if ((!priorSumCountDiffs || sumOfValueCountDiffs <= priorSumCountDiffs) && (!priorAverageCount || averageValueCount > priorAverageCount)) {
                             valueDelimiter = delimiter;
                             priorAverageCount = averageValueCount;
                             priorSumCountDiffs = sumOfValueCountDiffs;
                         }
-                        console.log(2222, valueDelimiter, priorAverageCount, priorSumCountDiffs);
                         resolve();
                     });
                     parser.write(text);
                     parser.end();
-                } catch (error) {
-                    console.log(8888, error);
+                } catch {
                     resolve(); // Ignore errors. Assume invalid delimiter caused parsing error.
                 }
             });
-        } catch (error) {
-            console.log(8888, error);
+        } catch {
             // Ignore errors. Assume invalid delimiter caused parsing error.
         }
     }
 
-    console.log(3333, valueDelimiter);
     return valueDelimiter ?? ',';
 }
 
