@@ -3390,7 +3390,7 @@ class ri {
    */
   async determineSchemaConfig(e, r) {
     const n = Xn(e), { records: i, valueDelimiterId: o } = await Kn(e, r);
-    return {
+    return console.log("records", i), {
       recordDelimiterId: n,
       records: i,
       valueDelimiterId: o

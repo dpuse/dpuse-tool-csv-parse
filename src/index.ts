@@ -46,6 +46,8 @@ class Tool {
         const recordDelimiterId = determineRecordDelimiter(text);
         const { records, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
 
+        console.log('records', records);
+
         // let firstDataRowIndex = 0;
         // const headerRecord = records[0];
         // const headerValueCount = headerRecord?.length ?? 0;
