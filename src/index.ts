@@ -204,11 +204,13 @@ async function determineValueDelimiter(text: string): Promise<ValueDelimiterId> 
                     });
                     parser.write(text);
                     parser.end();
-                } catch {
+                } catch (error) {
+                    console.log(8888, error);
                     resolve(); // Ignore errors. Assume invalid delimiter caused parsing error.
                 }
             });
-        } catch {
+        } catch (error) {
+            console.log(8888, error);
             // Ignore errors. Assume invalid delimiter caused parsing error.
         }
     }

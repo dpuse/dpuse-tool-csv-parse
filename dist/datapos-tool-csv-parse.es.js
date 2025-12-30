@@ -31,10 +31,10 @@ function Ze(t) {
   return n === 1 ? (e = t[r - 1], i += P[e >> 2], i += P[e << 4 & 63], i += "==") : n === 2 && (e = (t[r - 2] << 8) + t[r - 1], i += P[e >> 10], i += P[e >> 4 & 63], i += P[e << 2 & 63], i += "="), o.push(i), o.join("");
 }
 function ve(t, e, r, n, i) {
-  var o, s, f = i * 8 - n - 1, a = (1 << f) - 1, u = a >> 1, c = -7, h = r ? i - 1 : 0, p = r ? -1 : 1, g = t[e + h];
-  for (h += p, o = g & (1 << -c) - 1, g >>= -c, c += f; c > 0; o = o * 256 + t[e + h], h += p, c -= 8)
+  var o, s, f = i * 8 - n - 1, a = (1 << f) - 1, u = a >> 1, c = -7, h = r ? i - 1 : 0, d = r ? -1 : 1, g = t[e + h];
+  for (h += d, o = g & (1 << -c) - 1, g >>= -c, c += f; c > 0; o = o * 256 + t[e + h], h += d, c -= 8)
     ;
-  for (s = o & (1 << -c) - 1, o >>= -c, c += n; c > 0; s = s * 256 + t[e + h], h += p, c -= 8)
+  for (s = o & (1 << -c) - 1, o >>= -c, c += n; c > 0; s = s * 256 + t[e + h], h += d, c -= 8)
     ;
   if (o === 0)
     o = 1 - u;
@@ -46,8 +46,8 @@ function ve(t, e, r, n, i) {
   return (g ? -1 : 1) * s * Math.pow(2, o - n);
 }
 function ht(t, e, r, n, i, o) {
-  var s, f, a, u = o * 8 - i - 1, c = (1 << u) - 1, h = c >> 1, p = i === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0, g = n ? 0 : o - 1, O = n ? 1 : -1, E = e < 0 || e === 0 && 1 / e < 0 ? 1 : 0;
-  for (e = Math.abs(e), isNaN(e) || e === 1 / 0 ? (f = isNaN(e) ? 1 : 0, s = c) : (s = Math.floor(Math.log(e) / Math.LN2), e * (a = Math.pow(2, -s)) < 1 && (s--, a *= 2), s + h >= 1 ? e += p / a : e += p * Math.pow(2, 1 - h), e * a >= 2 && (s++, a /= 2), s + h >= c ? (f = 0, s = c) : s + h >= 1 ? (f = (e * a - 1) * Math.pow(2, i), s = s + h) : (f = e * Math.pow(2, h - 1) * Math.pow(2, i), s = 0)); i >= 8; t[r + g] = f & 255, g += O, f /= 256, i -= 8)
+  var s, f, a, u = o * 8 - i - 1, c = (1 << u) - 1, h = c >> 1, d = i === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0, g = n ? 0 : o - 1, O = n ? 1 : -1, E = e < 0 || e === 0 && 1 / e < 0 ? 1 : 0;
+  for (e = Math.abs(e), isNaN(e) || e === 1 / 0 ? (f = isNaN(e) ? 1 : 0, s = c) : (s = Math.floor(Math.log(e) / Math.LN2), e * (a = Math.pow(2, -s)) < 1 && (s--, a *= 2), s + h >= 1 ? e += d / a : e += d * Math.pow(2, 1 - h), e * a >= 2 && (s++, a /= 2), s + h >= c ? (f = 0, s = c) : s + h >= 1 ? (f = (e * a - 1) * Math.pow(2, i), s = s + h) : (f = e * Math.pow(2, h - 1) * Math.pow(2, i), s = 0)); i >= 8; t[r + g] = f & 255, g += O, f /= 256, i -= 8)
     ;
   for (s = s << i | f, u += i; u > 0; t[r + g] = s & 255, g += O, s /= 256, u -= 8)
     ;
@@ -361,8 +361,8 @@ function Xe(t, e, r, n, i) {
         c !== -1 && (u -= u - c), c = -1;
   } else
     for (r + f > s && (r = s - f), u = r; u >= 0; u--) {
-      for (var h = !0, p = 0; p < f; p++)
-        if (a(t, u + p) !== a(e, p)) {
+      for (var h = !0, d = 0; d < f; d++)
+        if (a(t, u + d) !== a(e, d)) {
           h = !1;
           break;
         }
@@ -1316,10 +1316,10 @@ function ye(t, e, r) {
   if (r < 0)
     return Le(e) ? t.stylize(RegExp.prototype.toString.call(e), "regexp") : t.stylize("[Object]", "special");
   t.seen.push(e);
-  var p;
-  return u ? p = Vr(t, e, r, s, o) : p = o.map(function(g) {
+  var d;
+  return u ? d = Vr(t, e, r, s, o) : d = o.map(function(g) {
     return Pe(t, e, r, s, g, u);
-  }), t.seen.pop(), Jr(p, a, c);
+  }), t.seen.pop(), Jr(d, a, c);
 }
 function zr(t, e) {
   if (Q(e))
@@ -1698,11 +1698,11 @@ I.prototype.pipe = function(t, e) {
   t.on("drain", a);
   var u = !1;
   function c() {
-    b("cleanup"), t.removeListener("close", O), t.removeListener("finish", E), t.removeListener("drain", a), t.removeListener("error", g), t.removeListener("unpipe", s), r.removeListener("end", f), r.removeListener("end", c), r.removeListener("data", p), u = !0, n.awaitDrain && (!t._writableState || t._writableState.needDrain) && a();
+    b("cleanup"), t.removeListener("close", O), t.removeListener("finish", E), t.removeListener("drain", a), t.removeListener("error", g), t.removeListener("unpipe", s), r.removeListener("end", f), r.removeListener("end", c), r.removeListener("data", d), u = !0, n.awaitDrain && (!t._writableState || t._writableState.needDrain) && a();
   }
   var h = !1;
-  r.on("data", p);
-  function p(S) {
+  r.on("data", d);
+  function d(S) {
     b("ondata"), h = !1;
     var y = t.write(S);
     y === !1 && !h && ((n.pipesCount === 1 && n.pipes === t || n.pipesCount > 1 && $t(n.pipes, t) !== -1) && !u && (b("false write response, pause", r._readableState.awaitDrain), r._readableState.awaitDrain++, h = !0), r.pause());
@@ -2665,7 +2665,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
     state: kn(r),
     __needMoreData: function(n, i, o) {
       if (o) return !1;
-      const { encoding: s, escape: f, quote: a } = this.options, { quoting: u, needMoreDataSize: c, recordDelimiterMaxLength: h } = this.state, p = i - n - 1, g = Math.max(
+      const { encoding: s, escape: f, quote: a } = this.options, { quoting: u, needMoreDataSize: c, recordDelimiterMaxLength: h } = this.state, d = i - n - 1, g = Math.max(
         c,
         // Skip if the remaining buffer smaller than record delimiter
         // If "record_delimiter" is yet to be discovered:
@@ -2680,7 +2680,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
         // Skip if remaining buffer can be record delimiter following the closing quote
         u ? a.length + h : 0
       );
-      return p < g;
+      return d < g;
     },
     // Central parser implementation
     parse: function(n, i, o, s) {
@@ -2690,7 +2690,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
         encoding: u,
         from_line: c,
         ltrim: h,
-        max_record_size: p,
+        max_record_size: d,
         raw: g,
         relax_quotes: O,
         rtrim: E,
@@ -2733,41 +2733,41 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
           this.state.bomSkipped = !0;
         }
       const Ie = v.length;
-      let d;
-      for (d = 0; d < Ie && !this.__needMoreData(d, Ie, i); d++) {
+      let p;
+      for (p = 0; p < Ie && !this.__needMoreData(p, Ie, i); p++) {
         if (this.state.wasRowDelimiter === !0 && (this.info.lines++, this.state.wasRowDelimiter = !1), y !== -1 && this.info.lines > y) {
           this.state.stop = !0, s();
           return;
         }
         this.state.quoting === !1 && Re.length === 0 && this.__autoDiscoverRecordDelimiter(
           v,
-          d
+          p
         ) && (Re = this.options.record_delimiter);
-        const C = v[d];
+        const C = v[p];
         if (g === !0 && Qt.append(C), (C === $n || C === jn) && this.state.wasRowDelimiter === !1 && (this.state.wasRowDelimiter = !0), this.state.escaping === !0)
           this.state.escaping = !1;
         else {
-          if (R !== null && this.state.quoting === !0 && this.__isEscape(v, d, C) && d + R.length < Ie)
+          if (R !== null && this.state.quoting === !0 && this.__isEscape(v, p, C) && p + R.length < Ie)
             if (Ht) {
-              if (this.__isQuote(v, d + R.length)) {
-                this.state.escaping = !0, d += R.length - 1;
+              if (this.__isQuote(v, p + R.length)) {
+                this.state.escaping = !0, p += R.length - 1;
                 continue;
               }
             } else {
-              this.state.escaping = !0, d += R.length - 1;
+              this.state.escaping = !0, p += R.length - 1;
               continue;
             }
-          if (this.state.commenting === !1 && this.__isQuote(v, d))
+          if (this.state.commenting === !1 && this.__isQuote(v, p))
             if (this.state.quoting === !0) {
-              const A = v[d + U.length], Z = E && this.__isCharTrimable(v, d + U.length), j = _ !== null && this.__compareBytes(_, v, d + U.length, A), X = this.__isDelimiter(
+              const A = v[p + U.length], Z = E && this.__isCharTrimable(v, p + U.length), j = _ !== null && this.__compareBytes(_, v, p + U.length, A), X = this.__isDelimiter(
                 v,
-                d + U.length,
+                p + U.length,
                 A
-              ), de = Re.length === 0 ? this.__autoDiscoverRecordDelimiter(v, d + U.length) : this.__isRecordDelimiter(A, v, d + U.length);
-              if (R !== null && this.__isEscape(v, d, C) && this.__isQuote(v, d + R.length))
-                d += R.length - 1;
+              ), de = Re.length === 0 ? this.__autoDiscoverRecordDelimiter(v, p + U.length) : this.__isRecordDelimiter(A, v, p + U.length);
+              if (R !== null && this.__isEscape(v, p, C) && this.__isQuote(v, p + R.length))
+                p += R.length - 1;
               else if (!A || X || de || j || Z) {
-                this.state.quoting = !1, this.state.wasQuoting = !0, d += U.length - 1;
+                this.state.quoting = !1, this.state.wasQuoting = !0, p += U.length - 1;
                 continue;
               } else if (O === !1) {
                 const Ge = this.__error(
@@ -2786,7 +2786,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
                 );
                 if (Ge !== void 0) return Ge;
               } else
-                this.state.quoting = !1, this.state.wasQuoting = !0, this.state.field.prepend(U), d += U.length - 1;
+                this.state.quoting = !1, this.state.wasQuoting = !0, this.state.field.prepend(U), p += U.length - 1;
             } else if (this.state.field.length !== 0) {
               if (O === !1) {
                 const A = this.__infoField(), Z = Object.keys(re).map(
@@ -2809,31 +2809,31 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
                 if (j !== void 0) return j;
               }
             } else {
-              this.state.quoting = !0, d += U.length - 1;
+              this.state.quoting = !0, p += U.length - 1;
               continue;
             }
           if (this.state.quoting === !1) {
             const A = this.__isRecordDelimiter(
               C,
               v,
-              d
+              p
             );
             if (A !== 0) {
               if (this.state.commenting && this.state.wasQuoting === !1 && this.state.record.length === 0 && this.state.field.length === 0)
                 this.info.comment_lines++;
               else {
                 if (this.state.enabled === !1 && this.info.lines + (this.state.wasRowDelimiter === !0 ? 1 : 0) >= c) {
-                  this.state.enabled = !0, this.__resetField(), this.__resetRecord(), d += A - 1;
+                  this.state.enabled = !0, this.__resetField(), this.__resetRecord(), p += A - 1;
                   continue;
                 }
                 if (x === !0 && this.state.wasQuoting === !1 && this.state.record.length === 0 && this.state.field.length === 0) {
-                  this.info.empty_lines++, d += A - 1;
+                  this.info.empty_lines++, p += A - 1;
                   continue;
                 }
-                this.info.bytes = this.state.bufBytesStart + d;
+                this.info.bytes = this.state.bufBytesStart + p;
                 const X = this.__onField();
                 if (X !== void 0) return X;
-                this.info.bytes = this.state.bufBytesStart + d + A;
+                this.info.bytes = this.state.bufBytesStart + p + A;
                 const de = this.__onRecord(o);
                 if (de !== void 0) return de;
                 if (S !== -1 && this.info.records >= S) {
@@ -2841,44 +2841,44 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
                   return;
                 }
               }
-              this.state.commenting = !1, d += A - 1;
+              this.state.commenting = !1, p += A - 1;
               continue;
             }
             if (this.state.commenting)
               continue;
-            if (_ !== null && (a === !1 || this.state.record.length === 0 && this.state.field.length === 0) && this.__compareBytes(_, v, d, C) !== 0) {
+            if (_ !== null && (a === !1 || this.state.record.length === 0 && this.state.field.length === 0) && this.__compareBytes(_, v, p, C) !== 0) {
               this.state.commenting = !0;
               continue;
             }
-            const Z = this.__isDelimiter(v, d, C);
+            const Z = this.__isDelimiter(v, p, C);
             if (Z !== 0) {
-              this.info.bytes = this.state.bufBytesStart + d;
+              this.info.bytes = this.state.bufBytesStart + p;
               const j = this.__onField();
               if (j !== void 0) return j;
-              d += Z - 1;
+              p += Z - 1;
               continue;
             }
           }
         }
-        if (this.state.commenting === !1 && p !== 0 && this.state.record_length + this.state.field.length > p)
+        if (this.state.commenting === !1 && d !== 0 && this.state.record_length + this.state.field.length > d)
           return this.__error(
             new w(
               "CSV_MAX_RECORD_SIZE",
               [
                 "Max Record Size:",
                 "record exceed the maximum number of tolerated bytes",
-                `of ${p}`,
+                `of ${d}`,
                 `at line ${this.info.lines}`
               ],
               this.options,
               this.__infoField()
             )
           );
-        const J = h === !1 || this.state.quoting === !0 || this.state.field.length !== 0 || !this.__isCharTrimable(v, d), he = E === !1 || this.state.wasQuoting === !1;
+        const J = h === !1 || this.state.quoting === !0 || this.state.field.length !== 0 || !this.__isCharTrimable(v, p), he = E === !1 || this.state.wasQuoting === !1;
         if (J === !0 && he === !0)
           this.state.field.append(C);
         else {
-          if (E === !0 && !this.__isCharTrimable(v, d))
+          if (E === !0 && !this.__isCharTrimable(v, p))
             return this.__error(
               new w(
                 "CSV_NON_TRIMABLE_CHAR_AFTER_CLOSING_QUOTE",
@@ -2891,7 +2891,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
                 this.__infoField()
               )
             );
-          J === !1 && (d += this.__isCharTrimable(v, d) - 1);
+          J === !1 && (p += this.__isCharTrimable(v, p) - 1);
           continue;
         }
       }
@@ -2910,14 +2910,14 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
           );
           if (C !== void 0) return C;
         } else if (this.state.wasQuoting === !0 || this.state.record.length !== 0 || this.state.field.length !== 0) {
-          this.info.bytes = this.state.bufBytesStart + d;
+          this.info.bytes = this.state.bufBytesStart + p;
           const C = this.__onField();
           if (C !== void 0) return C;
           const J = this.__onRecord(o);
           if (J !== void 0) return J;
         } else this.state.wasRowDelimiter === !0 ? this.info.empty_lines++ : this.state.commenting === !0 && this.info.comment_lines++;
       else
-        this.state.bufBytesStart += d, this.state.previousBuf = v.slice(d);
+        this.state.bufBytesStart += p, this.state.previousBuf = v.slice(p);
       this.state.wasRowDelimiter === !0 && (this.info.lines++, this.state.wasRowDelimiter = !1);
     },
     __onRecord: function(n) {
@@ -2930,7 +2930,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
         relax_column_count: u,
         relax_column_count_less: c,
         relax_column_count_more: h,
-        raw: p,
+        raw: d,
         skip_records_with_empty_values: g
       } = this.options, { enabled: O, record: E } = this.state;
       if (O === !1)
@@ -2991,10 +2991,10 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
           const y = {};
           for (let _ = 0, R = E.length; _ < R; _++)
             i[_] === void 0 || i[_].disabled || (o === !0 && y[i[_].name] !== void 0 ? Array.isArray(y[i[_].name]) ? y[i[_].name] = y[i[_].name].concat(E[_]) : y[i[_].name] = [y[i[_].name], E[_]] : y[i[_].name] = E[_]);
-          if (p === !0 || f === !0) {
+          if (d === !0 || f === !0) {
             const _ = Object.assign(
               { record: y },
-              p === !0 ? { raw: this.state.rawBuffer.toString(s) } : {},
+              d === !0 ? { raw: this.state.rawBuffer.toString(s) } : {},
               f === !0 ? { info: this.__infoRecord() } : {}
             ), R = this.__push(
               S === void 0 ? _ : [y[S], _],
@@ -3010,10 +3010,10 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
             if (_)
               return _;
           }
-        } else if (p === !0 || f === !0) {
+        } else if (d === !0 || f === !0) {
           const y = Object.assign(
             { record: E },
-            p === !0 ? { raw: this.state.rawBuffer.toString(s) } : {},
+            d === !0 ? { raw: this.state.rawBuffer.toString(s) } : {},
             f === !0 ? { info: this.__infoRecord() } : {}
           ), _ = this.__push(
             S === void 0 ? y : [E[S], y],
@@ -3400,10 +3400,10 @@ class ri {
    */
   async parseStream(e, r, n, i, o) {
     return new Promise((s, f) => {
-      let a, u, c, h = !1, p = !1;
+      let a, u, c, h = !1, d = !1;
       const g = () => {
-        if (p) return;
-        p = !0;
+        if (d) return;
+        d = !0;
         const x = a;
         a = void 0, c = void 0, x != null && (Be(() => x.removeAllListeners()), Be(() => x.end())), Be(() => {
           u?.cancel();
@@ -3464,21 +3464,22 @@ async function Kn(t) {
       await new Promise((h) => {
         try {
           c.on("readable", () => {
-            let p;
-            for (; (p = c.read()) != null; ) {
+            let d;
+            for (; (d = c.read()) != null; ) {
               a++;
-              const g = p.length;
+              const g = d.length;
               f != null && (u += Math.abs(g - f)), f = g, s += g;
             }
           }), c.on("error", () => h()), c.on("end", () => {
-            const p = s / a;
-            console.log(1111, r, n, i, p), (!i || u <= i) && (!n || p > n) && (r = o, n = p, i = u), console.log(2222, r, n, i), h();
+            const d = s / a;
+            console.log(1111, r, n, i, d), (!i || u <= i) && (!n || d > n) && (r = o, n = d, i = u), console.log(2222, r, n, i), h();
           }), c.write(t), c.end();
-        } catch {
-          h();
+        } catch (d) {
+          console.log(8888, d), h();
         }
       });
-    } catch {
+    } catch (s) {
+      console.log(8888, s);
     }
   return console.log(333, r), r ?? ",";
 }
