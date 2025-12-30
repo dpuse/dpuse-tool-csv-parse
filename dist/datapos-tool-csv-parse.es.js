@@ -532,79 +532,79 @@ u.prototype.slice = function(e, r) {
   }
   return i;
 };
-function L(t, e, r) {
+function T(t, e, r) {
   if (t % 1 !== 0 || t < 0) throw new RangeError("offset is not uint");
   if (t + e > r) throw new RangeError("Trying to access beyond buffer length");
 }
 u.prototype.readUIntLE = function(e, r, n) {
-  e = e | 0, r = r | 0, n || L(e, r, this.length);
+  e = e | 0, r = r | 0, n || T(e, r, this.length);
   for (var i = this[e], o = 1, s = 0; ++s < r && (o *= 256); )
     i += this[e + s] * o;
   return i;
 };
 u.prototype.readUIntBE = function(e, r, n) {
-  e = e | 0, r = r | 0, n || L(e, r, this.length);
+  e = e | 0, r = r | 0, n || T(e, r, this.length);
   for (var i = this[e + --r], o = 1; r > 0 && (o *= 256); )
     i += this[e + --r] * o;
   return i;
 };
 u.prototype.readUInt8 = function(e, r) {
-  return r || L(e, 1, this.length), this[e];
+  return r || T(e, 1, this.length), this[e];
 };
 u.prototype.readUInt16LE = function(e, r) {
-  return r || L(e, 2, this.length), this[e] | this[e + 1] << 8;
+  return r || T(e, 2, this.length), this[e] | this[e + 1] << 8;
 };
 u.prototype.readUInt16BE = function(e, r) {
-  return r || L(e, 2, this.length), this[e] << 8 | this[e + 1];
+  return r || T(e, 2, this.length), this[e] << 8 | this[e + 1];
 };
 u.prototype.readUInt32LE = function(e, r) {
-  return r || L(e, 4, this.length), (this[e] | this[e + 1] << 8 | this[e + 2] << 16) + this[e + 3] * 16777216;
+  return r || T(e, 4, this.length), (this[e] | this[e + 1] << 8 | this[e + 2] << 16) + this[e + 3] * 16777216;
 };
 u.prototype.readUInt32BE = function(e, r) {
-  return r || L(e, 4, this.length), this[e] * 16777216 + (this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3]);
+  return r || T(e, 4, this.length), this[e] * 16777216 + (this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3]);
 };
 u.prototype.readIntLE = function(e, r, n) {
-  e = e | 0, r = r | 0, n || L(e, r, this.length);
+  e = e | 0, r = r | 0, n || T(e, r, this.length);
   for (var i = this[e], o = 1, s = 0; ++s < r && (o *= 256); )
     i += this[e + s] * o;
   return o *= 128, i >= o && (i -= Math.pow(2, 8 * r)), i;
 };
 u.prototype.readIntBE = function(e, r, n) {
-  e = e | 0, r = r | 0, n || L(e, r, this.length);
+  e = e | 0, r = r | 0, n || T(e, r, this.length);
   for (var i = r, o = 1, s = this[e + --i]; i > 0 && (o *= 256); )
     s += this[e + --i] * o;
   return o *= 128, s >= o && (s -= Math.pow(2, 8 * r)), s;
 };
 u.prototype.readInt8 = function(e, r) {
-  return r || L(e, 1, this.length), this[e] & 128 ? (255 - this[e] + 1) * -1 : this[e];
+  return r || T(e, 1, this.length), this[e] & 128 ? (255 - this[e] + 1) * -1 : this[e];
 };
 u.prototype.readInt16LE = function(e, r) {
-  r || L(e, 2, this.length);
+  r || T(e, 2, this.length);
   var n = this[e] | this[e + 1] << 8;
   return n & 32768 ? n | 4294901760 : n;
 };
 u.prototype.readInt16BE = function(e, r) {
-  r || L(e, 2, this.length);
+  r || T(e, 2, this.length);
   var n = this[e + 1] | this[e] << 8;
   return n & 32768 ? n | 4294901760 : n;
 };
 u.prototype.readInt32LE = function(e, r) {
-  return r || L(e, 4, this.length), this[e] | this[e + 1] << 8 | this[e + 2] << 16 | this[e + 3] << 24;
+  return r || T(e, 4, this.length), this[e] | this[e + 1] << 8 | this[e + 2] << 16 | this[e + 3] << 24;
 };
 u.prototype.readInt32BE = function(e, r) {
-  return r || L(e, 4, this.length), this[e] << 24 | this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3];
+  return r || T(e, 4, this.length), this[e] << 24 | this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3];
 };
 u.prototype.readFloatLE = function(e, r) {
-  return r || L(e, 4, this.length), ve(this, e, !0, 23, 4);
+  return r || T(e, 4, this.length), ve(this, e, !0, 23, 4);
 };
 u.prototype.readFloatBE = function(e, r) {
-  return r || L(e, 4, this.length), ve(this, e, !1, 23, 4);
+  return r || T(e, 4, this.length), ve(this, e, !1, 23, 4);
 };
 u.prototype.readDoubleLE = function(e, r) {
-  return r || L(e, 8, this.length), ve(this, e, !0, 52, 8);
+  return r || T(e, 8, this.length), ve(this, e, !0, 52, 8);
 };
 u.prototype.readDoubleBE = function(e, r) {
-  return r || L(e, 8, this.length), ve(this, e, !1, 52, 8);
+  return r || T(e, 8, this.length), ve(this, e, !1, 52, 8);
 };
 function N(t, e, r, n, i, o) {
   if (!$(t)) throw new TypeError('"buffer" argument must be a Buffer instance');
@@ -910,7 +910,7 @@ function Ar(t, e, r, n, i, o) {
     for (var s = t.length, f = ae(t, s), a = 0; a < s; ++a)
       f[a].call(r, n, i, o);
 }
-function Lr(t, e, r, n) {
+function Tr(t, e, r, n) {
   if (e)
     t.apply(r, n);
   else
@@ -955,7 +955,7 @@ m.prototype.emit = function(e) {
     default:
       for (o = new Array(i - 1), s = 1; s < i; s++)
         o[s - 1] = arguments[s];
-      Lr(n, c, this, o);
+      Tr(n, c, this, o);
   }
   return !0;
 };
@@ -972,11 +972,11 @@ function It(t, e, r, n) {
   else if (typeof s == "function" ? s = o[e] = n ? [r, s] : [s, r] : n ? s.unshift(r) : s.push(r), !s.warned && (i = Rt(t), i && i > 0 && s.length > i)) {
     s.warned = !0;
     var f = new Error("Possible EventEmitter memory leak detected. " + s.length + " " + e + " listeners added. Use emitter.setMaxListeners() to increase limit");
-    f.name = "MaxListenersExceededWarning", f.emitter = t, f.type = e, f.count = s.length, Tr(f);
+    f.name = "MaxListenersExceededWarning", f.emitter = t, f.type = e, f.count = s.length, Lr(f);
   }
   return t;
 }
-function Tr(t) {
+function Lr(t) {
   typeof console.warn == "function" ? console.warn(t) : console.log(t);
 }
 m.prototype.addListener = function(e, r) {
@@ -1090,13 +1090,13 @@ function Nr(t) {
 function At() {
   throw new Error("setTimeout has not been defined");
 }
-function Lt() {
+function Tt() {
   throw new Error("clearTimeout has not been defined");
 }
-var Y = At, W = Lt;
+var Y = At, W = Tt;
 typeof ie.setTimeout == "function" && (Y = setTimeout);
 typeof ie.clearTimeout == "function" && (W = clearTimeout);
-function Tt(t) {
+function Lt(t) {
   if (Y === setTimeout)
     return setTimeout(t, 0);
   if ((Y === At || !Y) && setTimeout)
@@ -1114,7 +1114,7 @@ function Tt(t) {
 function Fr(t) {
   if (W === clearTimeout)
     return clearTimeout(t);
-  if ((W === Lt || !W) && clearTimeout)
+  if ((W === Tt || !W) && clearTimeout)
     return W = clearTimeout, clearTimeout(t);
   try {
     return W(t);
@@ -1132,7 +1132,7 @@ function Mr() {
 }
 function Dt() {
   if (!ne) {
-    var t = Tt(Mr);
+    var t = Lt(Mr);
     ne = !0;
     for (var e = z.length; e; ) {
       for (ee = z, z = []; ++me < e; )
@@ -1147,7 +1147,7 @@ function B(t) {
   if (arguments.length > 1)
     for (var r = 1; r < arguments.length; r++)
       e[r - 1] = arguments[r];
-  z.push(new Nt(t, e)), z.length === 1 && !ne && Tt(Dt);
+  z.push(new Nt(t, e)), z.length === 1 && !ne && Lt(Dt);
 }
 function Nt(t, e) {
   this.fun = t, this.array = e;
@@ -1292,18 +1292,18 @@ function ye(t, e, r) {
   if (i)
     return i;
   var o = Object.keys(e), s = qr(o);
-  if (t.showHidden && (o = Object.getOwnPropertyNames(e)), Te(e) && (o.indexOf("message") >= 0 || o.indexOf("description") >= 0))
+  if (t.showHidden && (o = Object.getOwnPropertyNames(e)), Le(e) && (o.indexOf("message") >= 0 || o.indexOf("description") >= 0))
     return Ae(e);
   if (o.length === 0) {
     if (De(e)) {
       var f = e.name ? ": " + e.name : "";
       return t.stylize("[Function" + f + "]", "special");
     }
-    if (Le(e))
+    if (Te(e))
       return t.stylize(RegExp.prototype.toString.call(e), "regexp");
     if (et(e))
       return t.stylize(Date.prototype.toString.call(e), "date");
-    if (Te(e))
+    if (Le(e))
       return Ae(e);
   }
   var a = "", l = !1, h = ["{", "}"];
@@ -1311,10 +1311,10 @@ function ye(t, e, r) {
     var c = e.name ? ": " + e.name : "";
     a = " [Function" + c + "]";
   }
-  if (Le(e) && (a = " " + RegExp.prototype.toString.call(e)), et(e) && (a = " " + Date.prototype.toUTCString.call(e)), Te(e) && (a = " " + Ae(e)), o.length === 0 && (!l || e.length == 0))
+  if (Te(e) && (a = " " + RegExp.prototype.toString.call(e)), et(e) && (a = " " + Date.prototype.toUTCString.call(e)), Le(e) && (a = " " + Ae(e)), o.length === 0 && (!l || e.length == 0))
     return h[0] + a + h[1];
   if (r < 0)
-    return Le(e) ? t.stylize(RegExp.prototype.toString.call(e), "regexp") : t.stylize("[Object]", "special");
+    return Te(e) ? t.stylize(RegExp.prototype.toString.call(e), "regexp") : t.stylize("[Object]", "special");
   t.seen.push(e);
   var p;
   return l ? p = Vr(t, e, r, s, o) : p = o.map(function(g) {
@@ -1405,7 +1405,7 @@ function Ye(t) {
 function Q(t) {
   return t === void 0;
 }
-function Le(t) {
+function Te(t) {
   return ue(t) && We(t) === "[object RegExp]";
 }
 function ue(t) {
@@ -1414,7 +1414,7 @@ function ue(t) {
 function et(t) {
   return ue(t) && We(t) === "[object Date]";
 }
-function Te(t) {
+function Le(t) {
   return ue(t) && (We(t) === "[object Error]" || t instanceof Error);
 }
 function De(t) {
@@ -1855,8 +1855,8 @@ function $t(t, e) {
     if (t[r] === e) return r;
   return -1;
 }
-T.WritableState = He;
-oe(T, m);
+L.WritableState = He;
+oe(L, m);
 function wn() {
 }
 function yn(t, e, r) {
@@ -1880,11 +1880,11 @@ He.prototype.getBuffer = function() {
     r.push(e), e = e.next;
   return r;
 };
-function T(t) {
-  if (!(this instanceof T) && !(this instanceof M)) return new T(t);
+function L(t) {
+  if (!(this instanceof L) && !(this instanceof M)) return new L(t);
   this._writableState = new He(t, this), this.writable = !0, t && (typeof t.write == "function" && (this._write = t.write), typeof t.writev == "function" && (this._writev = t.writev)), m.call(this);
 }
-T.prototype.pipe = function() {
+L.prototype.pipe = function() {
   this.emit("error", new Error("Cannot pipe, not readable"));
 };
 function vn(t, e) {
@@ -1895,19 +1895,19 @@ function bn(t, e, r, n) {
   var i = !0, o = !1;
   return r === null ? o = new TypeError("May not write null values to stream") : !u.isBuffer(r) && typeof r != "string" && r !== void 0 && !e.objectMode && (o = new TypeError("Invalid non-string/buffer chunk")), o && (t.emit("error", o), B(n, o), i = !1), i;
 }
-T.prototype.write = function(t, e, r) {
+L.prototype.write = function(t, e, r) {
   var n = this._writableState, i = !1;
   return typeof e == "function" && (r = e, e = null), u.isBuffer(t) ? e = "buffer" : e || (e = n.defaultEncoding), typeof r != "function" && (r = wn), n.ended ? vn(this, r) : bn(this, n, t, r) && (n.pendingcb++, i = xn(this, n, t, e, r)), i;
 };
-T.prototype.cork = function() {
+L.prototype.cork = function() {
   var t = this._writableState;
   t.corked++;
 };
-T.prototype.uncork = function() {
+L.prototype.uncork = function() {
   var t = this._writableState;
   t.corked && (t.corked--, !t.writing && !t.corked && !t.finished && !t.bufferProcessing && t.bufferedRequest && jt(this, t));
 };
-T.prototype.setDefaultEncoding = function(e) {
+L.prototype.setDefaultEncoding = function(e) {
   if (typeof e == "string" && (e = e.toLowerCase()), !(["hex", "utf8", "utf-8", "ascii", "binary", "base64", "ucs2", "ucs-2", "utf16le", "utf-16le", "raw"].indexOf((e + "").toLowerCase()) > -1)) throw new TypeError("Unknown encoding: " + e);
   return this._writableState.defaultEncoding = e, this;
 };
@@ -1968,11 +1968,11 @@ function jt(t, e) {
   }
   e.bufferedRequestCount = 0, e.bufferedRequest = r, e.bufferProcessing = !1;
 }
-T.prototype._write = function(t, e, r) {
+L.prototype._write = function(t, e, r) {
   r(new Error("not implemented"));
 };
-T.prototype._writev = null;
-T.prototype.end = function(t, e, r) {
+L.prototype._writev = null;
+L.prototype.end = function(t, e, r) {
   var n = this._writableState;
   typeof t == "function" ? (r = t, t = null, e = null) : typeof e == "function" && (r = e, e = null), t != null && this.write(t, e), n.corked && (n.corked = 1, this.uncork()), !n.ending && !n.finished && On(this, n, r);
 };
@@ -2001,23 +2001,23 @@ function Vt(t) {
   };
 }
 oe(M, C);
-var st = Object.keys(T.prototype);
+var st = Object.keys(L.prototype);
 for (var Fe = 0; Fe < st.length; Fe++) {
   var Me = st[Fe];
-  M.prototype[Me] || (M.prototype[Me] = T.prototype[Me]);
+  M.prototype[Me] || (M.prototype[Me] = L.prototype[Me]);
 }
 function M(t) {
   if (!(this instanceof M)) return new M(t);
-  C.call(this, t), T.call(this, t), t && t.readable === !1 && (this.readable = !1), t && t.writable === !1 && (this.writable = !1), this.allowHalfOpen = !0, t && t.allowHalfOpen === !1 && (this.allowHalfOpen = !1), this.once("end", An);
+  C.call(this, t), L.call(this, t), t && t.readable === !1 && (this.readable = !1), t && t.writable === !1 && (this.writable = !1), this.allowHalfOpen = !0, t && t.allowHalfOpen === !1 && (this.allowHalfOpen = !1), this.once("end", An);
 }
 function An() {
-  this.allowHalfOpen || this._writableState.ended || B(Ln, this);
+  this.allowHalfOpen || this._writableState.ended || B(Tn, this);
 }
-function Ln(t) {
+function Tn(t) {
   t.end();
 }
 oe(k, M);
-function Tn(t) {
+function Ln(t) {
   this.afterTransform = function(e, r) {
     return Dn(t, e, r);
   }, this.needTransform = !1, this.transforming = !1, this.writecb = null, this.writechunk = null, this.writeencoding = null;
@@ -2033,7 +2033,7 @@ function Dn(t, e, r) {
 }
 function k(t) {
   if (!(this instanceof k)) return new k(t);
-  M.call(this, t), this._transformState = new Tn(this);
+  M.call(this, t), this._transformState = new Ln(this);
   var e = this;
   this._readableState.needReadable = !0, this._readableState.sync = !1, t && (typeof t.transform == "function" && (this._transform = t.transform), typeof t.flush == "function" && (this._flush = t.flush)), this.once("prefinish", function() {
     typeof this._flush == "function" ? this._flush(function(r) {
@@ -2075,7 +2075,7 @@ fe.prototype._transform = function(t, e, r) {
 };
 oe(V, m);
 V.Readable = C;
-V.Writable = T;
+V.Writable = L;
 V.Duplex = M;
 V.Transform = k;
 V.PassThrough = fe;
@@ -3507,7 +3507,7 @@ function ti(t) {
     byteCount: t?.info.bytes ?? -1,
     commentLineCount: t?.info.comment_lines ?? -1,
     emptyLineCount: t?.info.empty_lines ?? -1,
-    invalidFieldLengthCount: t?.info.invalid_field_length ?? -1,
+    nonUniformRecordCount: t?.info.invalid_field_length ?? -1,
     lineCount: t?.info.lines ?? -1,
     recordCount: t?.info.records ?? -1
   };

@@ -7,7 +7,7 @@ import { parse, type Options as ParseOptions, type Parser } from 'csv-parse/brow
 
 // Framework dependencies.
 import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
-import type { RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared';
+import type { RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
 import type { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 
 /**
@@ -45,6 +45,17 @@ class Tool {
     async determineSchemaConfig(text: string, delimiters: ValueDelimiterId[]): Promise<SchemaConfig> {
         const recordDelimiterId = determineRecordDelimiter(text);
         const { records, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
+
+        // let firstDataRowIndex = 0;
+        // const headerRecord = records[0];
+        // const headerValueCount = headerRecord?.length ?? 0;
+        // for (let headerValueIndex = 0; headerValueIndex < headerValueCount; headerValueIndex++) {
+        //     const headerLabel = headerRecord[headerValueIndex]?.originalValue ?? `Column ${headerValueIndex}`;
+        //     const xxxx = previewConfig.columnConfigs[headerValueIndex];
+        //     if (xxxx == null) continue;
+        //     xxxx.label = { en: headerLabel };
+        // }
+        // firstDataRowIndex = 1;
 
         return {
             recordDelimiterId,
@@ -172,6 +183,12 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
     let priorSumCountDiffs: number;
     let records: ParsedRecord[] = [];
 
+    /* TODO: Could improve performance by limiting the number of delimiters
+       processed by exiting if column count is the same for each line and
+       by ordering delimiters in most common usage. Could also consider
+       parallel parsing. Maybe group by most common delimiters and then by
+       less common? */
+
     for (const delimiter of delimiters) {
         try {
             let totalValueCount = 0;
@@ -270,7 +287,7 @@ function constructSummary(parser: Parser | undefined): RetrieveRecordsSummary {
         byteCount: parser?.info.bytes ?? -1,
         commentLineCount: parser?.info.comment_lines ?? -1,
         emptyLineCount: parser?.info.empty_lines ?? -1,
-        invalidFieldLengthCount: parser?.info.invalid_field_length ?? -1,
+        nonUniformRecordCount: parser?.info.invalid_field_length ?? -1,
         lineCount: parser?.info.lines ?? -1,
         recordCount: parser?.info.records ?? -1
     };
