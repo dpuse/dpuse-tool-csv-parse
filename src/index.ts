@@ -191,7 +191,10 @@ async function determineValueDelimiter(text: string): Promise<ValueDelimiterId> 
                             totalValueCount += valueCount;
                         }
                     });
-                    parser.on('error', (): void => resolve());
+                    parser.on('error', (error): void => {
+                        console.log(7777, error);
+                        resolve();
+                    });
                     parser.on('end', (): void => {
                         const averageValueCount = totalValueCount / rowCount;
                         console.log(1111, valueDelimiter, priorAverageCount, priorSumCountDiffs, averageValueCount);

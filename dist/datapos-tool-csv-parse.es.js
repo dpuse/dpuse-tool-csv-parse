@@ -31,8 +31,8 @@ function Ze(t) {
   return n === 1 ? (e = t[r - 1], i += P[e >> 2], i += P[e << 4 & 63], i += "==") : n === 2 && (e = (t[r - 2] << 8) + t[r - 1], i += P[e >> 10], i += P[e >> 4 & 63], i += P[e << 2 & 63], i += "="), o.push(i), o.join("");
 }
 function ve(t, e, r, n, i) {
-  var o, s, f = i * 8 - n - 1, a = (1 << f) - 1, u = a >> 1, c = -7, h = r ? i - 1 : 0, d = r ? -1 : 1, g = t[e + h];
-  for (h += d, o = g & (1 << -c) - 1, g >>= -c, c += f; c > 0; o = o * 256 + t[e + h], h += d, c -= 8)
+  var o, s, f = i * 8 - n - 1, a = (1 << f) - 1, u = a >> 1, c = -7, h = r ? i - 1 : 0, d = r ? -1 : 1, m = t[e + h];
+  for (h += d, o = m & (1 << -c) - 1, m >>= -c, c += f; c > 0; o = o * 256 + t[e + h], h += d, c -= 8)
     ;
   for (s = o & (1 << -c) - 1, o >>= -c, c += n; c > 0; s = s * 256 + t[e + h], h += d, c -= 8)
     ;
@@ -40,18 +40,18 @@ function ve(t, e, r, n, i) {
     o = 1 - u;
   else {
     if (o === a)
-      return s ? NaN : (g ? -1 : 1) * (1 / 0);
+      return s ? NaN : (m ? -1 : 1) * (1 / 0);
     s = s + Math.pow(2, n), o = o - u;
   }
-  return (g ? -1 : 1) * s * Math.pow(2, o - n);
+  return (m ? -1 : 1) * s * Math.pow(2, o - n);
 }
 function ht(t, e, r, n, i, o) {
-  var s, f, a, u = o * 8 - i - 1, c = (1 << u) - 1, h = c >> 1, d = i === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0, g = n ? 0 : o - 1, O = n ? 1 : -1, E = e < 0 || e === 0 && 1 / e < 0 ? 1 : 0;
-  for (e = Math.abs(e), isNaN(e) || e === 1 / 0 ? (f = isNaN(e) ? 1 : 0, s = c) : (s = Math.floor(Math.log(e) / Math.LN2), e * (a = Math.pow(2, -s)) < 1 && (s--, a *= 2), s + h >= 1 ? e += d / a : e += d * Math.pow(2, 1 - h), e * a >= 2 && (s++, a /= 2), s + h >= c ? (f = 0, s = c) : s + h >= 1 ? (f = (e * a - 1) * Math.pow(2, i), s = s + h) : (f = e * Math.pow(2, h - 1) * Math.pow(2, i), s = 0)); i >= 8; t[r + g] = f & 255, g += O, f /= 256, i -= 8)
+  var s, f, a, u = o * 8 - i - 1, c = (1 << u) - 1, h = c >> 1, d = i === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0, m = n ? 0 : o - 1, O = n ? 1 : -1, E = e < 0 || e === 0 && 1 / e < 0 ? 1 : 0;
+  for (e = Math.abs(e), isNaN(e) || e === 1 / 0 ? (f = isNaN(e) ? 1 : 0, s = c) : (s = Math.floor(Math.log(e) / Math.LN2), e * (a = Math.pow(2, -s)) < 1 && (s--, a *= 2), s + h >= 1 ? e += d / a : e += d * Math.pow(2, 1 - h), e * a >= 2 && (s++, a /= 2), s + h >= c ? (f = 0, s = c) : s + h >= 1 ? (f = (e * a - 1) * Math.pow(2, i), s = s + h) : (f = e * Math.pow(2, h - 1) * Math.pow(2, i), s = 0)); i >= 8; t[r + m] = f & 255, m += O, f /= 256, i -= 8)
     ;
-  for (s = s << i | f, u += i; u > 0; t[r + g] = s & 255, g += O, s /= 256, u -= 8)
+  for (s = s << i | f, u += i; u > 0; t[r + m] = s & 255, m += O, s /= 256, u -= 8)
     ;
-  t[r + g - O] |= E * 128;
+  t[r + m - O] |= E * 128;
 }
 var er = {}.toString, dt = Array.isArray || function(t) {
   return er.call(t) == "[object Array]";
@@ -91,20 +91,20 @@ l.from = function(t, e, r) {
   return pt(null, t, e, r);
 };
 l.TYPED_ARRAY_SUPPORT && (l.prototype.__proto__ = Uint8Array.prototype, l.__proto__ = Uint8Array, typeof Symbol < "u" && Symbol.species && l[Symbol.species]);
-function mt(t) {
+function gt(t) {
   if (typeof t != "number")
     throw new TypeError('"size" argument must be a number');
   if (t < 0)
     throw new RangeError('"size" argument must not be negative');
 }
 function rr(t, e, r, n) {
-  return mt(e), e <= 0 ? q(t, e) : r !== void 0 ? typeof n == "string" ? q(t, e).fill(r, n) : q(t, e).fill(r) : q(t, e);
+  return gt(e), e <= 0 ? q(t, e) : r !== void 0 ? typeof n == "string" ? q(t, e).fill(r, n) : q(t, e).fill(r) : q(t, e);
 }
 l.alloc = function(t, e, r) {
   return rr(null, t, e, r);
 };
 function ze(t, e) {
-  if (mt(e), t = q(t, e < 0 ? 0 : Ve(e) | 0), !l.TYPED_ARRAY_SUPPORT)
+  if (gt(e), t = q(t, e < 0 ? 0 : Ve(e) | 0), !l.TYPED_ARRAY_SUPPORT)
     for (var r = 0; r < e; ++r)
       t[r] = 0;
   return t;
@@ -118,7 +118,7 @@ l.allocUnsafeSlow = function(t) {
 function nr(t, e, r) {
   if ((typeof r != "string" || r === "") && (r = "utf8"), !l.isEncoding(r))
     throw new TypeError('"encoding" must be a valid string encoding');
-  var n = gt(e, r) | 0;
+  var n = mt(e, r) | 0;
   t = q(t, n);
   var i = t.write(e, r);
   return i !== n && (t = t.slice(0, i)), t;
@@ -206,7 +206,7 @@ l.concat = function(e, r) {
   }
   return i;
 };
-function gt(t, e) {
+function mt(t, e) {
   if ($(t))
     return t.length;
   if (typeof ArrayBuffer < "u" && typeof ArrayBuffer.isView == "function" && (ArrayBuffer.isView(t) || t instanceof ArrayBuffer))
@@ -238,7 +238,7 @@ function gt(t, e) {
         e = ("" + e).toLowerCase(), n = !0;
     }
 }
-l.byteLength = gt;
+l.byteLength = mt;
 function sr(t, e, r) {
   var n = !1;
   if ((e === void 0 || e < 0) && (e = 0), e > this.length || ((r === void 0 || r > this.length) && (r = this.length), r <= 0) || (r >>>= 0, e >>>= 0, r <= e))
@@ -246,7 +246,7 @@ function sr(t, e, r) {
   for (t || (t = "utf8"); ; )
     switch (t) {
       case "hex":
-        return gr(this, e, r);
+        return mr(this, e, r);
       case "utf8":
       case "utf-8":
         return yt(this, e, r);
@@ -254,7 +254,7 @@ function sr(t, e, r) {
         return pr(this, e, r);
       case "latin1":
       case "binary":
-        return mr(this, e, r);
+        return gr(this, e, r);
       case "base64":
         return hr(this, e, r);
       case "ucs2":
@@ -348,8 +348,8 @@ function Xe(t, e, r, n, i) {
       return -1;
     o = 2, s /= 2, f /= 2, r /= 2;
   }
-  function a(g, O) {
-    return o === 1 ? g[O] : g.readUInt16BE(O * o);
+  function a(m, O) {
+    return o === 1 ? m[O] : m.readUInt16BE(O * o);
   }
   var u;
   if (i) {
@@ -499,14 +499,14 @@ function pr(t, e, r) {
     n += String.fromCharCode(t[i] & 127);
   return n;
 }
-function mr(t, e, r) {
+function gr(t, e, r) {
   var n = "";
   r = Math.min(t.length, r);
   for (var i = e; i < r; ++i)
     n += String.fromCharCode(t[i]);
   return n;
 }
-function gr(t, e, r) {
+function mr(t, e, r) {
   var n = t.length;
   (!e || e < 0) && (e = 0), (!r || r < 0 || r > n) && (r = n);
   for (var i = "", o = e; o < r; ++o)
@@ -859,27 +859,27 @@ var Ce;
 function H() {
 }
 H.prototype = /* @__PURE__ */ Object.create(null);
-function m() {
-  m.init.call(this);
+function g() {
+  g.init.call(this);
 }
-m.EventEmitter = m;
-m.usingDomains = !1;
-m.prototype.domain = void 0;
-m.prototype._events = void 0;
-m.prototype._maxListeners = void 0;
-m.defaultMaxListeners = 10;
-m.init = function() {
-  this.domain = null, m.usingDomains && Ce.active && !(this instanceof Ce.Domain) && (this.domain = Ce.active), (!this._events || this._events === Object.getPrototypeOf(this)._events) && (this._events = new H(), this._eventsCount = 0), this._maxListeners = this._maxListeners || void 0;
+g.EventEmitter = g;
+g.usingDomains = !1;
+g.prototype.domain = void 0;
+g.prototype._events = void 0;
+g.prototype._maxListeners = void 0;
+g.defaultMaxListeners = 10;
+g.init = function() {
+  this.domain = null, g.usingDomains && Ce.active && !(this instanceof Ce.Domain) && (this.domain = Ce.active), (!this._events || this._events === Object.getPrototypeOf(this)._events) && (this._events = new H(), this._eventsCount = 0), this._maxListeners = this._maxListeners || void 0;
 };
-m.prototype.setMaxListeners = function(e) {
+g.prototype.setMaxListeners = function(e) {
   if (typeof e != "number" || e < 0 || isNaN(e))
     throw new TypeError('"n" argument must be a positive number');
   return this._maxListeners = e, this;
 };
 function Rt(t) {
-  return t._maxListeners === void 0 ? m.defaultMaxListeners : t._maxListeners;
+  return t._maxListeners === void 0 ? g.defaultMaxListeners : t._maxListeners;
 }
-m.prototype.getMaxListeners = function() {
+g.prototype.getMaxListeners = function() {
   return Rt(this);
 };
 function Ir(t, e, r) {
@@ -917,7 +917,7 @@ function Lr(t, e, r, n) {
     for (var i = t.length, o = ae(t, i), s = 0; s < i; ++s)
       o[s].apply(r, n);
 }
-m.prototype.emit = function(e) {
+g.prototype.emit = function(e) {
   var r, n, i, o, s, f, a, u = e === "error";
   if (f = this._events, f)
     u = u && f.error == null;
@@ -979,11 +979,11 @@ function It(t, e, r, n) {
 function Tr(t) {
   typeof console.warn == "function" ? console.warn(t) : console.log(t);
 }
-m.prototype.addListener = function(e, r) {
+g.prototype.addListener = function(e, r) {
   return It(this, e, r, !1);
 };
-m.prototype.on = m.prototype.addListener;
-m.prototype.prependListener = function(e, r) {
+g.prototype.on = g.prototype.addListener;
+g.prototype.prependListener = function(e, r) {
   return It(this, e, r, !0);
 };
 function Ct(t, e, r) {
@@ -993,17 +993,17 @@ function Ct(t, e, r) {
   }
   return i.listener = r, i;
 }
-m.prototype.once = function(e, r) {
+g.prototype.once = function(e, r) {
   if (typeof r != "function")
     throw new TypeError('"listener" argument must be a function');
   return this.on(e, Ct(this, e, r)), this;
 };
-m.prototype.prependOnceListener = function(e, r) {
+g.prototype.prependOnceListener = function(e, r) {
   if (typeof r != "function")
     throw new TypeError('"listener" argument must be a function');
   return this.prependListener(e, Ct(this, e, r)), this;
 };
-m.prototype.removeListener = function(e, r) {
+g.prototype.removeListener = function(e, r) {
   var n, i, o, s, f;
   if (typeof r != "function")
     throw new TypeError('"listener" argument must be a function');
@@ -1031,7 +1031,7 @@ m.prototype.removeListener = function(e, r) {
   }
   return this;
 };
-m.prototype.removeAllListeners = function(e) {
+g.prototype.removeAllListeners = function(e) {
   var r, n;
   if (n = this._events, !n)
     return this;
@@ -1050,14 +1050,14 @@ m.prototype.removeAllListeners = function(e) {
     while (r[0]);
   return this;
 };
-m.prototype.listeners = function(e) {
+g.prototype.listeners = function(e) {
   var r, n, i = this._events;
   return i ? (r = i[e], r ? typeof r == "function" ? n = [r.listener || r] : n = Nr(r) : n = []) : n = [], n;
 };
-m.listenerCount = function(t, e) {
+g.listenerCount = function(t, e) {
   return typeof t.listenerCount == "function" ? t.listenerCount(e) : Ot.call(t, e);
 };
-m.prototype.listenerCount = Ot;
+g.prototype.listenerCount = Ot;
 function Ot(t) {
   var e = this._events;
   if (e) {
@@ -1069,7 +1069,7 @@ function Ot(t) {
   }
   return 0;
 }
-m.prototype.eventNames = function() {
+g.prototype.eventNames = function() {
   return this._eventsCount > 0 ? Reflect.ownKeys(this._events) : [];
 };
 function Dr(t, e) {
@@ -1126,18 +1126,18 @@ function Fr(t) {
     }
   }
 }
-var z = [], ne = !1, ee, me = -1;
+var z = [], ne = !1, ee, ge = -1;
 function Mr() {
-  !ne || !ee || (ne = !1, ee.length ? z = ee.concat(z) : me = -1, z.length && Dt());
+  !ne || !ee || (ne = !1, ee.length ? z = ee.concat(z) : ge = -1, z.length && Dt());
 }
 function Dt() {
   if (!ne) {
     var t = Tt(Mr);
     ne = !0;
     for (var e = z.length; e; ) {
-      for (ee = z, z = []; ++me < e; )
-        ee && ee[me].run();
-      me = -1, e = z.length;
+      for (ee = z, z = []; ++ge < e; )
+        ee && ee[ge].run();
+      ge = -1, e = z.length;
     }
     ee = null, ne = !1, Fr(t);
   }
@@ -1157,7 +1157,7 @@ Nt.prototype.run = function() {
 };
 var Br = {}, se = ie.performance || {};
 se.now || se.mozNow || se.msNow || se.oNow || se.webkitNow;
-var ge = {
+var me = {
   env: Br
 }, ke;
 typeof Object.create == "function" ? ke = function(e, r) {
@@ -1208,14 +1208,14 @@ function Ft(t, e) {
     return function() {
       return Ft(t, e).apply(this, arguments);
     };
-  if (ge.noDeprecation === !0)
+  if (me.noDeprecation === !0)
     return t;
   var r = !1;
   function n() {
     if (!r) {
-      if (ge.throwDeprecation)
+      if (me.throwDeprecation)
         throw new Error(e);
-      ge.traceDeprecation ? console.trace(e) : console.error(e), r = !0;
+      me.traceDeprecation ? console.trace(e) : console.error(e), r = !0;
     }
     return t.apply(this, arguments);
   }
@@ -1223,7 +1223,7 @@ function Ft(t, e) {
 }
 var pe = {}, Oe;
 function Pr(t) {
-  if (Q(Oe) && (Oe = ge.env.NODE_DEBUG || ""), t = t.toUpperCase(), !pe[t])
+  if (Q(Oe) && (Oe = me.env.NODE_DEBUG || ""), t = t.toUpperCase(), !pe[t])
     if (new RegExp("\\b" + t + "\\b", "i").test(Oe)) {
       var e = 0;
       pe[t] = function() {
@@ -1317,8 +1317,8 @@ function ye(t, e, r) {
     return Le(e) ? t.stylize(RegExp.prototype.toString.call(e), "regexp") : t.stylize("[Object]", "special");
   t.seen.push(e);
   var d;
-  return u ? d = Vr(t, e, r, s, o) : d = o.map(function(g) {
-    return Pe(t, e, r, s, g, u);
+  return u ? d = Vr(t, e, r, s, o) : d = o.map(function(m) {
+    return Pe(t, e, r, s, m, u);
   }), t.seen.pop(), Jr(d, a, c);
 }
 function zr(t, e) {
@@ -1567,7 +1567,7 @@ function Kr(t) {
 }
 I.ReadableState = Ut;
 var b = Pr("stream");
-oe(I, m);
+oe(I, g);
 function en(t, e, r) {
   if (typeof t.prependListener == "function")
     return t.prependListener(e, r);
@@ -1583,7 +1583,7 @@ function Ut(t, e) {
 }
 function I(t) {
   if (!(this instanceof I)) return new I(t);
-  this._readableState = new Ut(t, this), this.readable = !0, t && typeof t.read == "function" && (this._read = t.read), m.call(this);
+  this._readableState = new Ut(t, this), this.readable = !0, t && typeof t.read == "function" && (this._read = t.read), g.call(this);
 }
 I.prototype.push = function(t, e) {
   var r = this._readableState;
@@ -1698,7 +1698,7 @@ I.prototype.pipe = function(t, e) {
   t.on("drain", a);
   var u = !1;
   function c() {
-    b("cleanup"), t.removeListener("close", O), t.removeListener("finish", E), t.removeListener("drain", a), t.removeListener("error", g), t.removeListener("unpipe", s), r.removeListener("end", f), r.removeListener("end", c), r.removeListener("data", d), u = !0, n.awaitDrain && (!t._writableState || t._writableState.needDrain) && a();
+    b("cleanup"), t.removeListener("close", O), t.removeListener("finish", E), t.removeListener("drain", a), t.removeListener("error", m), t.removeListener("unpipe", s), r.removeListener("end", f), r.removeListener("end", c), r.removeListener("data", d), u = !0, n.awaitDrain && (!t._writableState || t._writableState.needDrain) && a();
   }
   var h = !1;
   r.on("data", d);
@@ -1707,10 +1707,10 @@ I.prototype.pipe = function(t, e) {
     var y = t.write(S);
     y === !1 && !h && ((n.pipesCount === 1 && n.pipes === t || n.pipesCount > 1 && $t(n.pipes, t) !== -1) && !u && (b("false write response, pause", r._readableState.awaitDrain), r._readableState.awaitDrain++, h = !0), r.pause());
   }
-  function g(S) {
-    b("onerror", S), x(), t.removeListener("error", g), tn(t, "error") === 0 && t.emit("error", S);
+  function m(S) {
+    b("onerror", S), x(), t.removeListener("error", m), tn(t, "error") === 0 && t.emit("error", S);
   }
-  en(t, "error", g);
+  en(t, "error", m);
   function O() {
     t.removeListener("finish", E), x();
   }
@@ -1746,7 +1746,7 @@ I.prototype.unpipe = function(t) {
   return o === -1 ? this : (e.pipes.splice(o, 1), e.pipesCount -= 1, e.pipesCount === 1 && (e.pipes = e.pipes[0]), t.emit("unpipe", this), this);
 };
 I.prototype.on = function(t, e) {
-  var r = m.prototype.on.call(this, t, e);
+  var r = g.prototype.on.call(this, t, e);
   if (t === "data")
     this._readableState.flowing !== !1 && this.resume();
   else if (t === "readable") {
@@ -1812,7 +1812,7 @@ function Pt(t, e) {
 }
 function dn(t, e, r) {
   var n;
-  return t < e.head.data.length ? (n = e.head.data.slice(0, t), e.head.data = e.head.data.slice(t)) : t === e.head.data.length ? n = e.shift() : n = r ? pn(t, e) : mn(t, e), n;
+  return t < e.head.data.length ? (n = e.head.data.slice(0, t), e.head.data = e.head.data.slice(t)) : t === e.head.data.length ? n = e.shift() : n = r ? pn(t, e) : gn(t, e), n;
 }
 function pn(t, e) {
   var r = e.head, n = 1, i = r.data;
@@ -1826,7 +1826,7 @@ function pn(t, e) {
   }
   return e.length -= n, i;
 }
-function mn(t, e) {
+function gn(t, e) {
   var r = l.allocUnsafe(t), n = e.head, i = 1;
   for (n.data.copy(r), t -= n.data.length; n = n.next; ) {
     var o = n.data, s = t > o.length ? o.length : t;
@@ -1841,9 +1841,9 @@ function mn(t, e) {
 function Ne(t) {
   var e = t._readableState;
   if (e.length > 0) throw new Error('"endReadable()" called on non-empty stream');
-  e.endEmitted || (e.ended = !0, B(gn, e, t));
+  e.endEmitted || (e.ended = !0, B(mn, e, t));
 }
-function gn(t, e) {
+function mn(t, e) {
   !t.endEmitted && t.length === 0 && (t.endEmitted = !0, e.readable = !1, e.emit("end"));
 }
 function _n(t, e) {
@@ -1856,7 +1856,7 @@ function $t(t, e) {
   return -1;
 }
 T.WritableState = He;
-oe(T, m);
+oe(T, g);
 function wn() {
 }
 function yn(t, e, r) {
@@ -1882,7 +1882,7 @@ He.prototype.getBuffer = function() {
 };
 function T(t) {
   if (!(this instanceof T) && !(this instanceof M)) return new T(t);
-  this._writableState = new He(t, this), this.writable = !0, t && (typeof t.write == "function" && (this._write = t.write), typeof t.writev == "function" && (this._writev = t.writev)), m.call(this);
+  this._writableState = new He(t, this), this.writable = !0, t && (typeof t.write == "function" && (this._write = t.write), typeof t.writev == "function" && (this._writev = t.writev)), g.call(this);
 }
 T.prototype.pipe = function() {
   this.emit("error", new Error("Cannot pipe, not readable"));
@@ -2073,7 +2073,7 @@ function fe(t) {
 fe.prototype._transform = function(t, e, r) {
   r(null, t);
 };
-oe(V, m);
+oe(V, g);
 V.Readable = I;
 V.Writable = T;
 V.Duplex = M;
@@ -2081,7 +2081,7 @@ V.Transform = k;
 V.PassThrough = fe;
 V.Stream = V;
 function V() {
-  m.call(this);
+  g.call(this);
 }
 V.prototype.pipe = function(t, e) {
   var r = this;
@@ -2101,7 +2101,7 @@ V.prototype.pipe = function(t, e) {
     o || (o = !0, typeof t.destroy == "function" && t.destroy());
   }
   function a(c) {
-    if (u(), m.listenerCount(this, "error") === 0)
+    if (u(), g.listenerCount(this, "error") === 0)
       throw c;
   }
   r.on("error", a), t.on("error", a);
@@ -2665,7 +2665,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
     state: kn(r),
     __needMoreData: function(n, i, o) {
       if (o) return !1;
-      const { encoding: s, escape: f, quote: a } = this.options, { quoting: u, needMoreDataSize: c, recordDelimiterMaxLength: h } = this.state, d = i - n - 1, g = Math.max(
+      const { encoding: s, escape: f, quote: a } = this.options, { quoting: u, needMoreDataSize: c, recordDelimiterMaxLength: h } = this.state, d = i - n - 1, m = Math.max(
         c,
         // Skip if the remaining buffer smaller than record delimiter
         // If "record_delimiter" is yet to be discovered:
@@ -2680,7 +2680,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
         // Skip if remaining buffer can be record delimiter following the closing quote
         u ? a.length + h : 0
       );
-      return d < g;
+      return d < m;
     },
     // Central parser implementation
     parse: function(n, i, o, s) {
@@ -2691,7 +2691,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
         from_line: c,
         ltrim: h,
         max_record_size: d,
-        raw: g,
+        raw: m,
         relax_quotes: O,
         rtrim: E,
         skip_empty_lines: x,
@@ -2744,7 +2744,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
           p
         ) && (Re = this.options.record_delimiter);
         const C = v[p];
-        if (g === !0 && Qt.append(C), (C === $n || C === jn) && this.state.wasRowDelimiter === !1 && (this.state.wasRowDelimiter = !0), this.state.escaping === !0)
+        if (m === !0 && Qt.append(C), (C === $n || C === jn) && this.state.wasRowDelimiter === !1 && (this.state.wasRowDelimiter = !0), this.state.escaping === !0)
           this.state.escaping = !1;
         else {
           if (R !== null && this.state.quoting === !0 && this.__isEscape(v, p, C) && p + R.length < Ie)
@@ -2931,13 +2931,13 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
         relax_column_count_less: c,
         relax_column_count_more: h,
         raw: d,
-        skip_records_with_empty_values: g
+        skip_records_with_empty_values: m
       } = this.options, { enabled: O, record: E } = this.state;
       if (O === !1)
         return this.__resetRecord();
       const x = E.length;
       if (i === !0) {
-        if (g === !0 && ut(E)) {
+        if (m === !0 && ut(E)) {
           this.__resetRecord();
           return;
         }
@@ -2977,7 +2977,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
           if (y) return y;
         }
       }
-      if (g === !0 && ut(E)) {
+      if (m === !0 && ut(E)) {
         this.__resetRecord();
         return;
       }
@@ -3401,7 +3401,7 @@ class ri {
   async parseStream(e, r, n, i, o) {
     return new Promise((s, f) => {
       let a, u, c, h = !1, d = !1;
-      const g = () => {
+      const m = () => {
         if (d) return;
         d = !0;
         const x = a;
@@ -3409,9 +3409,9 @@ class ri {
           u?.cancel();
         }), u = void 0;
       };
-      i.signal.addEventListener("abort", g, { once: !0 });
+      i.signal.addEventListener("abort", m, { once: !0 });
       const O = (x) => {
-        h || (h = !0, g(), i.signal.aborted || i.abort(x), f(x));
+        h || (h = !0, m(), i.signal.aborted || i.abort(x), f(x));
       };
       (async () => {
         a = je(r), c = ei({ chunk: o, chunkSize: e.chunkSize ?? Gn }), a.on("readable", () => {
@@ -3468,10 +3468,12 @@ async function Kn(t) {
             let d;
             for (; (d = c.read()) != null; ) {
               a++;
-              const g = d.length;
-              f != null && (u += Math.abs(g - f)), f = g, s += g;
+              const m = d.length;
+              f != null && (u += Math.abs(m - f)), f = m, s += m;
             }
-          }), c.on("error", () => h()), c.on("end", () => {
+          }), c.on("error", (d) => {
+            console.log(7777, d), h();
+          }), c.on("end", () => {
             const d = s / a;
             console.log(1111, r, n, i, d), (!i || u <= i) && (!n || d > n) && (r = o, n = d, i = u), console.log(2222, r, n, i), h();
           }), c.write(t), c.end();
