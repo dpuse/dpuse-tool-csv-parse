@@ -2,7 +2,7 @@
  * Vite configuration.
  */
 
-// Dependencies - Vendor.
+// Vendor dependencies.
 import { defineConfig } from 'vite'; // Core Vite API.
 import dts from 'vite-plugin-dts'; // Emit .d.ts files alongside the bundle.
 import Sonda from 'sonda/vite'; // Visualize bundle results with Sonda plugin.

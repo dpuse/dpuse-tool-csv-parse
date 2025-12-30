@@ -1,11 +1,12 @@
 import { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
-import { RecordDelimiterId } from '@datapos/datapos-shared';
+import { RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared';
 import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 /**
  * Schema.
  */
 interface SchemaConfig {
     recordDelimiter: RecordDelimiterId;
+    valueDelimiter: ValueDelimiterId;
 }
 /** Tool. */
 declare class Tool {
@@ -14,7 +15,7 @@ declare class Tool {
     /**
      * Determine schema configuration.
      */
-    determineSchemaConfig(text: string, delimiters: string[]): SchemaConfig;
+    determineSchemaConfig(text: string, delimiters: string[]): Promise<SchemaConfig>;
     /**
      * Parse stream.
      */

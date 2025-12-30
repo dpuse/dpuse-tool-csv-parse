@@ -6,8 +6,8 @@
 import { parse, type Options as ParseOptions, type Parser } from 'csv-parse/browser/esm';
 
 // Framework dependencies.
-import type { RecordDelimiterId } from '@datapos/datapos-shared';
 import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
+import type { RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared';
 import type { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 
 /**
@@ -24,6 +24,7 @@ interface RowBuffer {
  */
 interface SchemaConfig {
     recordDelimiter: RecordDelimiterId;
+    valueDelimiter: ValueDelimiterId;
 }
 
 // Constants.
@@ -40,11 +41,13 @@ class Tool {
     /**
      * Determine schema configuration.
      */
-    determineSchemaConfig(text: string, delimiters: string[]): SchemaConfig {
+    async determineSchemaConfig(text: string, delimiters: string[]): Promise<SchemaConfig> {
         const recordDelimiter = determineRecordDelimiter(text);
+        const valueDelimiter = await determineValueDelimiter(text);
 
         return {
-            recordDelimiter
+            recordDelimiter,
+            valueDelimiter
         };
     }
 
@@ -142,6 +145,82 @@ class Tool {
     }
 }
 
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//#region: Determine schema helpers.
+
+/**
+ * Determine record delimiter.
+ */
+function determineRecordDelimiter(text: string): RecordDelimiterId {
+    const countCRLF = (text.match(/\r\n/g) ?? []).length; // Count all '\r\n'character sequences.
+    const countLF = (text.match(/(?<!\r)\n/g) ?? []).length; // Count all '\n' characters not preceded by '\r' character.
+    const countCR = (text.match(/\r(?!\n)/g) ?? []).length; // Count all '\r' characters not followed by '\n' character.
+    if (countCRLF >= countLF && countCRLF >= countCR) return '\r\n';
+    if (countLF >= countCRLF && countLF >= countCR) return '\n';
+    if (countCR >= countCRLF && countCR >= countLF) return '\r';
+    return '\n'; // Default to '\n' character if all counts are equal or zero.
+}
+
+/**
+ * Determine value delimiter.
+ */
+async function determineValueDelimiter(text: string): Promise<ValueDelimiterId> {
+    const delimiters: ValueDelimiterId[] = [':', ',', '!', '0x1E', ';', ' ', '\t', '_', '0x1F', '|'];
+    let valueDelimiter: ValueDelimiterId | undefined;
+    let priorAverageCount: number;
+    let priorSumCountDiffs: number;
+
+    for (const delimiter of delimiters) {
+        try {
+            let totalValueCount = 0;
+            let priorValueCount: number | undefined;
+            let rowCount = 0;
+            let sumOfValueCountDiffs = 0;
+
+            const parser = parse({ delimiter, relax_column_count: true });
+            await new Promise<void>((resolve): void => {
+                try {
+                    parser.on('readable', (): void => {
+                        let row;
+                        while ((row = parser.read() as Row | null) != null) {
+                            rowCount++;
+                            const valueCount = row.length;
+                            if (priorValueCount != null) sumOfValueCountDiffs += Math.abs(valueCount - priorValueCount);
+                            priorValueCount = valueCount;
+                            totalValueCount += valueCount;
+                        }
+                    });
+                    parser.on('error', (): void => resolve());
+                    parser.on('end', (): void => {
+                        const averageValueCount = totalValueCount / rowCount;
+                        if ((!priorSumCountDiffs || sumOfValueCountDiffs <= priorSumCountDiffs) && (!priorAverageCount || averageValueCount > priorAverageCount)) {
+                            console.log(1111, valueDelimiter, priorAverageCount, priorSumCountDiffs);
+                            valueDelimiter = delimiter;
+                            priorAverageCount = averageValueCount;
+                            priorSumCountDiffs = sumOfValueCountDiffs;
+                            console.log(2222, valueDelimiter, priorAverageCount, priorSumCountDiffs);
+                        }
+                        resolve();
+                    });
+                    parser.write(text);
+                    parser.end();
+                } catch {
+                    resolve(); // Ignore errors. Assume invalid delimiter caused parsing error.
+                }
+            });
+        } catch {
+            // Ignore errors. Assume invalid delimiter caused parsing error.
+        }
+    }
+
+    return valueDelimiter ?? ',';
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//#region: Parse stream helpers.
+
 /**
  * Construct row buffer.
  */
@@ -193,18 +272,7 @@ function constructSummary(parser: Parser | undefined): RetrieveRecordsSummary {
     };
 }
 
-/**
- * Determine record delimiter.
- */
-function determineRecordDelimiter(text: string): RecordDelimiterId {
-    const countCRLF = (text.match(/\r\n/g) ?? []).length; // Count all '\r\n'character sequences.
-    const countLF = (text.match(/(?<!\r)\n/g) ?? []).length; // Count all '\n' characters not preceded by '\r' character.
-    const countCR = (text.match(/\r(?!\n)/g) ?? []).length; // Count all '\r' characters not followed by '\n' character.
-    if (countCRLF >= countLF && countCRLF >= countCR) return '\r\n';
-    if (countLF >= countCRLF && countLF >= countCR) return '\n';
-    if (countCR >= countCRLF && countCR >= countLF) return '\r';
-    return '\n'; // Default to '\n' character if all counts are equal or zero.
-}
+//#endregion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 // Exports.
 export type { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
