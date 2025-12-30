@@ -5,8 +5,8 @@ import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos
  * Schema.
  */
 interface SchemaConfig {
-    recordDelimiter: RecordDelimiterId;
-    valueDelimiter: ValueDelimiterId;
+    recordDelimiterId: RecordDelimiterId;
+    valueDelimiterId: ValueDelimiterId;
 }
 /** Tool. */
 declare class Tool {

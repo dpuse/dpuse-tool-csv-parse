@@ -23,8 +23,8 @@ interface RowBuffer {
  * Schema.
  */
 interface SchemaConfig {
-    recordDelimiter: RecordDelimiterId;
-    valueDelimiter: ValueDelimiterId;
+    recordDelimiterId: RecordDelimiterId;
+    valueDelimiterId: ValueDelimiterId;
 }
 
 // Constants.
