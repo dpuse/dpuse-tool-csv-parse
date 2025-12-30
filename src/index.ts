@@ -173,6 +173,7 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
     let records: ParsedRecord[] = [];
 
     for (const delimiter of delimiters) {
+        console.log(1111, delimiter);
         try {
             let totalValueCount = 0;
             let priorValueCount: number | undefined;
@@ -210,7 +211,8 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
                     });
                     parser.write(text);
                     parser.end();
-                } catch {
+                } catch (error) {
+                    console.log(8888, error);
                     resolve(); // Ignore errors. Assume invalid delimiter caused parsing error.
                 }
             });
