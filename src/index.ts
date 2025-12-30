@@ -20,15 +20,16 @@ interface RowBuffer {
 }
 
 /**
- * Schema.
+ * Schema configuration.
  */
 interface SchemaConfig {
     recordDelimiterId: RecordDelimiterId;
+    rows: Row[];
     valueDelimiterId: ValueDelimiterId;
 }
 
 // Constants.
-const DEFAULT_ROW_BUFFER_SIZE = 10_000; // Row count.
+const DEFAULT_ROW_BUFFER_SIZE = 10_000;
 const DEFAULT_ROW_BUFFER_POOL_SIZE = 4;
 
 /** Tool. */
@@ -41,12 +42,13 @@ class Tool {
     /**
      * Determine schema configuration.
      */
-    async determineSchemaConfig(text: string, delimiters: string[]): Promise<SchemaConfig> {
+    async determineSchemaConfig(text: string, delimiters: ValueDelimiterId[]): Promise<SchemaConfig> {
         const recordDelimiterId = determineRecordDelimiter(text);
-        const valueDelimiterId = await determineValueDelimiter(text);
+        const { rows, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
 
         return {
             recordDelimiterId,
+            rows,
             valueDelimiterId
         };
     }
@@ -164,11 +166,11 @@ function determineRecordDelimiter(text: string): RecordDelimiterId {
 /**
  * Determine value delimiter.
  */
-async function determineValueDelimiter(text: string): Promise<ValueDelimiterId> {
-    const delimiters: ValueDelimiterId[] = [':', ',', '!', '0x1E', ';', ' ', '\t', '_', '0x1F', '|'];
-    let valueDelimiter: ValueDelimiterId | undefined;
+async function determineValueDelimiter(text: string, delimiters: ValueDelimiterId[]): Promise<{ rows: Row[]; valueDelimiterId: ValueDelimiterId }> {
+    let valueDelimiterId: ValueDelimiterId | undefined;
     let priorAverageCount: number;
     let priorSumCountDiffs: number;
+    let rows: Row[] = [];
 
     for (const delimiter of delimiters) {
         try {
@@ -180,24 +182,29 @@ async function determineValueDelimiter(text: string): Promise<ValueDelimiterId> 
             const parser = parse({ delimiter, relax_column_count: true });
             await new Promise<void>((resolve): void => {
                 try {
+                    const pendingRows: Row[] = [];
                     parser.on('readable', (): void => {
                         let row;
                         while ((row = parser.read() as Row | null) != null) {
-                            console.log('ROW', row);
                             rowCount++;
                             const valueCount = row.length;
                             if (priorValueCount != null) sumOfValueCountDiffs += Math.abs(valueCount - priorValueCount);
                             priorValueCount = valueCount;
                             totalValueCount += valueCount;
+                            pendingRows.push(row);
                         }
                     });
-                    parser.on('error', (): void => resolve());
+                    parser.on('error', (error): void => {
+                        console.log(7777, error);
+                        resolve();
+                    });
                     parser.on('end', (): void => {
                         const averageValueCount = totalValueCount / rowCount;
                         if ((!priorSumCountDiffs || sumOfValueCountDiffs <= priorSumCountDiffs) && (!priorAverageCount || averageValueCount > priorAverageCount)) {
-                            valueDelimiter = delimiter;
+                            valueDelimiterId = delimiter;
                             priorAverageCount = averageValueCount;
                             priorSumCountDiffs = sumOfValueCountDiffs;
+                            rows = [...pendingRows];
                         }
                         resolve();
                     });
@@ -212,7 +219,7 @@ async function determineValueDelimiter(text: string): Promise<ValueDelimiterId> 
         }
     }
 
-    return valueDelimiter ?? ',';
+    return { rows, valueDelimiterId: valueDelimiterId ?? ',' };
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -275,4 +282,4 @@ function constructSummary(parser: Parser | undefined): RetrieveRecordsSummary {
 
 // Exports.
 export type { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
-export { type SchemaConfig, Tool };
+export { type Row, type SchemaConfig, Tool };
