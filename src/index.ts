@@ -173,7 +173,6 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
     let records: ParsedRecord[] = [];
 
     for (const delimiter of delimiters) {
-        console.log(1111, delimiter);
         try {
             let totalValueCount = 0;
             let priorValueCount: number | undefined;
@@ -195,12 +194,10 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
                             pendingRecords.push(record);
                         }
                     });
-                    parser.on('error', (error): void => {
-                        console.log(7777, error);
-                        resolve();
-                    });
+                    parser.on('error', (): void => resolve()); // Ignore errors. Assume invalid delimiter caused parsing error.
                     parser.on('end', (): void => {
                         const averageValueCount = totalValueCount / recordCount;
+                        console.log(1111, totalValueCount, recordCount, averageValueCount);
                         if ((!priorSumCountDiffs || sumOfValueCountDiffs <= priorSumCountDiffs) && (!priorAverageCount || averageValueCount > priorAverageCount)) {
                             valueDelimiterId = delimiter;
                             priorAverageCount = averageValueCount;
@@ -211,8 +208,7 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
                     });
                     parser.write(text);
                     parser.end();
-                } catch (error) {
-                    console.log(8888, error);
+                } catch {
                     resolve(); // Ignore errors. Assume invalid delimiter caused parsing error.
                 }
             });
