@@ -1,12 +1,13 @@
 import { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
 import { EngineUtilities } from '@datapos/datapos-shared/engine';
-import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
+import { ConnectionColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 import { ParseResult, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
 type StreamParsedRecord = string[];
 /**
  * Schema configuration.
  */
 interface SchemaConfig {
+    columnConfigs: ConnectionColumnConfig[];
     recordDelimiterId: RecordDelimiterId;
     records: ParseResult[][];
     valueDelimiterId: ValueDelimiterId;

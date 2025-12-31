@@ -25,6 +25,7 @@ interface StreamRecordBuffer {
  * Schema configuration.
  */
 interface SchemaConfig {
+    columnConfigs: ConnectionColumnConfig[];
     recordDelimiterId: RecordDelimiterId;
     records: ParseResult[][];
     valueDelimiterId: ValueDelimiterId;
@@ -55,22 +56,22 @@ class Tool {
             castRecords.push(parsedResult);
         }
 
-        // let firstDataRowIndex = 0;
-        // const headerRecord = records[0];
-        // const headerValueCount = headerRecord?.length ?? 0;
-        // for (let headerValueIndex = 0; headerValueIndex < headerValueCount; headerValueIndex++) {
-        //     const headerLabel = headerRecord[headerValueIndex]?.originalValue ?? `Column ${headerValueIndex}`;
-        //     const xxxx = previewConfig.columnConfigs[headerValueIndex];
-        //     if (xxxx == null) continue;
-        //     xxxx.label = { en: headerLabel };
-        // }
-        // firstDataRowIndex = 1;
+        let firstDataRowIndex = 0;
+        const headerRecord = castRecords[0];
+        if (headerRecord) {
+            const headerValueCount = castRecords.length;
+            for (let headerValueIndex = 0; headerValueIndex < headerValueCount; headerValueIndex++) {
+                // eslint-disable-next-line security/detect-object-injection
+                const headerLabel = headerRecord[headerValueIndex]?.originalValue ?? `Column ${headerValueIndex}`;
+                // eslint-disable-next-line security/detect-object-injection
+                const xxxx = columnConfigs[headerValueIndex];
+                if (xxxx == null) continue;
+                xxxx.label = { en: headerLabel };
+            }
+            firstDataRowIndex = 1;
+        }
 
-        return {
-            recordDelimiterId,
-            records: castRecords,
-            valueDelimiterId
-        };
+        return { columnConfigs, recordDelimiterId, records: castRecords, valueDelimiterId };
     }
 
     /**
