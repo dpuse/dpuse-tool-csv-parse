@@ -6,16 +6,18 @@
 import { parse, type Options as ParseOptions, type Parser } from 'csv-parse/browser/esm';
 
 // Framework dependencies.
+import type { EngineUtilities } from '@datapos/datapos-shared/engine';
 import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
+import type { ConnectionColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 import type { RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
-import type { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 
 /**
  * Parse record and parsed record buffer.
  */
-type ParsedRecord = string[];
+type PreviewParsedRecord = { value: string | null | undefined; isQuoted: boolean }[];
+type StreamParsedRecord = string[];
 interface RecordBuffer {
-    push: (record: ParsedRecord) => void;
+    push: (record: StreamParsedRecord) => void;
     flush: () => void;
 }
 
@@ -24,7 +26,7 @@ interface RecordBuffer {
  */
 interface SchemaConfig {
     recordDelimiterId: RecordDelimiterId;
-    records: ParsedRecord[];
+    records: StreamParsedRecord[];
     valueDelimiterId: ValueDelimiterId;
 }
 
@@ -42,11 +44,18 @@ class Tool {
     /**
      * Determine schema configuration.
      */
-    async determineSchemaConfig(text: string, delimiters: ValueDelimiterId[]): Promise<SchemaConfig> {
+    async determineSchemaConfig(engineUtilities: EngineUtilities, text: string, delimiters: ValueDelimiterId[]): Promise<SchemaConfig> {
         const recordDelimiterId = determineRecordDelimiter(text);
         const { records, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
 
-        console.log('records', records);
+        console.log(3333, records);
+
+        const records2: StreamParsedRecord[] = [];
+        const columnConfigs: ConnectionColumnConfig[] = [];
+        for (const record of records) {
+            const parsedResult = engineUtilities.parseRecord(columnConfigs, record, true);
+            console.log(4444, parsedResult);
+        }
 
         // let firstDataRowIndex = 0;
         // const headerRecord = records[0];
@@ -61,7 +70,7 @@ class Tool {
 
         return {
             recordDelimiterId,
-            records,
+            records: records2,
             valueDelimiterId
         };
     }
@@ -115,8 +124,8 @@ class Tool {
                 parser.on('readable', () => {
                     try {
                         if (parser == null || recordBuffer == null) return;
-                        let record: ParsedRecord | null;
-                        while ((record = parser.read() as ParsedRecord | null) != null) {
+                        let record: StreamParsedRecord | null;
+                        while ((record = parser.read() as StreamParsedRecord | null) != null) {
                             if (hasErrored) return;
                             abortController.signal.throwIfAborted();
                             recordBuffer.push(record);
@@ -179,11 +188,11 @@ function determineRecordDelimiter(text: string): RecordDelimiterId {
 /**
  * Determine value delimiter.
  */
-async function determineValueDelimiter(text: string, delimiters: ValueDelimiterId[]): Promise<{ records: ParsedRecord[]; valueDelimiterId: ValueDelimiterId }> {
+async function determineValueDelimiter(text: string, delimiters: ValueDelimiterId[]): Promise<{ records: PreviewParsedRecord[]; valueDelimiterId: ValueDelimiterId }> {
     let valueDelimiterId: ValueDelimiterId | undefined;
     let priorAverageCount: number;
     let priorSumCountDiffs: number;
-    let records: ParsedRecord[] = [];
+    let records: PreviewParsedRecord[] = [];
 
     /* TODO: Could improve performance by limiting the number of delimiters
        processed by exiting if column count is the same for each line and
@@ -198,13 +207,17 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
             let recordCount = 0;
             let sumOfValueCountDiffs = 0;
 
-            const parser = parse({ delimiter, relax_column_count: true });
+            const parser = parse({
+                cast: (value, context): { value: string; isQuoted: boolean } => ({ value, isQuoted: context.quoting }),
+                delimiter,
+                relax_column_count: true
+            });
             await new Promise<void>((resolve): void => {
                 try {
-                    const pendingRecords: ParsedRecord[] = [];
+                    const pendingRecords: PreviewParsedRecord[] = [];
                     parser.on('readable', (): void => {
                         let record;
-                        while ((record = parser.read() as ParsedRecord | null) != null) {
+                        while ((record = parser.read() as { value: string | null | undefined; isQuoted: boolean }[] | null) != null) {
                             recordCount++;
                             const valueCount = record.length;
                             if (priorValueCount != null) sumOfValueCountDiffs += Math.abs(valueCount - priorValueCount);
@@ -247,9 +260,9 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
 /**
  * Construct record buffer.
  */
-function constructRecordBuffer(bufferOptions: { chunk: (records: ParsedRecord[]) => void; chunkSize: number }): RecordBuffer {
+function constructRecordBuffer(bufferOptions: { chunk: (records: StreamParsedRecord[]) => void; chunkSize: number }): RecordBuffer {
     const recordsPerChunk = Math.max(1, Math.floor(bufferOptions.chunkSize));
-    const pool: ParsedRecord[][] = [];
+    const pool: StreamParsedRecord[][] = [];
     let records = allocateBuffer();
     let recordCount = 0;
 
@@ -263,21 +276,21 @@ function constructRecordBuffer(bufferOptions: { chunk: (records: ParsedRecord[])
         if (pool.length < DEFAULT_RECORD_BUFFER_POOL_SIZE) pool.push(recordsToEmit);
     };
 
-    const push = (record: ParsedRecord): void => {
+    const push = (record: StreamParsedRecord): void => {
         records[recordCount++] = record;
         if (recordCount >= recordsPerChunk) flush();
     };
 
     return { flush, push };
 
-    function allocateBuffer(): ParsedRecord[] {
+    function allocateBuffer(): StreamParsedRecord[] {
         const pooled = pool.pop();
         if (pooled != null) {
             pooled.length = 0;
             return pooled;
         }
 
-        const allocated = Array.from<ParsedRecord>({ length: recordsPerChunk });
+        const allocated = Array.from<StreamParsedRecord>({ length: recordsPerChunk });
         allocated.length = 0;
         return allocated;
     }
@@ -299,4 +312,4 @@ function constructSummary(parser: Parser | undefined): RetrieveRecordsSummary {
 
 // Exports.
 export type { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
-export { type ParsedRecord, type SchemaConfig, Tool };
+export { type StreamParsedRecord, type SchemaConfig, Tool };
