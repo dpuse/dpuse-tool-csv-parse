@@ -3389,12 +3389,10 @@ class ri {
    * Determine schema configuration.
    */
   async determineSchemaConfig(e, r, n) {
-    const i = Xn(r), { records: o, valueDelimiterId: s } = await Kn(r, n);
-    console.log(3333, o);
-    const f = [], a = [];
+    const i = Xn(r), { records: o, valueDelimiterId: s } = await Kn(r, n), f = [], a = [];
     for (const l of o) {
       const c = e.parseRecord(a, l, !0);
-      console.log(4444, c);
+      f.push(c);
     }
     return {
       recordDelimiterId: i,

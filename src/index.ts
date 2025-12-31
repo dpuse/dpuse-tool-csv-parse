@@ -9,14 +9,14 @@ import { parse, type Options as ParseOptions, type Parser } from 'csv-parse/brow
 import type { EngineUtilities } from '@datapos/datapos-shared/engine';
 import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
 import type { ConnectionColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
-import type { RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
+import type { ParseResult, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
 
 /**
  * Parse record and parsed record buffer.
  */
-type PreviewParsedRecord = { value: string | null | undefined; isQuoted: boolean }[];
+type SchemaParsedRecord = { value: string | null | undefined; isQuoted: boolean }[];
 type StreamParsedRecord = string[];
-interface RecordBuffer {
+interface StreamRecordBuffer {
     push: (record: StreamParsedRecord) => void;
     flush: () => void;
 }
@@ -26,7 +26,7 @@ interface RecordBuffer {
  */
 interface SchemaConfig {
     recordDelimiterId: RecordDelimiterId;
-    records: StreamParsedRecord[];
+    records: ParseResult[][];
     valueDelimiterId: ValueDelimiterId;
 }
 
@@ -48,13 +48,11 @@ class Tool {
         const recordDelimiterId = determineRecordDelimiter(text);
         const { records, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
 
-        console.log(3333, records);
-
-        const records2: StreamParsedRecord[] = [];
+        const castRecords: ParseResult[][] = [];
         const columnConfigs: ConnectionColumnConfig[] = [];
         for (const record of records) {
             const parsedResult = engineUtilities.parseRecord(columnConfigs, record, true);
-            console.log(4444, parsedResult);
+            castRecords.push(parsedResult);
         }
 
         // let firstDataRowIndex = 0;
@@ -70,7 +68,7 @@ class Tool {
 
         return {
             recordDelimiterId,
-            records: records2,
+            records: castRecords,
             valueDelimiterId
         };
     }
@@ -88,7 +86,7 @@ class Tool {
         return new Promise<RetrieveRecordsSummary>((resolve, reject) => {
             let parser: Parser | undefined;
             let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
-            let recordBuffer: RecordBuffer | undefined;
+            let recordBuffer: StreamRecordBuffer | undefined;
             let hasErrored = false;
             let hasStoppedProcessing = false;
 
@@ -188,11 +186,11 @@ function determineRecordDelimiter(text: string): RecordDelimiterId {
 /**
  * Determine value delimiter.
  */
-async function determineValueDelimiter(text: string, delimiters: ValueDelimiterId[]): Promise<{ records: PreviewParsedRecord[]; valueDelimiterId: ValueDelimiterId }> {
+async function determineValueDelimiter(text: string, delimiters: ValueDelimiterId[]): Promise<{ records: SchemaParsedRecord[]; valueDelimiterId: ValueDelimiterId }> {
     let valueDelimiterId: ValueDelimiterId | undefined;
     let priorAverageCount: number;
     let priorSumCountDiffs: number;
-    let records: PreviewParsedRecord[] = [];
+    let records: SchemaParsedRecord[] = [];
 
     /* TODO: Could improve performance by limiting the number of delimiters
        processed by exiting if column count is the same for each line and
@@ -214,7 +212,7 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
             });
             await new Promise<void>((resolve): void => {
                 try {
-                    const pendingRecords: PreviewParsedRecord[] = [];
+                    const pendingRecords: SchemaParsedRecord[] = [];
                     parser.on('readable', (): void => {
                         let record;
                         while ((record = parser.read() as { value: string | null | undefined; isQuoted: boolean }[] | null) != null) {
@@ -260,7 +258,7 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
 /**
  * Construct record buffer.
  */
-function constructRecordBuffer(bufferOptions: { chunk: (records: StreamParsedRecord[]) => void; chunkSize: number }): RecordBuffer {
+function constructRecordBuffer(bufferOptions: { chunk: (records: StreamParsedRecord[]) => void; chunkSize: number }): StreamRecordBuffer {
     const recordsPerChunk = Math.max(1, Math.floor(bufferOptions.chunkSize));
     const pool: StreamParsedRecord[][] = [];
     let records = allocateBuffer();
