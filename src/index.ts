@@ -46,6 +46,8 @@ class Tool {
             castRecords.push(inferredResults);
         }
 
+        console.log('castRecords', castRecords);
+
         // let firstDataRowIndex = 0;
         // const headerRecord = castRecords[0];
         // if (headerRecord) {

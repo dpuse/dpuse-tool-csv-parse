@@ -3396,7 +3396,7 @@ class ri {
       const c = e.parseRecord(a, l, !0);
       f.push(c);
     }
-    return { columnConfigs: a, recordDelimiterId: i, records: f, valueDelimiterId: s };
+    return console.log("castRecords", f), { columnConfigs: a, recordDelimiterId: i, records: f, valueDelimiterId: s };
   }
   /**
    * Parse stream.
