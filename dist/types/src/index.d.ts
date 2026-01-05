@@ -1,16 +1,7 @@
 import { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
 import { EngineUtilities } from '@datapos/datapos-shared/engine';
-import { ConnectionColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
-import { InferredResult, ParseRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
-/**
- * Schema configuration.
- */
-interface SchemaConfig {
-    columnConfigs: ConnectionColumnConfig[];
-    recordDelimiterId: RecordDelimiterId;
-    records: InferredResult[][];
-    valueDelimiterId: ValueDelimiterId;
-}
+import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
+import { ParseRecord, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
 /** Tool. */
 declare class Tool {
     /** Build parser. */
@@ -25,4 +16,4 @@ declare class Tool {
     parseStream(retrieveRecordsOptions: RetrieveRecordsOptions, parseOptions: ParseOptions, url: string, abortController: AbortController, chunk: (records: ParseRecord[]) => void): Promise<RetrieveRecordsSummary>;
 }
 export type { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
-export { type SchemaConfig, Tool };
+export { Tool };

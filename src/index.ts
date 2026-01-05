@@ -19,16 +19,6 @@ interface StreamRecordBuffer {
     flush: () => void;
 }
 
-/**
- * Schema configuration.
- */
-interface SchemaConfig {
-    columnConfigs: ConnectionColumnConfig[];
-    recordDelimiterId: RecordDelimiterId;
-    records: InferredResult[][];
-    valueDelimiterId: ValueDelimiterId;
-}
-
 // Constants.
 const DEFAULT_RECORD_BUFFER_SIZE = 10_000;
 const DEFAULT_RECORD_BUFFER_POOL_SIZE = 4;
@@ -317,4 +307,4 @@ function constructSummary(parser: Parser | undefined): RetrieveRecordsSummary {
 
 // Exports.
 export type { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
-export { type SchemaConfig, Tool };
+export { Tool };
