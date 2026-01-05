@@ -9,7 +9,7 @@ import { parse, type Options as ParseOptions, type Parser } from 'csv-parse/brow
 import type { EngineUtilities } from '@datapos/datapos-shared/engine';
 import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
 import type { ConnectionColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
-import type { ParseRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
+import type { InferredResult, ParseRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
 
 /**
  * Parse record and parsed record buffer.
@@ -25,7 +25,7 @@ interface StreamRecordBuffer {
 interface SchemaConfig {
     columnConfigs: ConnectionColumnConfig[];
     recordDelimiterId: RecordDelimiterId;
-    records: ParseRecord[][];
+    records: InferredResult[][];
     valueDelimiterId: ValueDelimiterId;
 }
 
@@ -48,12 +48,13 @@ class Tool {
         const { records, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
 
         console.log('records', records);
-        const castRecords: ParseRecord[][] = [];
+
+        const castRecords: InferredResult[][] = [];
         const columnConfigs: ConnectionColumnConfig[] = [];
-        // for (const record of records) {
-        //     const parsedResult = engineUtilities.parseRecord(columnConfigs, record, true);
-        //     castRecords.push(parsedResult);
-        // }
+        for (const parseRecord of records) {
+            const parsedResult = engineUtilities.parseRecord(columnConfigs, parseRecord, true);
+            castRecords.push(parsedResult);
+        }
 
         // let firstDataRowIndex = 0;
         // const headerRecord = castRecords[0];
@@ -119,7 +120,7 @@ class Tool {
             const run = async (): Promise<void> => {
                 parser = parse({
                     ...parseOptions,
-                    cast: (value, context): { value: string; isQuoted: boolean } => ({ value, isQuoted: context.quoting })
+                    cast: (value, context): { value: string; wasValueQuoted: boolean } => ({ value, wasValueQuoted: context.quoting })
                 });
                 recordBuffer = constructRecordBuffer({ chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RECORD_BUFFER_SIZE });
                 parser.on('readable', () => {
@@ -212,7 +213,7 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
             let sumOfValueCountDiffs = 0;
 
             const parser = parse({
-                cast: (value, context): { value: string; isQuoted: boolean } => ({ value, isQuoted: context.quoting }),
+                cast: (value, context): { value: string; wasValueQuoted: boolean } => ({ value, wasValueQuoted: context.quoting }),
                 delimiter,
                 relax_column_count: true
             });

@@ -1,14 +1,14 @@
 import { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
 import { EngineUtilities } from '@datapos/datapos-shared/engine';
 import { ConnectionColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
-import { ParseRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
+import { InferredResult, ParseRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
 /**
  * Schema configuration.
  */
 interface SchemaConfig {
     columnConfigs: ConnectionColumnConfig[];
     recordDelimiterId: RecordDelimiterId;
-    records: ParseRecord[][];
+    records: InferredResult[][];
     valueDelimiterId: ValueDelimiterId;
 }
 /** Tool. */
