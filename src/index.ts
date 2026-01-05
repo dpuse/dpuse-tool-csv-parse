@@ -47,6 +47,7 @@ class Tool {
         const recordDelimiterId = determineRecordDelimiter(text);
         const { records, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
 
+        console.log('records', records);
         const castRecords: ParseRecord[][] = [];
         const columnConfigs: ConnectionColumnConfig[] = [];
         // for (const record of records) {

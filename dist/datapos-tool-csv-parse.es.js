@@ -3390,7 +3390,7 @@ class ri {
    */
   async determineSchemaConfig(e, r, n) {
     const i = Xn(r), { records: o, valueDelimiterId: s } = await Kn(r, n);
-    return { columnConfigs: [], recordDelimiterId: i, records: [], valueDelimiterId: s };
+    return console.log("records", o), { columnConfigs: [], recordDelimiterId: i, records: [], valueDelimiterId: s };
   }
   /**
    * Parse stream.
