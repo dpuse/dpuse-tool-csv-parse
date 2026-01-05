@@ -1,6 +1,6 @@
 {
     "name": "@datapos/datapos-tool-csv-parse",
-    "version": "0.0.81",
+    "version": "0.0.82",
     "description": "",
     "license": "MIT",
     "private": false,
@@ -26,7 +26,7 @@
     ],
     "prettier": "@datapos/datapos-development/prettierrc",
     "dependencies": {
-        "@datapos/datapos-shared": "^0.3.451",
+        "@datapos/datapos-shared": "^0.3.458",
         "csv-parse": "^6.1.0"
     },
     "devDependencies": {
@@ -46,7 +46,7 @@
         "license-report": "^6.8.1",
         "license-report-check": "^0.1.2",
         "license-report-recursive": "^6.8.2",
-        "npm-check-updates": "^19.2.0",
+        "npm-check-updates": "^19.3.0",
         "owasp-dependency-check": "^1.0.0",
         "prettier": "^3.7.4",
         "rollup-plugin-visualizer": "^6.0.5",
