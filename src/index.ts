@@ -9,7 +9,7 @@ import { parse, type Options as ParseOptions, type Parser } from 'csv-parse/brow
 import type { EngineUtilities } from '@datapos/datapos-shared/engine';
 import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
 import type { ConnectionColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
-import type { ObjectRecord, ParseRecord, RecordDelimiterId, StringRecord, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
+import type { ParseRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
 
 /**
  * Parse record and parsed record buffer.
@@ -80,7 +80,7 @@ class Tool {
         parseOptions: ParseOptions,
         url: string,
         abortController: AbortController,
-        chunk: (records: ObjectRecord[]) => void
+        chunk: (records: ParseRecord[]) => void
     ): Promise<RetrieveRecordsSummary> {
         return new Promise<RetrieveRecordsSummary>((resolve, reject) => {
             let parser: Parser | undefined;
@@ -191,11 +191,11 @@ function determineRecordDelimiter(text: string): RecordDelimiterId {
 /**
  * Determine value delimiter.
  */
-async function determineValueDelimiter(text: string, delimiters: ValueDelimiterId[]): Promise<{ records: StringRecord[]; valueDelimiterId: ValueDelimiterId }> {
+async function determineValueDelimiter(text: string, delimiters: ValueDelimiterId[]): Promise<{ records: ParseRecord[]; valueDelimiterId: ValueDelimiterId }> {
     let valueDelimiterId: ValueDelimiterId | undefined;
     let priorAverageCount: number;
     let priorSumCountDiffs: number;
-    let records: StringRecord[] = [];
+    let records: ParseRecord[] = [];
 
     /* TODO: Could improve performance by limiting the number of delimiters
        processed by exiting if column count is the same for each line and
@@ -211,15 +211,16 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
             let sumOfValueCountDiffs = 0;
 
             const parser = parse({
+                cast: (value, context): { value: string; isQuoted: boolean } => ({ value, isQuoted: context.quoting }),
                 delimiter,
                 relax_column_count: true
             });
             await new Promise<void>((resolve): void => {
                 try {
-                    const pendingRecords: StringRecord[] = [];
+                    const pendingRecords: ParseRecord[] = [];
                     parser.on('readable', (): void => {
                         let record;
-                        while ((record = parser.read() as StringRecord | null) != null) {
+                        while ((record = parser.read() as ParseRecord | null) != null) {
                             recordCount++;
                             const valueCount = record.length;
                             if (priorValueCount != null) sumOfValueCountDiffs += Math.abs(valueCount - priorValueCount);
