@@ -9,7 +9,7 @@ import { parse, type Options as ParseOptions, type Parser } from 'csv-parse/brow
 import type { EngineUtilities } from '@datapos/datapos-shared/engine';
 import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
 import type { ConnectionColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
-import type { InferredResult, ParseRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
+import type { InferredResult, ParseRecord, RecordDelimiterId, SchemaConfig, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
 
 /**
  * Parse record and parsed record buffer.
@@ -42,8 +42,8 @@ class Tool {
         const castRecords: InferredResult[][] = [];
         const columnConfigs: ConnectionColumnConfig[] = [];
         for (const parseRecord of records) {
-            const parsedResult = engineUtilities.parseRecord(columnConfigs, parseRecord, true);
-            castRecords.push(parsedResult);
+            const inferredResults = engineUtilities.parseRecord(columnConfigs, parseRecord, true);
+            castRecords.push(inferredResults);
         }
 
         // let firstDataRowIndex = 0;

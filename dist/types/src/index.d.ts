@@ -1,7 +1,7 @@
 import { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
 import { EngineUtilities } from '@datapos/datapos-shared/engine';
 import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
-import { ParseRecord, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
+import { ParseRecord, SchemaConfig, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
 /** Tool. */
 declare class Tool {
     /** Build parser. */
