@@ -8,8 +8,8 @@ import { type Options, parse, type Parser } from 'csv-parse/browser/esm';
 // Framework dependencies.
 import type { EngineUtilities } from '@datapos/datapos-shared/engine';
 import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
-import type { ConnectionColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 import type { InferenceRecord, ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
+import type { ObjectColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 
 // Baseline parser configuration pinned to explicit values to prevent behavioural drift across parser upgrades.
 // Intentionally exhaustive, even where values mirror current defaults. See: https://csv.js.org/parse/options/ for more information.
@@ -65,7 +65,7 @@ interface SchemaConfig {
     valueDelimiterId: ValueDelimiterId;
     parsingRecords: ParsingRecord[];
     inferenceRecords: InferenceRecord[];
-    columnConfigs: ConnectionColumnConfig[];
+    columnConfigs: ObjectColumnConfig[];
 }
 
 // Constants.
@@ -87,10 +87,10 @@ class Tool {
         const { parsingRecords, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
 
         // Infer values and initialise column configurations.
-        const columnConfigs: ConnectionColumnConfig[] = [];
+        const columnConfigs: ObjectColumnConfig[] = [];
         const inferenceRecords: InferenceRecord[] = [];
         for (const parsingRecord of parsingRecords) {
-            const inferredValues = engineUtilities.inferValues(columnConfigs, parsingRecord, true);
+            const inferredValues = engineUtilities.inferValues(parsingRecord, columnConfigs);
             inferenceRecords.push(inferredValues);
         }
 

@@ -3426,7 +3426,7 @@ class ni {
   async inferSchema(e, r, n) {
     const i = Kn(r), { parsingRecords: o, valueDelimiterId: s } = await ei(r, n), f = [], a = [];
     for (const c of o) {
-      const d = e.inferValues(f, c, !0);
+      const d = e.inferValues(c, f);
       a.push(d);
     }
     let u = 0;
