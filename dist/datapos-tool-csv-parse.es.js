@@ -3397,7 +3397,7 @@ const Wt = {
   ltrim: !1,
   max_record_size: 0,
   objname: void 0,
-  on_record: void 0,
+  // on_record: undefined,
   on_skip: void 0,
   quote: '"',
   raw: !1,

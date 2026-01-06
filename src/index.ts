@@ -31,7 +31,7 @@ const DEFAULT_OPTIONS: Options = {
     ltrim: false,
     max_record_size: 0,
     objname: undefined,
-    on_record: undefined,
+    // on_record: undefined,
     on_skip: undefined,
     quote: '"',
     raw: false,
