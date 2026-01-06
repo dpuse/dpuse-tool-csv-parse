@@ -50,8 +50,8 @@ class Tool {
 
         const inferenceRecords: InferenceRecord[] = [];
         const columnConfigs: ConnectionColumnConfig[] = [];
-        for (const parseRecord of parsingRecords) {
-            const inferredValues = engineUtilities.parseRecord(columnConfigs, parseRecord, true);
+        for (const parsingRecord of parsingRecords) {
+            const inferredValues = engineUtilities.inferValues(columnConfigs, parsingRecord, true);
             inferenceRecords.push(inferredValues);
         }
 
@@ -65,14 +65,13 @@ class Tool {
                 const headerLabel = headerValue == undefined ? `Column ${headerValueIndex}` : String(headerValue);
                 // eslint-disable-next-line security/detect-object-injection
                 const columnConfig = columnConfigs[headerValueIndex];
-                if (columnConfig == null) {
-                    columnConfigs.push({ label: { en: headerLabel } });
-                } else {
-                    columnConfig.label = { en: headerLabel };
-                }
+                if (columnConfig == null) continue;
+                columnConfig.label = { en: headerLabel };
             }
             firstDataRowIndex = 1;
         }
+
+        for (let index = firstDataRowIndex; index < inferenceRecords.length; index++) {}
 
         return { recordDelimiterId, valueDelimiterId, parsingRecords, inferenceRecords, columnConfigs };
     }
