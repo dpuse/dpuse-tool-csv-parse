@@ -44,7 +44,7 @@ const DEFAULT_OPTIONS: Options = {
     skip_empty_lines: false,
     skip_records_with_empty_values: false,
     skip_records_with_error: false,
-    to: 1,
+    to: undefined, // TODO: Assigning default value of 1 triggers error 'TypeError: \"listener\" argument must be a function'.
     to_line: -1,
     trim: false
 };
