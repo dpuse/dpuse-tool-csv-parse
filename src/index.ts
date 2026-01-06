@@ -34,7 +34,7 @@ const DEFAULT_OPTIONS: Options = {
     on_record: undefined,
     on_skip: undefined,
     quote: '"',
-    // raw: false,
+    raw: false,
     record_delimiter: [],
     relax_column_count: false,
     relax_column_count_less: false,

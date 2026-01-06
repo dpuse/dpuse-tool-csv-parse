@@ -3400,7 +3400,7 @@ const Wt = {
   on_record: void 0,
   on_skip: void 0,
   quote: '"',
-  // raw: false,
+  raw: !1,
   record_delimiter: [],
   relax_column_count: !1,
   relax_column_count_less: !1,
