@@ -16,7 +16,7 @@ import type { InferenceRecord, ParsingRecord, RecordDelimiterId, ValueDelimiterI
 const DEFAULT_OPTIONS: Options = {
     bom: false,
     cast: undefined,
-    cast_date: false,
+    cast_date: undefined,
     columns: false,
     comment: '',
     comment_no_infix: false,
@@ -170,7 +170,7 @@ class Tool {
 
             const run = async (): Promise<void> => {
                 parser = parse({
-                    // ...DEFAULT_OPTIONS,
+                    ...DEFAULT_OPTIONS,
                     ...parseOptions,
                     cast: (value, context): { value: string; wasValueQuoted: boolean } => ({ value, wasValueQuoted: context.quoting })
                 });
@@ -263,7 +263,7 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
             let sumOfValueCountDiffs = 0;
 
             const parser = parse({
-                // ...DEFAULT_OPTIONS,
+                ...DEFAULT_OPTIONS,
                 cast: (value, context): { value: string; wasValueQuoted: boolean } => ({ value, wasValueQuoted: context.quoting }),
                 delimiter,
                 relax_column_count: true
