@@ -3410,7 +3410,8 @@ const Wt = {
   skip_empty_lines: !1,
   skip_records_with_empty_values: !1,
   skip_records_with_error: !1,
-  to: 1,
+  to: void 0,
+  // TODO: Assigning default value of 1 triggers error 'TypeError: \"listener\" argument must be a function'.
   to_line: -1,
   trim: !1
 }, Zn = 1e4, Xn = 4;
