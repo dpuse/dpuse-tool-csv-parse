@@ -24,7 +24,7 @@ const DEFAULT_OPTIONS: Options = {
     encoding: 'utf8',
     escape: '"',
     // from: 1,
-    // from_line: 1,
+    from_line: 1,
     group_columns_by_name: false,
     ignore_last_delimiters: false,
     info: false,
