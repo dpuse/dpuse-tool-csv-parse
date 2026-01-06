@@ -74,7 +74,7 @@ function u(t, e, r) {
       throw new Error(
         "If encoding is specified then the first argument must be a string"
       );
-    return ze(this, t);
+    return Ve(this, t);
   }
   return pt(this, t, e, r);
 }
@@ -103,17 +103,17 @@ function rr(t, e, r, n) {
 u.alloc = function(t, e, r) {
   return rr(null, t, e, r);
 };
-function ze(t, e) {
-  if (mt(e), t = q(t, e < 0 ? 0 : Ve(e) | 0), !u.TYPED_ARRAY_SUPPORT)
+function Ve(t, e) {
+  if (mt(e), t = q(t, e < 0 ? 0 : ze(e) | 0), !u.TYPED_ARRAY_SUPPORT)
     for (var r = 0; r < e; ++r)
       t[r] = 0;
   return t;
 }
 u.allocUnsafe = function(t) {
-  return ze(null, t);
+  return Ve(null, t);
 };
 u.allocUnsafeSlow = function(t) {
-  return ze(null, t);
+  return Ve(null, t);
 };
 function nr(t, e, r) {
   if ((typeof r != "string" || r === "") && (r = "utf8"), !u.isEncoding(r))
@@ -124,7 +124,7 @@ function nr(t, e, r) {
   return i !== n && (t = t.slice(0, i)), t;
 }
 function Ue(t, e) {
-  var r = e.length < 0 ? 0 : Ve(e.length) | 0;
+  var r = e.length < 0 ? 0 : ze(e.length) | 0;
   t = q(t, r);
   for (var n = 0; n < r; n += 1)
     t[n] = e[n] & 255;
@@ -139,7 +139,7 @@ function ir(t, e, r, n) {
 }
 function or(t, e) {
   if ($(e)) {
-    var r = Ve(e.length) | 0;
+    var r = ze(e.length) | 0;
     return t = q(t, r), t.length === 0 || e.copy(t, 0, 0, r), t;
   }
   if (e) {
@@ -150,7 +150,7 @@ function or(t, e) {
   }
   throw new TypeError("First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.");
 }
-function Ve(t) {
+function ze(t) {
   if (t >= _e())
     throw new RangeError("Attempt to allocate Buffer larger than maximum size: 0x" + _e().toString(16) + " bytes");
   return t | 0;
@@ -1126,18 +1126,18 @@ function Fr(t) {
     }
   }
 }
-var z = [], ne = !1, ee, me = -1;
+var V = [], ne = !1, ee, me = -1;
 function Mr() {
-  !ne || !ee || (ne = !1, ee.length ? z = ee.concat(z) : me = -1, z.length && Dt());
+  !ne || !ee || (ne = !1, ee.length ? V = ee.concat(V) : me = -1, V.length && Dt());
 }
 function Dt() {
   if (!ne) {
     var t = Lt(Mr);
     ne = !0;
-    for (var e = z.length; e; ) {
-      for (ee = z, z = []; ++me < e; )
+    for (var e = V.length; e; ) {
+      for (ee = V, V = []; ++me < e; )
         ee && ee[me].run();
-      me = -1, e = z.length;
+      me = -1, e = V.length;
     }
     ee = null, ne = !1, Fr(t);
   }
@@ -1147,7 +1147,7 @@ function U(t) {
   if (arguments.length > 1)
     for (var r = 1; r < arguments.length; r++)
       e[r - 1] = arguments[r];
-  z.push(new Nt(t, e)), z.length === 1 && !ne && Lt(Dt);
+  V.push(new Nt(t, e)), V.length === 1 && !ne && Lt(Dt);
 }
 function Nt(t, e) {
   this.fun = t, this.array = e;
@@ -1288,7 +1288,7 @@ function ye(t, e, r) {
     var n = e.inspect(r, t);
     return Ye(n) || (n = ye(t, n, r)), n;
   }
-  var i = zr(t, e);
+  var i = Vr(t, e);
   if (i)
     return i;
   var o = Object.keys(e), s = qr(o);
@@ -1317,11 +1317,11 @@ function ye(t, e, r) {
     return Te(e) ? t.stylize(RegExp.prototype.toString.call(e), "regexp") : t.stylize("[Object]", "special");
   t.seen.push(e);
   var p;
-  return l ? p = Vr(t, e, r, s, o) : p = o.map(function(m) {
+  return l ? p = zr(t, e, r, s, o) : p = o.map(function(m) {
     return Pe(t, e, r, s, m, l);
   }), t.seen.pop(), Jr(p, a, c);
 }
-function zr(t, e) {
+function Vr(t, e) {
   if (Q(e))
     return t.stylize("undefined", "undefined");
   if (Ye(e)) {
@@ -1338,7 +1338,7 @@ function zr(t, e) {
 function Ae(t) {
   return "[" + Error.prototype.toString.call(t) + "]";
 }
-function Vr(t, e, r, n, i) {
+function zr(t, e, r, n, i) {
   for (var o = [], s = 0, f = e.length; s < f; ++s)
     Bt(e, String(s)) ? o.push(Pe(
       t,
@@ -1873,7 +1873,7 @@ function He(t, e) {
   var i = t.decodeStrings === !1;
   this.decodeStrings = !i, this.defaultEncoding = t.defaultEncoding || "utf8", this.length = 0, this.writing = !1, this.corked = 0, this.sync = !0, this.bufferProcessing = !1, this.onwrite = function(o) {
     In(e, o);
-  }, this.writecb = null, this.writelen = 0, this.bufferedRequest = null, this.lastBufferedRequest = null, this.pendingcb = 0, this.prefinished = !1, this.errorEmitted = !1, this.bufferedRequestCount = 0, this.corkedRequestsFree = new Vt(this);
+  }, this.writecb = null, this.writelen = 0, this.bufferedRequest = null, this.lastBufferedRequest = null, this.pendingcb = 0, this.prefinished = !1, this.errorEmitted = !1, this.bufferedRequestCount = 0, this.corkedRequestsFree = new zt(this);
 }
 He.prototype.getBuffer = function() {
   for (var e = this.bufferedRequest, r = []; e; )
@@ -1944,7 +1944,7 @@ function In(t, e) {
   }
 }
 function it(t, e, r, n) {
-  r || Cn(t, e), e.pendingcb--, n(), zt(t, e);
+  r || Cn(t, e), e.pendingcb--, n(), Vt(t, e);
 }
 function Cn(t, e) {
   e.length === 0 && e.needDrain && (e.needDrain = !1, t.emit("drain"));
@@ -1957,7 +1957,7 @@ function jt(t, e) {
     o.entry = r;
     for (var s = 0; r; )
       i[s] = r, r = r.next, s += 1;
-    $e(t, e, !0, e.length, i, "", o.finish), e.pendingcb++, e.lastBufferedRequest = null, o.next ? (e.corkedRequestsFree = o.next, o.next = null) : e.corkedRequestsFree = new Vt(e);
+    $e(t, e, !0, e.length, i, "", o.finish), e.pendingcb++, e.lastBufferedRequest = null, o.next ? (e.corkedRequestsFree = o.next, o.next = null) : e.corkedRequestsFree = new zt(e);
   } else {
     for (; r; ) {
       var f = r.chunk, a = r.encoding, l = r.callback, c = e.objectMode ? 1 : f.length;
@@ -1982,14 +1982,14 @@ function qt(t) {
 function ot(t, e) {
   e.prefinished || (e.prefinished = !0, t.emit("prefinish"));
 }
-function zt(t, e) {
+function Vt(t, e) {
   var r = qt(e);
   return r && (e.pendingcb === 0 ? (ot(t, e), e.finished = !0, t.emit("finish")) : ot(t, e)), r;
 }
 function On(t, e, r) {
-  e.ending = !0, zt(t, e), r && (e.finished ? U(r) : t.once("finish", r)), e.ended = !0, t.writable = !1;
+  e.ending = !0, Vt(t, e), r && (e.finished ? U(r) : t.once("finish", r)), e.ended = !0, t.writable = !1;
 }
-function Vt(t) {
+function zt(t) {
   var e = this;
   this.next = null, this.entry = null, this.finish = function(r) {
     var n = e.entry;
@@ -2073,17 +2073,17 @@ function fe(t) {
 fe.prototype._transform = function(t, e, r) {
   r(null, t);
 };
-oe(V, g);
-V.Readable = C;
-V.Writable = L;
-V.Duplex = B;
-V.Transform = k;
-V.PassThrough = fe;
-V.Stream = V;
-function V() {
+oe(z, g);
+z.Readable = C;
+z.Writable = L;
+z.Duplex = B;
+z.Transform = k;
+z.PassThrough = fe;
+z.Stream = z;
+function z() {
   g.call(this);
 }
-V.prototype.pipe = function(t, e) {
+z.prototype.pipe = function(t, e) {
   var r = this;
   function n(c) {
     t.writable && t.write(c) === !1 && r.pause && r.pause();
@@ -3250,7 +3250,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
     }
   };
 };
-class zn extends k {
+class Vn extends k {
   constructor(e = {}) {
     super({ readableObjectMode: !0, ...e, encoding: null }), this.api = qn({
       on_skip: (r, n) => {
@@ -3309,7 +3309,7 @@ const je = function() {
         e || {}
       );
   }
-  const n = new zn(e);
+  const n = new Vn(e);
   if (r) {
     const i = e === void 0 || e.objname === void 0 ? [] : {};
     n.on("readable", function() {
@@ -3330,14 +3330,14 @@ const je = function() {
   }
   return n;
 };
-class Vn extends Error {
+class zn extends Error {
   locator;
   /** Logical source of the error. */
   constructor(e, r, n) {
     super(e, n), this.name = new.target.name, this.locator = r;
   }
 }
-class Jn extends Vn {
+class Jn extends zn {
 }
 class Yn extends Jn {
   body;
@@ -3386,17 +3386,15 @@ class ri {
     return je(e);
   }
   /**
-   * Determine schema configuration.
+   * Infer schema.
    */
-  async determineSchemaConfig(e, r, n) {
-    const i = Xn(r), { records: o, valueDelimiterId: s } = await Kn(r, n);
-    console.log("records", o);
-    const f = [], a = [];
+  async inferSchema(e, r, n) {
+    const i = Xn(r), { parsingRecords: o, valueDelimiterId: s } = await Kn(r, n), f = [], a = [];
     for (const l of o) {
       const c = e.parseRecord(a, l, !0);
       f.push(c);
     }
-    return console.log("castRecords", f), { columnConfigs: a, recordDelimiterId: i, records: f, valueDelimiterId: s };
+    return console.log("inferenceRecords", f), { recordDelimiterId: i, valueDelimiterId: s, parsingRecords: o, inferenceRecords: f, columnConfigs: a };
   }
   /**
    * Parse stream.
@@ -3490,7 +3488,7 @@ async function Kn(t, e) {
       });
     } catch {
     }
-  return { records: o, valueDelimiterId: r ?? "," };
+  return { parsingRecords: o, valueDelimiterId: r ?? "," };
 }
 function ei(t) {
   const e = Math.max(1, Math.floor(t.chunkSize)), r = [];

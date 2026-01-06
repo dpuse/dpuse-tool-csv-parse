@@ -1,19 +1,29 @@
 import { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
 import { EngineUtilities } from '@datapos/datapos-shared/engine';
-import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
-import { ParseRecord, SchemaConfig, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
+import { ConnectionColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
+import { InferenceRecord, ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
+/**
+ * Schema configuration.
+ */
+interface SchemaConfig {
+    recordDelimiterId: RecordDelimiterId;
+    valueDelimiterId: ValueDelimiterId;
+    parsingRecords: ParsingRecord[];
+    inferenceRecords: InferenceRecord[];
+    columnConfigs: ConnectionColumnConfig[];
+}
 /** Tool. */
 declare class Tool {
     /** Build parser. */
     buildParser(options: ParseOptions): Parser;
     /**
-     * Determine schema configuration.
+     * Infer schema.
      */
-    determineSchemaConfig(engineUtilities: EngineUtilities, text: string, delimiters: ValueDelimiterId[]): Promise<SchemaConfig>;
+    inferSchema(engineUtilities: EngineUtilities, text: string, delimiters: ValueDelimiterId[]): Promise<SchemaConfig>;
     /**
      * Parse stream.
      */
-    parseStream(retrieveRecordsOptions: RetrieveRecordsOptions, parseOptions: ParseOptions, url: string, abortController: AbortController, chunk: (records: ParseRecord[]) => void): Promise<RetrieveRecordsSummary>;
+    parseStream(retrieveRecordsOptions: RetrieveRecordsOptions, parseOptions: ParseOptions, url: string, abortController: AbortController, chunk: (records: ParsingRecord[]) => void): Promise<RetrieveRecordsSummary>;
 }
 export type { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
 export { Tool };
