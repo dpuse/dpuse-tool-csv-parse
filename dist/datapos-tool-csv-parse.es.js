@@ -3389,7 +3389,7 @@ const Wt = {
   delimiter: ",",
   encoding: "utf8",
   escape: '"',
-  // from: 1,
+  from: 1,
   from_line: 1,
   group_columns_by_name: !1,
   ignore_last_delimiters: !1,

@@ -23,7 +23,7 @@ const DEFAULT_OPTIONS: Options = {
     delimiter: ',',
     encoding: 'utf8',
     escape: '"',
-    // from: 1,
+    from: 1,
     from_line: 1,
     group_columns_by_name: false,
     ignore_last_delimiters: false,
