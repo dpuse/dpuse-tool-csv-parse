@@ -31,8 +31,8 @@ function Ze(t) {
   return n === 1 ? (e = t[r - 1], i += P[e >> 2], i += P[e << 4 & 63], i += "==") : n === 2 && (e = (t[r - 2] << 8) + t[r - 1], i += P[e >> 10], i += P[e >> 4 & 63], i += P[e << 2 & 63], i += "="), o.push(i), o.join("");
 }
 function ve(t, e, r, n, i) {
-  var o, s, f = i * 8 - n - 1, a = (1 << f) - 1, l = a >> 1, h = -7, c = r ? i - 1 : 0, d = r ? -1 : 1, g = t[e + c];
-  for (c += d, o = g & (1 << -h) - 1, g >>= -h, h += f; h > 0; o = o * 256 + t[e + c], c += d, h -= 8)
+  var o, s, f = i * 8 - n - 1, a = (1 << f) - 1, l = a >> 1, h = -7, c = r ? i - 1 : 0, d = r ? -1 : 1, p = t[e + c];
+  for (c += d, o = p & (1 << -h) - 1, p >>= -h, h += f; h > 0; o = o * 256 + t[e + c], c += d, h -= 8)
     ;
   for (s = o & (1 << -h) - 1, o >>= -h, h += n; h > 0; s = s * 256 + t[e + c], c += d, h -= 8)
     ;
@@ -40,18 +40,18 @@ function ve(t, e, r, n, i) {
     o = 1 - l;
   else {
     if (o === a)
-      return s ? NaN : (g ? -1 : 1) * (1 / 0);
+      return s ? NaN : (p ? -1 : 1) * (1 / 0);
     s = s + Math.pow(2, n), o = o - l;
   }
-  return (g ? -1 : 1) * s * Math.pow(2, o - n);
+  return (p ? -1 : 1) * s * Math.pow(2, o - n);
 }
 function ht(t, e, r, n, i, o) {
-  var s, f, a, l = o * 8 - i - 1, h = (1 << l) - 1, c = h >> 1, d = i === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0, g = n ? 0 : o - 1, x = n ? 1 : -1, _ = e < 0 || e === 0 && 1 / e < 0 ? 1 : 0;
-  for (e = Math.abs(e), isNaN(e) || e === 1 / 0 ? (f = isNaN(e) ? 1 : 0, s = h) : (s = Math.floor(Math.log(e) / Math.LN2), e * (a = Math.pow(2, -s)) < 1 && (s--, a *= 2), s + c >= 1 ? e += d / a : e += d * Math.pow(2, 1 - c), e * a >= 2 && (s++, a /= 2), s + c >= h ? (f = 0, s = h) : s + c >= 1 ? (f = (e * a - 1) * Math.pow(2, i), s = s + c) : (f = e * Math.pow(2, c - 1) * Math.pow(2, i), s = 0)); i >= 8; t[r + g] = f & 255, g += x, f /= 256, i -= 8)
+  var s, f, a, l = o * 8 - i - 1, h = (1 << l) - 1, c = h >> 1, d = i === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0, p = n ? 0 : o - 1, x = n ? 1 : -1, _ = e < 0 || e === 0 && 1 / e < 0 ? 1 : 0;
+  for (e = Math.abs(e), isNaN(e) || e === 1 / 0 ? (f = isNaN(e) ? 1 : 0, s = h) : (s = Math.floor(Math.log(e) / Math.LN2), e * (a = Math.pow(2, -s)) < 1 && (s--, a *= 2), s + c >= 1 ? e += d / a : e += d * Math.pow(2, 1 - c), e * a >= 2 && (s++, a /= 2), s + c >= h ? (f = 0, s = h) : s + c >= 1 ? (f = (e * a - 1) * Math.pow(2, i), s = s + c) : (f = e * Math.pow(2, c - 1) * Math.pow(2, i), s = 0)); i >= 8; t[r + p] = f & 255, p += x, f /= 256, i -= 8)
     ;
-  for (s = s << i | f, l += i; l > 0; t[r + g] = s & 255, g += x, s /= 256, l -= 8)
+  for (s = s << i | f, l += i; l > 0; t[r + p] = s & 255, p += x, s /= 256, l -= 8)
     ;
-  t[r + g - x] |= _ * 128;
+  t[r + p - x] |= _ * 128;
 }
 var er = {}.toString, dt = Array.isArray || function(t) {
   return er.call(t) == "[object Array]";
@@ -348,8 +348,8 @@ function Xe(t, e, r, n, i) {
       return -1;
     o = 2, s /= 2, f /= 2, r /= 2;
   }
-  function a(g, x) {
-    return o === 1 ? g[x] : g.readUInt16BE(x * o);
+  function a(p, x) {
+    return o === 1 ? p[x] : p.readUInt16BE(x * o);
   }
   var l;
   if (i) {
@@ -1317,8 +1317,8 @@ function ye(t, e, r) {
     return Le(e) ? t.stylize(RegExp.prototype.toString.call(e), "regexp") : t.stylize("[Object]", "special");
   t.seen.push(e);
   var d;
-  return l ? d = zr(t, e, r, s, o) : d = o.map(function(g) {
-    return Pe(t, e, r, s, g, l);
+  return l ? d = zr(t, e, r, s, o) : d = o.map(function(p) {
+    return Pe(t, e, r, s, p, l);
   }), t.seen.pop(), Jr(d, a, h);
 }
 function Vr(t, e) {
@@ -1698,7 +1698,7 @@ C.prototype.pipe = function(t, e) {
   t.on("drain", a);
   var l = !1;
   function h() {
-    E("cleanup"), t.removeListener("close", x), t.removeListener("finish", _), t.removeListener("drain", a), t.removeListener("error", g), t.removeListener("unpipe", s), r.removeListener("end", f), r.removeListener("end", h), r.removeListener("data", d), l = !0, n.awaitDrain && (!t._writableState || t._writableState.needDrain) && a();
+    E("cleanup"), t.removeListener("close", x), t.removeListener("finish", _), t.removeListener("drain", a), t.removeListener("error", p), t.removeListener("unpipe", s), r.removeListener("end", f), r.removeListener("end", h), r.removeListener("data", d), l = !0, n.awaitDrain && (!t._writableState || t._writableState.needDrain) && a();
   }
   var c = !1;
   r.on("data", d);
@@ -1707,10 +1707,10 @@ C.prototype.pipe = function(t, e) {
     var v = t.write(I);
     v === !1 && !c && ((n.pipesCount === 1 && n.pipes === t || n.pipesCount > 1 && $t(n.pipes, t) !== -1) && !l && (E("false write response, pause", r._readableState.awaitDrain), r._readableState.awaitDrain++, c = !0), r.pause());
   }
-  function g(I) {
-    E("onerror", I), S(), t.removeListener("error", g), tn(t, "error") === 0 && t.emit("error", I);
+  function p(I) {
+    E("onerror", I), S(), t.removeListener("error", p), tn(t, "error") === 0 && t.emit("error", I);
   }
-  en(t, "error", g);
+  en(t, "error", p);
   function x() {
     t.removeListener("finish", _), S();
   }
@@ -2665,7 +2665,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
     state: kn(r),
     __needMoreData: function(n, i, o) {
       if (o) return !1;
-      const { encoding: s, escape: f, quote: a } = this.options, { quoting: l, needMoreDataSize: h, recordDelimiterMaxLength: c } = this.state, d = i - n - 1, g = Math.max(
+      const { encoding: s, escape: f, quote: a } = this.options, { quoting: l, needMoreDataSize: h, recordDelimiterMaxLength: c } = this.state, d = i - n - 1, p = Math.max(
         h,
         // Skip if the remaining buffer smaller than record delimiter
         // If "record_delimiter" is yet to be discovered:
@@ -2680,7 +2680,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
         // Skip if remaining buffer can be record delimiter following the closing quote
         l ? a.length + c : 0
       );
-      return d < g;
+      return d < p;
     },
     // Central parser implementation
     parse: function(n, i, o, s) {
@@ -2691,7 +2691,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
         from_line: h,
         ltrim: c,
         max_record_size: d,
-        raw: g,
+        raw: p,
         relax_quotes: x,
         rtrim: _,
         skip_empty_lines: S,
@@ -2733,41 +2733,41 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
           this.state.bomSkipped = !0;
         }
       const Ie = b.length;
-      let p;
-      for (p = 0; p < Ie && !this.__needMoreData(p, Ie, i); p++) {
+      let g;
+      for (g = 0; g < Ie && !this.__needMoreData(g, Ie, i); g++) {
         if (this.state.wasRowDelimiter === !0 && (this.info.lines++, this.state.wasRowDelimiter = !1), v !== -1 && this.info.lines > v) {
           this.state.stop = !0, s();
           return;
         }
         this.state.quoting === !1 && Re.length === 0 && this.__autoDiscoverRecordDelimiter(
           b,
-          p
+          g
         ) && (Re = this.options.record_delimiter);
-        const O = b[p];
-        if (g === !0 && Qt.append(O), (O === $n || O === jn) && this.state.wasRowDelimiter === !1 && (this.state.wasRowDelimiter = !0), this.state.escaping === !0)
+        const O = b[g];
+        if (p === !0 && Qt.append(O), (O === $n || O === jn) && this.state.wasRowDelimiter === !1 && (this.state.wasRowDelimiter = !0), this.state.escaping === !0)
           this.state.escaping = !1;
         else {
-          if (R !== null && this.state.quoting === !0 && this.__isEscape(b, p, O) && p + R.length < Ie)
+          if (R !== null && this.state.quoting === !0 && this.__isEscape(b, g, O) && g + R.length < Ie)
             if (Ht) {
-              if (this.__isQuote(b, p + R.length)) {
-                this.state.escaping = !0, p += R.length - 1;
+              if (this.__isQuote(b, g + R.length)) {
+                this.state.escaping = !0, g += R.length - 1;
                 continue;
               }
             } else {
-              this.state.escaping = !0, p += R.length - 1;
+              this.state.escaping = !0, g += R.length - 1;
               continue;
             }
-          if (this.state.commenting === !1 && this.__isQuote(b, p))
+          if (this.state.commenting === !1 && this.__isQuote(b, g))
             if (this.state.quoting === !0) {
-              const A = b[p + F.length], Z = _ && this.__isCharTrimable(b, p + F.length), j = w !== null && this.__compareBytes(w, b, p + F.length, A), X = this.__isDelimiter(
+              const A = b[g + F.length], Z = _ && this.__isCharTrimable(b, g + F.length), j = w !== null && this.__compareBytes(w, b, g + F.length, A), X = this.__isDelimiter(
                 b,
-                p + F.length,
+                g + F.length,
                 A
-              ), de = Re.length === 0 ? this.__autoDiscoverRecordDelimiter(b, p + F.length) : this.__isRecordDelimiter(A, b, p + F.length);
-              if (R !== null && this.__isEscape(b, p, O) && this.__isQuote(b, p + R.length))
-                p += R.length - 1;
+              ), de = Re.length === 0 ? this.__autoDiscoverRecordDelimiter(b, g + F.length) : this.__isRecordDelimiter(A, b, g + F.length);
+              if (R !== null && this.__isEscape(b, g, O) && this.__isQuote(b, g + R.length))
+                g += R.length - 1;
               else if (!A || X || de || j || Z) {
-                this.state.quoting = !1, this.state.wasQuoting = !0, p += F.length - 1;
+                this.state.quoting = !1, this.state.wasQuoting = !0, g += F.length - 1;
                 continue;
               } else if (x === !1) {
                 const Ge = this.__error(
@@ -2786,7 +2786,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
                 );
                 if (Ge !== void 0) return Ge;
               } else
-                this.state.quoting = !1, this.state.wasQuoting = !0, this.state.field.prepend(F), p += F.length - 1;
+                this.state.quoting = !1, this.state.wasQuoting = !0, this.state.field.prepend(F), g += F.length - 1;
             } else if (this.state.field.length !== 0) {
               if (x === !1) {
                 const A = this.__infoField(), Z = Object.keys(re).map(
@@ -2809,31 +2809,31 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
                 if (j !== void 0) return j;
               }
             } else {
-              this.state.quoting = !0, p += F.length - 1;
+              this.state.quoting = !0, g += F.length - 1;
               continue;
             }
           if (this.state.quoting === !1) {
             const A = this.__isRecordDelimiter(
               O,
               b,
-              p
+              g
             );
             if (A !== 0) {
               if (this.state.commenting && this.state.wasQuoting === !1 && this.state.record.length === 0 && this.state.field.length === 0)
                 this.info.comment_lines++;
               else {
                 if (this.state.enabled === !1 && this.info.lines + (this.state.wasRowDelimiter === !0 ? 1 : 0) >= h) {
-                  this.state.enabled = !0, this.__resetField(), this.__resetRecord(), p += A - 1;
+                  this.state.enabled = !0, this.__resetField(), this.__resetRecord(), g += A - 1;
                   continue;
                 }
                 if (S === !0 && this.state.wasQuoting === !1 && this.state.record.length === 0 && this.state.field.length === 0) {
-                  this.info.empty_lines++, p += A - 1;
+                  this.info.empty_lines++, g += A - 1;
                   continue;
                 }
-                this.info.bytes = this.state.bufBytesStart + p;
+                this.info.bytes = this.state.bufBytesStart + g;
                 const X = this.__onField();
                 if (X !== void 0) return X;
-                this.info.bytes = this.state.bufBytesStart + p + A;
+                this.info.bytes = this.state.bufBytesStart + g + A;
                 const de = this.__onRecord(o);
                 if (de !== void 0) return de;
                 if (I !== -1 && this.info.records >= I) {
@@ -2841,21 +2841,21 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
                   return;
                 }
               }
-              this.state.commenting = !1, p += A - 1;
+              this.state.commenting = !1, g += A - 1;
               continue;
             }
             if (this.state.commenting)
               continue;
-            if (w !== null && (a === !1 || this.state.record.length === 0 && this.state.field.length === 0) && this.__compareBytes(w, b, p, O) !== 0) {
+            if (w !== null && (a === !1 || this.state.record.length === 0 && this.state.field.length === 0) && this.__compareBytes(w, b, g, O) !== 0) {
               this.state.commenting = !0;
               continue;
             }
-            const Z = this.__isDelimiter(b, p, O);
+            const Z = this.__isDelimiter(b, g, O);
             if (Z !== 0) {
-              this.info.bytes = this.state.bufBytesStart + p;
+              this.info.bytes = this.state.bufBytesStart + g;
               const j = this.__onField();
               if (j !== void 0) return j;
-              p += Z - 1;
+              g += Z - 1;
               continue;
             }
           }
@@ -2874,11 +2874,11 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
               this.__infoField()
             )
           );
-        const J = c === !1 || this.state.quoting === !0 || this.state.field.length !== 0 || !this.__isCharTrimable(b, p), he = _ === !1 || this.state.wasQuoting === !1;
+        const J = c === !1 || this.state.quoting === !0 || this.state.field.length !== 0 || !this.__isCharTrimable(b, g), he = _ === !1 || this.state.wasQuoting === !1;
         if (J === !0 && he === !0)
           this.state.field.append(O);
         else {
-          if (_ === !0 && !this.__isCharTrimable(b, p))
+          if (_ === !0 && !this.__isCharTrimable(b, g))
             return this.__error(
               new y(
                 "CSV_NON_TRIMABLE_CHAR_AFTER_CLOSING_QUOTE",
@@ -2891,7 +2891,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
                 this.__infoField()
               )
             );
-          J === !1 && (p += this.__isCharTrimable(b, p) - 1);
+          J === !1 && (g += this.__isCharTrimable(b, g) - 1);
           continue;
         }
       }
@@ -2910,14 +2910,14 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
           );
           if (O !== void 0) return O;
         } else if (this.state.wasQuoting === !0 || this.state.record.length !== 0 || this.state.field.length !== 0) {
-          this.info.bytes = this.state.bufBytesStart + p;
+          this.info.bytes = this.state.bufBytesStart + g;
           const O = this.__onField();
           if (O !== void 0) return O;
           const J = this.__onRecord(o);
           if (J !== void 0) return J;
         } else this.state.wasRowDelimiter === !0 ? this.info.empty_lines++ : this.state.commenting === !0 && this.info.comment_lines++;
       else
-        this.state.bufBytesStart += p, this.state.previousBuf = b.slice(p);
+        this.state.bufBytesStart += g, this.state.previousBuf = b.slice(g);
       this.state.wasRowDelimiter === !0 && (this.info.lines++, this.state.wasRowDelimiter = !1);
     },
     __onRecord: function(n) {
@@ -2931,13 +2931,13 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
         relax_column_count_less: h,
         relax_column_count_more: c,
         raw: d,
-        skip_records_with_empty_values: g
+        skip_records_with_empty_values: p
       } = this.options, { enabled: x, record: _ } = this.state;
       if (x === !1)
         return this.__resetRecord();
       const S = _.length;
       if (i === !0) {
-        if (g === !0 && lt(_)) {
+        if (p === !0 && lt(_)) {
           this.__resetRecord();
           return;
         }
@@ -2977,7 +2977,7 @@ const Nn = 12, Fn = 13, Mn = 10, Bn = 32, Un = 9, kn = function(t) {
           if (v) return v;
         }
       }
-      if (g === !0 && lt(_)) {
+      if (p === !0 && lt(_)) {
         this.__resetRecord();
         return;
       }
@@ -3391,22 +3391,25 @@ class ri {
   async inferSchema(e, r, n) {
     const i = Xn(r), { parsingRecords: o, valueDelimiterId: s } = await Kn(r, n), f = [], a = [];
     for (const c of o) {
-      const d = e.inferValues(a, c, !0);
-      f.push(d);
+      const d = e.inferValues(f, c, !0);
+      a.push(d);
     }
     let l = 0;
-    const h = f[0];
+    const h = a[0];
     if (h) {
       const c = h.length;
       for (let d = 0; d < c; d++) {
-        const g = h[d]?.inferredValue, x = g == null ? `Column ${d}` : String(g), _ = a[d];
+        const p = h[d]?.inferredValue, x = p == null ? `Column ${d}` : String(p), _ = f[d];
         _ != null && (_.label = { en: x });
       }
       l = 1;
     }
-    for (let c = l; c < f.length; c++)
-      ;
-    return { recordDelimiterId: i, valueDelimiterId: s, parsingRecords: o, inferenceRecords: f, columnConfigs: a };
+    for (let c = l; c < a.length; c++) {
+      const d = a[c] ?? [];
+      for (let p = 0; p < d.length; p++)
+        f[p];
+    }
+    return { recordDelimiterId: i, valueDelimiterId: s, parsingRecords: o, inferenceRecords: a, columnConfigs: f };
   }
   /**
    * Parse stream.
@@ -3414,7 +3417,7 @@ class ri {
   async parseStream(e, r, n, i, o) {
     return new Promise((s, f) => {
       let a, l, h, c = !1, d = !1;
-      const g = () => {
+      const p = () => {
         if (d) return;
         d = !0;
         const S = a;
@@ -3422,9 +3425,9 @@ class ri {
           l?.cancel();
         }), l = void 0;
       };
-      i.signal.addEventListener("abort", g, { once: !0 });
+      i.signal.addEventListener("abort", p, { once: !0 });
       const x = (S) => {
-        c || (c = !0, g(), i.signal.aborted || i.abort(S), f(S));
+        c || (c = !0, p(), i.signal.aborted || i.abort(S), f(S));
       };
       (async () => {
         a = je({
@@ -3476,23 +3479,23 @@ async function Kn(t, e) {
     try {
       let f = 0, a, l = 0, h = 0;
       const c = je({
-        cast: (d, g) => ({ value: d, wasValueQuoted: g.quoting }),
+        cast: (d, p) => ({ value: d, wasValueQuoted: p.quoting }),
         delimiter: s,
         relax_column_count: !0
       });
       await new Promise((d) => {
         try {
-          const g = [];
+          const p = [];
           c.on("readable", () => {
             let x;
             for (; (x = c.read()) != null; ) {
               l++;
               const _ = x.length;
-              a != null && (h += Math.abs(_ - a)), a = _, f += _, g.push(x);
+              a != null && (h += Math.abs(_ - a)), a = _, f += _, p.push(x);
             }
           }), c.on("error", () => d()), c.on("end", () => {
             const x = f / l;
-            (!i || h <= i) && (!n || x > n) && (r = s, n = x, i = h, o = [...g]), d();
+            (!i || h <= i) && (!n || x > n) && (r = s, n = x, i = h, o = [...p]), d();
           }), c.write(t), c.end();
         } catch {
           d();

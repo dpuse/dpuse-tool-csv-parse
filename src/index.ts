@@ -48,13 +48,16 @@ class Tool {
         const recordDelimiterId = determineRecordDelimiter(text);
         const { parsingRecords, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
 
-        const inferenceRecords: InferenceRecord[] = [];
+        // Infer values and initialise column configurations.
         const columnConfigs: ConnectionColumnConfig[] = [];
+        const inferenceRecords: InferenceRecord[] = [];
         for (const parsingRecord of parsingRecords) {
             const inferredValues = engineUtilities.inferValues(columnConfigs, parsingRecord, true);
             inferenceRecords.push(inferredValues);
         }
 
+        // Infer column labels.
+        // TODO: Only do this if headers detected.
         let firstDataRowIndex = 0;
         const headerRecord = inferenceRecords[0];
         if (headerRecord) {
@@ -62,7 +65,7 @@ class Tool {
             for (let headerValueIndex = 0; headerValueIndex < headerValueCount; headerValueIndex++) {
                 // eslint-disable-next-line security/detect-object-injection
                 const headerValue = headerRecord[headerValueIndex]?.inferredValue;
-                const headerLabel = headerValue == undefined ? `Column ${headerValueIndex}` : String(headerValue);
+                const headerLabel = headerValue == undefined ? `Column ${headerValueIndex}` : String(headerValue); // TODO: Default not needed, set in 'inferValues'.
                 // eslint-disable-next-line security/detect-object-injection
                 const columnConfig = columnConfigs[headerValueIndex];
                 if (columnConfig == null) continue;
@@ -71,7 +74,15 @@ class Tool {
             firstDataRowIndex = 1;
         }
 
-        for (let index = firstDataRowIndex; index < inferenceRecords.length; index++) {}
+        // Infer column characteristics.
+        for (let recordIndex = firstDataRowIndex; recordIndex < inferenceRecords.length; recordIndex++) {
+            // eslint-disable-next-line security/detect-object-injection
+            const inferenceRecord = inferenceRecords[recordIndex] ?? [];
+            for (let inferenceIndex = 0; inferenceIndex < inferenceRecord.length; inferenceIndex++) {
+                // eslint-disable-next-line security/detect-object-injection
+                const columnConfig = columnConfigs[inferenceIndex];
+            }
+        }
 
         return { recordDelimiterId, valueDelimiterId, parsingRecords, inferenceRecords, columnConfigs };
     }
