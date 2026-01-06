@@ -3,13 +3,51 @@
  */
 
 // Vendor dependencies.
-import { parse, type Options as ParseOptions, type Parser } from 'csv-parse/browser/esm';
+import { type Options, parse, type Parser } from 'csv-parse/browser/esm';
 
 // Framework dependencies.
 import type { EngineUtilities } from '@datapos/datapos-shared/engine';
 import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
 import type { ConnectionColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 import type { InferenceRecord, ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
+
+// Baseline parser configuration pinned to explicit values to prevent behavioural drift across parser upgrades.
+// Intentionally exhaustive, even where values mirror current defaults. See: https://csv.js.org/parse/options/ for more information.
+const DEFAULT_OPTIONS: Options = {
+    bom: false,
+    cast: undefined,
+    cast_date: false,
+    columns: false,
+    comment: '',
+    comment_no_infix: false,
+    delimiter: ',',
+    encoding: 'utf8',
+    escape: '"',
+    from: 1,
+    from_line: 1,
+    group_columns_by_name: false,
+    ignore_last_delimiters: false,
+    info: false,
+    ltrim: false,
+    max_record_size: 0,
+    objname: undefined,
+    on_record: undefined,
+    on_skip: undefined,
+    quote: '"',
+    raw: false,
+    record_delimiter: [],
+    relax_column_count: false,
+    relax_column_count_less: false,
+    relax_column_count_more: false,
+    relax_quotes: false,
+    rtrim: false,
+    skip_empty_lines: false,
+    skip_records_with_empty_values: false,
+    skip_records_with_error: false,
+    to: 1,
+    to_line: -1,
+    trim: false
+};
 
 /**
  * Parse record and parsed record buffer.
@@ -37,7 +75,7 @@ const DEFAULT_RECORD_BUFFER_POOL_SIZE = 4;
 /** Tool. */
 class Tool {
     /** Build parser. */
-    buildParser(options: ParseOptions): Parser {
+    buildParser(options: Options): Parser {
         return parse(options);
     }
 
@@ -92,7 +130,7 @@ class Tool {
      */
     async parseStream(
         retrieveRecordsOptions: RetrieveRecordsOptions,
-        parseOptions: ParseOptions,
+        parseOptions: Options,
         url: string,
         abortController: AbortController,
         chunk: (records: ParsingRecord[]) => void
@@ -132,6 +170,7 @@ class Tool {
 
             const run = async (): Promise<void> => {
                 parser = parse({
+                    ...DEFAULT_OPTIONS,
                     ...parseOptions,
                     cast: (value, context): { value: string; wasValueQuoted: boolean } => ({ value, wasValueQuoted: context.quoting })
                 });
@@ -224,6 +263,7 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
             let sumOfValueCountDiffs = 0;
 
             const parser = parse({
+                ...DEFAULT_OPTIONS,
                 cast: (value, context): { value: string; wasValueQuoted: boolean } => ({ value, wasValueQuoted: context.quoting }),
                 delimiter,
                 relax_column_count: true
@@ -327,5 +367,5 @@ function constructSummary(parser: Parser | undefined): RetrieveRecordsSummary {
 //#endregion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 // Exports.
-export type { Options as ParseOptions, Parser } from 'csv-parse/browser/esm';
+export type { Options, Parser } from 'csv-parse/browser/esm';
 export { Tool };
