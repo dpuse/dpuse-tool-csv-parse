@@ -3382,7 +3382,7 @@ function Gn(t) {
 const Wt = {
   bom: !1,
   // cast: undefined,
-  cast_date: !1,
+  // cast_date: false,
   columns: !1,
   comment: "",
   comment_no_infix: !1,

@@ -16,7 +16,7 @@ import type { InferenceRecord, ParsingRecord, RecordDelimiterId, ValueDelimiterI
 const DEFAULT_OPTIONS: Options = {
     bom: false,
     // cast: undefined,
-    cast_date: false,
+    // cast_date: false,
     columns: false,
     comment: '',
     comment_no_infix: false,
