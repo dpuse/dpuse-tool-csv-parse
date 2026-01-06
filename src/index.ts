@@ -15,8 +15,8 @@ import type { InferenceRecord, ParsingRecord, RecordDelimiterId, ValueDelimiterI
 // Intentionally exhaustive, even where values mirror current defaults. See: https://csv.js.org/parse/options/ for more information.
 const DEFAULT_OPTIONS: Options = {
     bom: false,
-    cast: undefined,
-    cast_date: undefined,
+    // cast: undefined,
+    cast_date: false,
     columns: false,
     comment: '',
     comment_no_infix: false,
