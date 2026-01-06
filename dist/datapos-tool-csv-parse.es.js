@@ -3380,7 +3380,7 @@ function Gn(t) {
     return t.length > 2048 ? `${t.slice(0, 2048)}... [truncated]` : t;
 }
 const Wt = {
-  // bom: false,
+  bom: !1,
   cast: void 0,
   cast_date: !1,
   columns: !1,
@@ -3389,8 +3389,8 @@ const Wt = {
   delimiter: ",",
   encoding: "utf8",
   escape: '"',
-  from: 1,
-  from_line: 1,
+  // from: 1,
+  // from_line: 1,
   group_columns_by_name: !1,
   ignore_last_delimiters: !1,
   info: !1,
@@ -3410,8 +3410,8 @@ const Wt = {
   skip_empty_lines: !1,
   skip_records_with_empty_values: !1,
   skip_records_with_error: !1,
-  to: 1,
-  to_line: -1,
+  // to: 1,
+  // to_line: -1,
   trim: !1
 }, Zn = 1e4, Xn = 4;
 class ni {
