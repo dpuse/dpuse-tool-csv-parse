@@ -23,8 +23,8 @@ const DEFAULT_OPTIONS: Options = {
     delimiter: ',',
     encoding: 'utf8',
     escape: '"',
-    // from: 1,
-    // from_line: 1,
+    from: 1,
+    from_line: 1,
     group_columns_by_name: false,
     ignore_last_delimiters: false,
     info: false,
@@ -44,8 +44,8 @@ const DEFAULT_OPTIONS: Options = {
     skip_empty_lines: false,
     skip_records_with_empty_values: false,
     skip_records_with_error: false,
-    // to: 1,
-    // to_line: -1,
+    to: 1,
+    to_line: -1,
     trim: false
 };
 
