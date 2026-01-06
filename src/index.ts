@@ -55,22 +55,24 @@ class Tool {
             inferenceRecords.push(inferredValues);
         }
 
-        console.log('inferenceRecords', inferenceRecords);
-
-        // let firstDataRowIndex = 0;
-        // const headerRecord = castRecords[0];
-        // if (headerRecord) {
-        //     const headerValueCount = castRecords.length;
-        //     for (let headerValueIndex = 0; headerValueIndex < headerValueCount; headerValueIndex++) {
-        //         // eslint-disable-next-line security/detect-object-injection
-        //         const headerLabel = headerRecord[headerValueIndex]?.originalValue ?? `Column ${headerValueIndex}`;
-        //         // eslint-disable-next-line security/detect-object-injection
-        //         const xxxx = columnConfigs[headerValueIndex];
-        //         if (xxxx == null) continue;
-        //         xxxx.label = { en: headerLabel };
-        //     }
-        //     firstDataRowIndex = 1;
-        // }
+        let firstDataRowIndex = 0;
+        const headerRecord = inferenceRecords[0];
+        if (headerRecord) {
+            const headerValueCount = headerRecord.length;
+            for (let headerValueIndex = 0; headerValueIndex < headerValueCount; headerValueIndex++) {
+                // eslint-disable-next-line security/detect-object-injection
+                const headerValue = headerRecord[headerValueIndex]?.inferredValue;
+                const headerLabel = headerValue == undefined ? `Column ${headerValueIndex}` : String(headerValue);
+                // eslint-disable-next-line security/detect-object-injection
+                const columnConfig = columnConfigs[headerValueIndex];
+                if (columnConfig == null) {
+                    columnConfigs.push({ label: { en: headerLabel } });
+                } else {
+                    columnConfig.label = { en: headerLabel };
+                }
+            }
+            firstDataRowIndex = 1;
+        }
 
         return { recordDelimiterId, valueDelimiterId, parsingRecords, inferenceRecords, columnConfigs };
     }
@@ -127,8 +129,6 @@ class Tool {
                 parser.on('readable', () => {
                     try {
                         if (parser == null || recordBuffer == null) return;
-                        // let record: StreamParsedRecord | null;
-                        // while ((record = parser.read() as StreamParsedRecord | null) != null) {
                         let record: ParsingRecord | null;
                         while ((record = parser.read() as ParsingRecord | null) != null) {
                             if (hasErrored) return;
