@@ -14,7 +14,7 @@ import type { InferenceRecord, ParsingRecord, RecordDelimiterId, ValueDelimiterI
 // Baseline parser configuration pinned to explicit values to prevent behavioural drift across parser upgrades.
 // Intentionally exhaustive, even where values mirror current defaults. See: https://csv.js.org/parse/options/ for more information.
 const DEFAULT_OPTIONS: Options = {
-    bom: false,
+    // bom: false,
     // cast: undefined,
     // cast_date: false,
     columns: false,
@@ -23,8 +23,8 @@ const DEFAULT_OPTIONS: Options = {
     delimiter: ',',
     encoding: 'utf8',
     escape: '"',
-    from: 1,
-    from_line: 1,
+    // from: 1,
+    // from_line: 1,
     group_columns_by_name: false,
     ignore_last_delimiters: false,
     info: false,
@@ -34,8 +34,8 @@ const DEFAULT_OPTIONS: Options = {
     // on_record: undefined,
     // on_skip: undefined,
     quote: '"',
-    raw: false,
-    record_delimiter: [],
+    // raw: false,
+    // record_delimiter: [],
     relax_column_count: false,
     relax_column_count_less: false,
     relax_column_count_more: false,
@@ -44,8 +44,8 @@ const DEFAULT_OPTIONS: Options = {
     skip_empty_lines: false,
     skip_records_with_empty_values: false,
     skip_records_with_error: false,
-    to: 1,
-    to_line: -1,
+    // to: 1,
+    // to_line: -1,
     trim: false
 };
 
