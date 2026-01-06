@@ -32,7 +32,7 @@ const DEFAULT_OPTIONS: Options = {
     max_record_size: 0,
     objname: undefined,
     // on_record: undefined,
-    on_skip: undefined,
+    // on_skip: undefined,
     quote: '"',
     raw: false,
     record_delimiter: [],
