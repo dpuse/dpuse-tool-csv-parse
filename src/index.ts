@@ -45,7 +45,7 @@ const DEFAULT_OPTIONS: Options = {
     skip_records_with_empty_values: false,
     skip_records_with_error: false,
     // to: 1,
-    // to_line: -1,
+    to_line: -1,
     trim: false
 };
 

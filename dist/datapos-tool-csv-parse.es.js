@@ -3411,7 +3411,7 @@ const Wt = {
   skip_records_with_empty_values: !1,
   skip_records_with_error: !1,
   // to: 1,
-  // to_line: -1,
+  to_line: -1,
   trim: !1
 }, Zn = 1e4, Xn = 4;
 class ni {
