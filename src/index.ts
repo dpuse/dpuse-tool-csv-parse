@@ -170,7 +170,7 @@ class Tool {
 
             const run = async (): Promise<void> => {
                 parser = parse({
-                    ...DEFAULT_OPTIONS,
+                    // ...DEFAULT_OPTIONS,
                     ...parseOptions,
                     cast: (value, context): { value: string; wasValueQuoted: boolean } => ({ value, wasValueQuoted: context.quoting })
                 });
@@ -263,7 +263,7 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
             let sumOfValueCountDiffs = 0;
 
             const parser = parse({
-                ...DEFAULT_OPTIONS,
+                // ...DEFAULT_OPTIONS,
                 cast: (value, context): { value: string; wasValueQuoted: boolean } => ({ value, wasValueQuoted: context.quoting }),
                 delimiter,
                 relax_column_count: true
