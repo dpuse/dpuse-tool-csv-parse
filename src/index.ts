@@ -7,14 +7,14 @@ import { type Options, parse, type Parser } from 'csv-parse/browser/esm';
 
 // Framework dependencies.
 import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
-import type { RecordDelimiterId, StringValueRecord, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
+import type { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
 import type { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 
 /**
  * Parse record and parsed record buffer.
  */
 interface StreamRecordBuffer {
-    push: (record: StringValueRecord) => void;
+    push: (record: ParsingRecord) => void;
     flush: () => void;
 }
 
@@ -22,7 +22,7 @@ interface StreamRecordBuffer {
  * Parse text result.
  */
 interface ParseTextResult {
-    parsedRecords: StringValueRecord[];
+    parsedRecords: ParsingRecord[];
     recordDelimiterId: RecordDelimiterId;
     valueDelimiterId: ValueDelimiterId;
 }
@@ -89,7 +89,7 @@ class Tool {
         parseOptions: Options,
         url: string,
         abortController: AbortController,
-        chunk: (records: StringValueRecord[]) => void
+        chunk: (records: ParsingRecord[]) => void
     ): Promise<RetrieveRecordsSummary> {
         return new Promise<RetrieveRecordsSummary>((resolve, reject) => {
             let parser: Parser | undefined;
@@ -134,8 +134,8 @@ class Tool {
                 parser.on('readable', () => {
                     try {
                         if (parser == null || recordBuffer == null) return;
-                        let record: StringValueRecord | null;
-                        while ((record = parser.read() as StringValueRecord | null) != null) {
+                        let record: ParsingRecord | null;
+                        while ((record = parser.read() as ParsingRecord | null) != null) {
                             if (hasErrored) return;
                             abortController.signal.throwIfAborted();
                             recordBuffer.push(record);
@@ -195,9 +195,9 @@ class Tool {
 /**
  * Construct record buffer.
  */
-function constructRecordBuffer(bufferOptions: { chunk: (records: StringValueRecord[]) => void; chunkSize: number }): StreamRecordBuffer {
+function constructRecordBuffer(bufferOptions: { chunk: (records: ParsingRecord[]) => void; chunkSize: number }): StreamRecordBuffer {
     const recordsPerChunk = Math.max(1, Math.floor(bufferOptions.chunkSize));
-    const pool: StringValueRecord[][] = [];
+    const pool: ParsingRecord[][] = [];
     let records = allocateBuffer();
     let recordCount = 0;
 
@@ -211,21 +211,21 @@ function constructRecordBuffer(bufferOptions: { chunk: (records: StringValueReco
         if (pool.length < DEFAULT_RECORD_BUFFER_POOL_SIZE) pool.push(recordsToEmit);
     };
 
-    const push = (record: StringValueRecord): void => {
+    const push = (record: ParsingRecord): void => {
         records[recordCount++] = record;
         if (recordCount >= recordsPerChunk) flush();
     };
 
     return { flush, push };
 
-    function allocateBuffer(): StringValueRecord[] {
+    function allocateBuffer(): ParsingRecord[] {
         const pooled = pool.pop();
         if (pooled != null) {
             pooled.length = 0;
             return pooled;
         }
 
-        const allocated = Array.from<StringValueRecord>({ length: recordsPerChunk });
+        const allocated = Array.from<ParsingRecord>({ length: recordsPerChunk });
         allocated.length = 0;
         return allocated;
     }
@@ -265,11 +265,11 @@ function determineRecordDelimiter(text: string): RecordDelimiterId {
 /**
  * Determine value delimiter.
  */
-async function determineValueDelimiter(text: string, delimiters: ValueDelimiterId[]): Promise<{ parsedRecords: StringValueRecord[]; valueDelimiterId: ValueDelimiterId }> {
+async function determineValueDelimiter(text: string, delimiters: ValueDelimiterId[]): Promise<{ parsedRecords: ParsingRecord[]; valueDelimiterId: ValueDelimiterId }> {
     let valueDelimiterId: ValueDelimiterId | undefined;
     let priorAverageCount: number;
     let priorSumCountDiffs: number;
-    let parsedRecords: StringValueRecord[] = [];
+    let parsedRecords: ParsingRecord[] = [];
 
     /* TODO: Could improve performance by limiting the number of delimiters
        processed by exiting if column count is the same for each line and
@@ -292,10 +292,10 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
             });
             await new Promise<void>((resolve): void => {
                 try {
-                    const pendingRecords: StringValueRecord[] = [];
+                    const pendingRecords: ParsingRecord[] = [];
                     parser.on('readable', (): void => {
                         let record;
-                        while ((record = parser.read() as StringValueRecord | null) != null) {
+                        while ((record = parser.read() as ParsingRecord | null) != null) {
                             recordCount++;
                             const valueCount = record.length;
                             if (priorValueCount != null) sumOfValueCountDiffs += Math.abs(valueCount - priorValueCount);
