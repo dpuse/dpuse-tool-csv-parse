@@ -57,9 +57,9 @@ interface StreamRecordBuffer {
 }
 
 /**
- * Preview configuration.
+ * Parse preview configuration.
  */
-interface PreviewConfig {
+interface ParsePreviewConfig {
     parsingRecords: ParsingRecord[];
     recordDelimiterId: RecordDelimiterId;
     valueDelimiterId: ValueDelimiterId;
@@ -79,7 +79,7 @@ class Tool {
     /**
      * Parse preview.
      */
-    async parsePreview(text: string, delimiters: ValueDelimiterId[]): Promise<PreviewConfig> {
+    async parsePreview(text: string, delimiters: ValueDelimiterId[]): Promise<ParsePreviewConfig> {
         const recordDelimiterId = determineRecordDelimiter(text);
         const { parsingRecords, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
         return { parsingRecords, recordDelimiterId, valueDelimiterId };
@@ -328,4 +328,4 @@ function constructSummary(parser: Parser | undefined): RetrieveRecordsSummary {
 
 // Exports.
 export type { Options, Parser } from 'csv-parse/browser/esm';
-export { Tool };
+export { type ParsePreviewConfig, Tool };
