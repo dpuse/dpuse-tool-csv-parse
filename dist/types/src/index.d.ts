@@ -1,26 +1,24 @@
-import { Options, Parser } from 'csv-parse/browser/esm';
+import { Options } from 'csv-parse/browser/esm';
 import { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
 import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 /**
- * Parse preview configuration.
+ * Parse text configuration.
  */
-interface ParsePreviewConfig {
+interface ParseTextConfig {
     parsingRecords: ParsingRecord[];
     recordDelimiterId: RecordDelimiterId;
     valueDelimiterId: ValueDelimiterId;
 }
 /** Tool. */
 declare class Tool {
-    /** Build parser. */
-    buildParser(options: Options): Parser;
-    /**
-     * Parse preview.
-     */
-    parsePreview(text: string, delimiters: ValueDelimiterId[]): Promise<ParsePreviewConfig>;
     /**
      * Parse stream.
      */
     parseStream(retrieveRecordsOptions: RetrieveRecordsOptions, parseOptions: Options, url: string, abortController: AbortController, chunk: (records: ParsingRecord[]) => void): Promise<RetrieveRecordsSummary>;
+    /**
+     * Parse text.
+     */
+    parseText(text: string, delimiters: ValueDelimiterId[]): Promise<ParseTextConfig>;
 }
 export type { Options, Parser } from 'csv-parse/browser/esm';
-export { type ParsePreviewConfig, Tool };
+export { type ParseTextConfig, Tool };

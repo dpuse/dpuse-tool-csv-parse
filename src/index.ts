@@ -57,9 +57,9 @@ interface StreamRecordBuffer {
 }
 
 /**
- * Parse preview configuration.
+ * Parse text configuration.
  */
-interface ParsePreviewConfig {
+interface ParseTextConfig {
     parsingRecords: ParsingRecord[];
     recordDelimiterId: RecordDelimiterId;
     valueDelimiterId: ValueDelimiterId;
@@ -71,20 +71,6 @@ const DEFAULT_RECORD_BUFFER_POOL_SIZE = 4;
 
 /** Tool. */
 class Tool {
-    /** Build parser. */
-    buildParser(options: Options): Parser {
-        return parse(options);
-    }
-
-    /**
-     * Parse preview.
-     */
-    async parsePreview(text: string, delimiters: ValueDelimiterId[]): Promise<ParsePreviewConfig> {
-        const recordDelimiterId = determineRecordDelimiter(text);
-        const { parsingRecords, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
-        return { parsingRecords, recordDelimiterId, valueDelimiterId };
-    }
-
     /**
      * Parse stream.
      */
@@ -181,10 +167,76 @@ class Tool {
             void run().catch((error: unknown) => handleError(error));
         });
     }
+
+    /**
+     * Parse text.
+     */
+    async parseText(text: string, delimiters: ValueDelimiterId[]): Promise<ParseTextConfig> {
+        const recordDelimiterId = determineRecordDelimiter(text);
+        const { parsingRecords, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
+        return { parsingRecords, recordDelimiterId, valueDelimiterId };
+    }
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//#region: Determine schema helpers.
+//#region: Parse stream helpers.
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+/**
+ * Construct record buffer.
+ */
+function constructRecordBuffer(bufferOptions: { chunk: (records: ParsingRecord[]) => void; chunkSize: number }): StreamRecordBuffer {
+    const recordsPerChunk = Math.max(1, Math.floor(bufferOptions.chunkSize));
+    const pool: ParsingRecord[][] = [];
+    let records = allocateBuffer();
+    let recordCount = 0;
+
+    const flush = (): void => {
+        if (recordCount === 0) return;
+        const recordsToEmit = records;
+        recordsToEmit.length = recordCount; // Trim before handing off so consumers only see populated entries.
+        records = allocateBuffer();
+        recordCount = 0;
+        bufferOptions.chunk(recordsToEmit);
+        if (pool.length < DEFAULT_RECORD_BUFFER_POOL_SIZE) pool.push(recordsToEmit);
+    };
+
+    const push = (record: ParsingRecord): void => {
+        records[recordCount++] = record;
+        if (recordCount >= recordsPerChunk) flush();
+    };
+
+    return { flush, push };
+
+    function allocateBuffer(): ParsingRecord[] {
+        const pooled = pool.pop();
+        if (pooled != null) {
+            pooled.length = 0;
+            return pooled;
+        }
+
+        const allocated = Array.from<ParsingRecord>({ length: recordsPerChunk });
+        allocated.length = 0;
+        return allocated;
+    }
+}
+
+/** Construct summary. */
+function constructSummary(parser: Parser | undefined): RetrieveRecordsSummary {
+    return {
+        byteCount: parser?.info.bytes ?? -1,
+        commentLineCount: parser?.info.comment_lines ?? -1,
+        emptyLineCount: parser?.info.empty_lines ?? -1,
+        nonUniformRecordCount: parser?.info.invalid_field_length ?? -1,
+        lineCount: parser?.info.lines ?? -1,
+        recordCount: parser?.info.records ?? -1
+    };
+}
+
+//#endregion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//#region: Parse text helpers.
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 /**
@@ -269,63 +321,6 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
 
 //#endregion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//#region: Parse stream helpers.
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-/**
- * Construct record buffer.
- */
-function constructRecordBuffer(bufferOptions: { chunk: (records: ParsingRecord[]) => void; chunkSize: number }): StreamRecordBuffer {
-    const recordsPerChunk = Math.max(1, Math.floor(bufferOptions.chunkSize));
-    const pool: ParsingRecord[][] = [];
-    let records = allocateBuffer();
-    let recordCount = 0;
-
-    const flush = (): void => {
-        if (recordCount === 0) return;
-        const recordsToEmit = records;
-        recordsToEmit.length = recordCount; // Trim before handing off so consumers only see populated entries.
-        records = allocateBuffer();
-        recordCount = 0;
-        bufferOptions.chunk(recordsToEmit);
-        if (pool.length < DEFAULT_RECORD_BUFFER_POOL_SIZE) pool.push(recordsToEmit);
-    };
-
-    const push = (record: ParsingRecord): void => {
-        records[recordCount++] = record;
-        if (recordCount >= recordsPerChunk) flush();
-    };
-
-    return { flush, push };
-
-    function allocateBuffer(): ParsingRecord[] {
-        const pooled = pool.pop();
-        if (pooled != null) {
-            pooled.length = 0;
-            return pooled;
-        }
-
-        const allocated = Array.from<ParsingRecord>({ length: recordsPerChunk });
-        allocated.length = 0;
-        return allocated;
-    }
-}
-
-/** Construct summary. */
-function constructSummary(parser: Parser | undefined): RetrieveRecordsSummary {
-    return {
-        byteCount: parser?.info.bytes ?? -1,
-        commentLineCount: parser?.info.comment_lines ?? -1,
-        emptyLineCount: parser?.info.empty_lines ?? -1,
-        nonUniformRecordCount: parser?.info.invalid_field_length ?? -1,
-        lineCount: parser?.info.lines ?? -1,
-        recordCount: parser?.info.records ?? -1
-    };
-}
-
-//#endregion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
 // Exports.
 export type { Options, Parser } from 'csv-parse/browser/esm';
-export { type ParsePreviewConfig, Tool };
+export { type ParseTextConfig, Tool };
