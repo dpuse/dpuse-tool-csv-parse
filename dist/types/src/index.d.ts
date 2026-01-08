@@ -1,25 +1,22 @@
 import { Options, Parser } from 'csv-parse/browser/esm';
-import { EngineUtilities } from '@datapos/datapos-shared/engine';
-import { InferenceRecord, ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
-import { ObjectColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
+import { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
+import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 /**
- * Schema configuration.
+ * Preview configuration.
  */
-interface SchemaConfig {
+interface PreviewConfig {
+    parsingRecords: ParsingRecord[];
     recordDelimiterId: RecordDelimiterId;
     valueDelimiterId: ValueDelimiterId;
-    parsingRecords: ParsingRecord[];
-    inferenceRecords: InferenceRecord[];
-    columnConfigs: ObjectColumnConfig[];
 }
 /** Tool. */
 declare class Tool {
     /** Build parser. */
     buildParser(options: Options): Parser;
     /**
-     * Infer schema.
+     * Parse preview.
      */
-    inferSchema(engineUtilities: EngineUtilities, text: string, delimiters: ValueDelimiterId[]): Promise<SchemaConfig>;
+    parsePreview(text: string, delimiters: ValueDelimiterId[]): Promise<PreviewConfig>;
     /**
      * Parse stream.
      */

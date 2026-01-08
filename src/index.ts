@@ -6,10 +6,9 @@
 import { type Options, parse, type Parser } from 'csv-parse/browser/esm';
 
 // Framework dependencies.
-import type { EngineUtilities } from '@datapos/datapos-shared/engine';
 import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
-import type { InferenceRecord, ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
-import type { ObjectColumnConfig, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
+import type { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
+import type { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 
 // Baseline parser configuration pinned to explicit values to prevent behavioural drift across parser upgrades.
 // Intentionally exhaustive, even where values mirror current defaults. See: https://csv.js.org/parse/options/ for more information.
@@ -44,7 +43,7 @@ const DEFAULT_OPTIONS: Options = {
     skip_empty_lines: false,
     skip_records_with_empty_values: false,
     skip_records_with_error: false,
-    to: undefined, // TODO: Assigning default value of 1 triggers error 'TypeError: \"listener\" argument must be a function'.
+    to: undefined, // Assigning documented default value of 1 triggers error `TypeError: "listener" argument must be a function`.
     to_line: -1,
     trim: false
 };
@@ -58,14 +57,12 @@ interface StreamRecordBuffer {
 }
 
 /**
- * Schema configuration.
+ * Preview configuration.
  */
-interface SchemaConfig {
+interface PreviewConfig {
+    parsingRecords: ParsingRecord[];
     recordDelimiterId: RecordDelimiterId;
     valueDelimiterId: ValueDelimiterId;
-    parsingRecords: ParsingRecord[];
-    inferenceRecords: InferenceRecord[];
-    columnConfigs: ObjectColumnConfig[];
 }
 
 // Constants.
@@ -80,49 +77,12 @@ class Tool {
     }
 
     /**
-     * Infer schema.
+     * Parse preview.
      */
-    async inferSchema(engineUtilities: EngineUtilities, text: string, delimiters: ValueDelimiterId[]): Promise<SchemaConfig> {
+    async parsePreview(text: string, delimiters: ValueDelimiterId[]): Promise<PreviewConfig> {
         const recordDelimiterId = determineRecordDelimiter(text);
         const { parsingRecords, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
-
-        // Infer values and initialise column configurations.
-        const columnConfigs: ObjectColumnConfig[] = [];
-        const inferenceRecords: InferenceRecord[] = [];
-        for (const parsingRecord of parsingRecords) {
-            const inferredValues = engineUtilities.inferValues(parsingRecord, columnConfigs);
-            inferenceRecords.push(inferredValues);
-        }
-
-        // Infer column labels.
-        // TODO: Only do this if headers detected.
-        let firstDataRowIndex = 0;
-        const headerRecord = inferenceRecords[0];
-        if (headerRecord) {
-            const headerValueCount = headerRecord.length;
-            for (let headerValueIndex = 0; headerValueIndex < headerValueCount; headerValueIndex++) {
-                // eslint-disable-next-line security/detect-object-injection
-                const headerValue = headerRecord[headerValueIndex]?.inferredValue;
-                const headerLabel = headerValue == undefined ? `Column ${headerValueIndex}` : String(headerValue); // TODO: Default not needed, set in 'inferValues'.
-                // eslint-disable-next-line security/detect-object-injection
-                const columnConfig = columnConfigs[headerValueIndex];
-                if (columnConfig == null) continue;
-                columnConfig.label = { en: headerLabel };
-            }
-            firstDataRowIndex = 1;
-        }
-
-        // Infer column characteristics.
-        for (let recordIndex = firstDataRowIndex; recordIndex < inferenceRecords.length; recordIndex++) {
-            // eslint-disable-next-line security/detect-object-injection
-            const inferenceRecord = inferenceRecords[recordIndex] ?? [];
-            for (let inferenceIndex = 0; inferenceIndex < inferenceRecord.length; inferenceIndex++) {
-                // eslint-disable-next-line security/detect-object-injection
-                const columnConfig = columnConfigs[inferenceIndex];
-            }
-        }
-
-        return { recordDelimiterId, valueDelimiterId, parsingRecords, inferenceRecords, columnConfigs };
+        return { parsingRecords, recordDelimiterId, valueDelimiterId };
     }
 
     /**

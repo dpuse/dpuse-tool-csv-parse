@@ -1,6 +1,6 @@
 {
     "name": "@datapos/datapos-tool-csv-parse",
-    "version": "0.0.119",
+    "version": "0.0.120",
     "description": "",
     "license": "MIT",
     "private": false,
@@ -26,7 +26,7 @@
     ],
     "prettier": "@datapos/datapos-development/prettierrc",
     "dependencies": {
-        "@datapos/datapos-shared": "^0.3.485",
+        "@datapos/datapos-shared": "^0.3.490",
         "csv-parse": "^6.1.0"
     },
     "devDependencies": {
@@ -52,7 +52,7 @@
         "rollup-plugin-visualizer": "^6.0.5",
         "sonda": "^0.10.1",
         "typescript": "^5.9.3",
-        "vite": "^7.3.0",
+        "vite": "^7.3.1",
         "vite-plugin-dts": "^4.5.4",
         "vitest": "^4.0.16"
     },
