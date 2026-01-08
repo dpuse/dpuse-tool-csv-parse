@@ -60,7 +60,7 @@ interface StreamRecordBuffer {
  * Parse text configuration.
  */
 interface ParseTextConfig {
-    parsingRecords: ParsingRecord[];
+    parsedRecords: ParsingRecord[];
     recordDelimiterId: RecordDelimiterId;
     valueDelimiterId: ValueDelimiterId;
 }
@@ -69,7 +69,9 @@ interface ParseTextConfig {
 const DEFAULT_RECORD_BUFFER_SIZE = 10_000;
 const DEFAULT_RECORD_BUFFER_POOL_SIZE = 4;
 
-/** Tool. */
+/**
+ * Tool.
+ */
 class Tool {
     /**
      * Parse stream.
@@ -173,8 +175,8 @@ class Tool {
      */
     async parseText(text: string, delimiters: ValueDelimiterId[]): Promise<ParseTextConfig> {
         const recordDelimiterId = determineRecordDelimiter(text);
-        const { parsingRecords, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
-        return { parsingRecords, recordDelimiterId, valueDelimiterId };
+        const { parsedRecords, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
+        return { parsedRecords, recordDelimiterId, valueDelimiterId };
     }
 }
 
@@ -255,11 +257,11 @@ function determineRecordDelimiter(text: string): RecordDelimiterId {
 /**
  * Determine value delimiter.
  */
-async function determineValueDelimiter(text: string, delimiters: ValueDelimiterId[]): Promise<{ parsingRecords: ParsingRecord[]; valueDelimiterId: ValueDelimiterId }> {
+async function determineValueDelimiter(text: string, delimiters: ValueDelimiterId[]): Promise<{ parsedRecords: ParsingRecord[]; valueDelimiterId: ValueDelimiterId }> {
     let valueDelimiterId: ValueDelimiterId | undefined;
     let priorAverageCount: number;
     let priorSumCountDiffs: number;
-    let parsingRecords: ParsingRecord[] = [];
+    let parsedRecords: ParsingRecord[] = [];
 
     /* TODO: Could improve performance by limiting the number of delimiters
        processed by exiting if column count is the same for each line and
@@ -301,7 +303,7 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
                             valueDelimiterId = delimiter;
                             priorAverageCount = averageValueCount;
                             priorSumCountDiffs = sumOfValueCountDiffs;
-                            parsingRecords = [...pendingRecords];
+                            parsedRecords = [...pendingRecords];
                         }
                         resolve();
                     });
@@ -316,7 +318,7 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
         }
     }
 
-    return { parsingRecords, valueDelimiterId: valueDelimiterId ?? ',' };
+    return { parsedRecords, valueDelimiterId: valueDelimiterId ?? ',' };
 }
 
 //#endregion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

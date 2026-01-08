@@ -5,11 +5,13 @@ import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos
  * Parse text configuration.
  */
 interface ParseTextConfig {
-    parsingRecords: ParsingRecord[];
+    parsedRecords: ParsingRecord[];
     recordDelimiterId: RecordDelimiterId;
     valueDelimiterId: ValueDelimiterId;
 }
-/** Tool. */
+/**
+ * Tool.
+ */
 declare class Tool {
     /**
      * Parse stream.

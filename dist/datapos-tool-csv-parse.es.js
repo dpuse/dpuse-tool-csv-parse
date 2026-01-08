@@ -3475,8 +3475,8 @@ class ni {
    * Parse text.
    */
   async parseText(e, r) {
-    const n = ti(e), { parsingRecords: i, valueDelimiterId: o } = await ri(e, r);
-    return { parsingRecords: i, recordDelimiterId: n, valueDelimiterId: o };
+    const n = ti(e), { parsedRecords: i, valueDelimiterId: o } = await ri(e, r);
+    return { parsedRecords: i, recordDelimiterId: n, valueDelimiterId: o };
   }
 }
 function Kn(t) {
@@ -3546,7 +3546,7 @@ async function ri(t, e) {
       });
     } catch {
     }
-  return { parsingRecords: o, valueDelimiterId: r ?? "," };
+  return { parsedRecords: o, valueDelimiterId: r ?? "," };
 }
 export {
   ni as Tool
