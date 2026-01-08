@@ -2,9 +2,9 @@ import { Options } from 'csv-parse/browser/esm';
 import { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
 import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 /**
- * Parse text configuration.
+ * Parse text result.
  */
-interface ParseTextConfig {
+interface ParseTextResult {
     parsedRecords: ParsingRecord[];
     recordDelimiterId: RecordDelimiterId;
     valueDelimiterId: ValueDelimiterId;
@@ -20,7 +20,7 @@ declare class Tool {
     /**
      * Parse text.
      */
-    parseText(text: string, delimiters: ValueDelimiterId[]): Promise<ParseTextConfig>;
+    parseText(text: string, delimiters: ValueDelimiterId[]): Promise<ParseTextResult>;
 }
 export type { Options, Parser } from 'csv-parse/browser/esm';
-export { type ParseTextConfig, Tool };
+export { type ParseTextResult, Tool };

@@ -10,6 +10,23 @@ import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
 import type { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
 import type { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 
+/**
+ * Parse record and parsed record buffer.
+ */
+interface StreamRecordBuffer {
+    push: (record: ParsingRecord) => void;
+    flush: () => void;
+}
+
+/**
+ * Parse text result.
+ */
+interface ParseTextResult {
+    parsedRecords: ParsingRecord[];
+    recordDelimiterId: RecordDelimiterId;
+    valueDelimiterId: ValueDelimiterId;
+}
+
 // Baseline parser configuration pinned to explicit values to prevent behavioural drift across parser upgrades.
 // Intentionally exhaustive, even where values mirror current defaults. See: https://csv.js.org/parse/options/ for more information.
 const DEFAULT_OPTIONS: Options = {
@@ -47,24 +64,6 @@ const DEFAULT_OPTIONS: Options = {
     to_line: -1,
     trim: false
 };
-
-/**
- * Parse record and parsed record buffer.
- */
-interface StreamRecordBuffer {
-    push: (record: ParsingRecord) => void;
-    flush: () => void;
-}
-
-/**
- * Parse text configuration.
- */
-interface ParseTextConfig {
-    parsedRecords: ParsingRecord[];
-    recordDelimiterId: RecordDelimiterId;
-    valueDelimiterId: ValueDelimiterId;
-}
-
 // Constants.
 const DEFAULT_RECORD_BUFFER_SIZE = 10_000;
 const DEFAULT_RECORD_BUFFER_POOL_SIZE = 4;
@@ -173,7 +172,7 @@ class Tool {
     /**
      * Parse text.
      */
-    async parseText(text: string, delimiters: ValueDelimiterId[]): Promise<ParseTextConfig> {
+    async parseText(text: string, delimiters: ValueDelimiterId[]): Promise<ParseTextResult> {
         const recordDelimiterId = determineRecordDelimiter(text);
         const { parsedRecords, valueDelimiterId } = await determineValueDelimiter(text, delimiters);
         return { parsedRecords, recordDelimiterId, valueDelimiterId };
@@ -325,4 +324,4 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
 
 // Exports.
 export type { Options, Parser } from 'csv-parse/browser/esm';
-export { type ParseTextConfig, Tool };
+export { type ParseTextResult, Tool };
