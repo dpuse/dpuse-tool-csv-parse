@@ -11,20 +11,20 @@ import type { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapo
 import type { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
 
 /**
- * Parse record and parsed record buffer.
- */
-interface StreamRecordBuffer {
-    push: (record: ParsingRecord) => void;
-    flush: () => void;
-}
-
-/**
  * Parse text result.
  */
 interface ParseTextResult {
     parsedRecords: ParsingRecord[];
     recordDelimiterId: RecordDelimiterId;
     valueDelimiterId: ValueDelimiterId;
+}
+
+/**
+ * Stream record buffer.
+ */
+interface StreamRecordBuffer {
+    push: (record: ParsingRecord) => void;
+    flush: () => void;
 }
 
 /**
