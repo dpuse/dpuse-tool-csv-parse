@@ -3,49 +3,37 @@
  */
 
 // Vendor dependencies.
-import { defineConfig } from 'vite'; // Core Vite API.
-import dts from 'vite-plugin-dts'; // Emit .d.ts files alongside the bundle.
-import Sonda from 'sonda/vite'; // Visualize bundle results with Sonda plugin.
-import { visualizer } from 'rollup-plugin-visualizer'; // Generate bundle size report.
-import { fileURLToPath, URL } from 'node:url'; // ESM-safe path helpers.
+import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
+import Sonda from 'sonda/vite';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { fileURLToPath, URL } from 'node:url';
 
-// Dependencies - Data.
-import config from './config.json' with { type: 'json' }; // Provide configuration identifier for naming.
+// Data dependencies..
+import config from './config.json' with { type: 'json' };
 
-// Exposures - Configuration.
+// Exports.
 export default defineConfig({
     build: {
         lib: {
-            entry: fileURLToPath(new URL('src/index.ts', import.meta.url)), // Absolute entry path.
-            fileName: (format) => `${config.id}.${format}.js`, // Bundle name derived from config identifier and format.
-            formats: ['es'] // Only emit native ES modules.
+            entry: fileURLToPath(new URL('src/index.ts', import.meta.url)),
+            fileName: (format) => `${config.id}.${format}.js`,
+            formats: ['es']
         },
         rollupOptions: {
             external: [/^https:\/\/engine-eu\.datapos\.app\//],
             plugins: [
-                Sonda({
-                    filename: 'index', // Output file name.
-                    format: 'html', // Output file format.
-                    gzip: true, // Include gzip sizes.
-                    brotli: true, // Include brotli sizes.
-                    open: false, // Do not auto-open browser post-build.
-                    outputDir: './bundle-analysis-reports/sonda' // Output directory.
-                }), // Run Sonda analyser to generate additional bundle insights.
-                visualizer({
-                    filename: './bundle-analysis-reports/rollup-visualiser/index.html', // Output file path.
-                    open: false, // Do not auto-open browser post-build.
-                    gzipSize: true, // Include gzip sizes.
-                    brotliSize: true // Include brotli sizes.
-                })
+                Sonda({ filename: 'index', format: 'html', gzip: true, brotli: true, open: false, outputDir: './bundle-analysis-reports/sonda' }),
+                visualizer({ filename: './bundle-analysis-reports/rollup-visualiser/index.html', open: false, gzipSize: true, brotliSize: true })
             ]
         },
-        target: 'ESNext' // Emit modern JavaScript for consumers.
+        target: 'ESNext'
     },
-    plugins: [dts({ outDir: 'dist/types' })], // Generate type declarations in dist/types.
+    plugins: [dts({ outDir: 'dist/types' })],
     resolve: {
         alias: {
-            '~': fileURLToPath(new URL('./', import.meta.url)), // Base alias matching tsconfig.
-            '@': fileURLToPath(new URL('src', import.meta.url)) // Source alias matching tsconfig.
+            '~': fileURLToPath(new URL('./', import.meta.url)),
+            '@': fileURLToPath(new URL('src', import.meta.url))
         }
     }
 });
