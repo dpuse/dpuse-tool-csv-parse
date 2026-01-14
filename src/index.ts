@@ -130,6 +130,8 @@ class Tool {
                     ...parseOptions,
                     cast: (value, context): { value: string; wasValueQuoted: boolean } => ({ value, wasValueQuoted: context.quoting })
                 };
+                console.log('xxxx', DEFAULT_OPTIONS);
+                console.log('xxxx', parseOptions);
                 console.log('xxxx', xxxx);
                 parser = parse(xxxx);
                 recordBuffer = constructRecordBuffer({ chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RECORD_BUFFER_SIZE });
