@@ -125,11 +125,13 @@ class Tool {
             };
 
             const run = async (): Promise<void> => {
-                parser = parse({
+                const xxxx = {
                     ...DEFAULT_OPTIONS,
                     ...parseOptions,
                     cast: (value, context): { value: string; wasValueQuoted: boolean } => ({ value, wasValueQuoted: context.quoting })
-                });
+                };
+                console.log('xxxx', xxxx);
+                parser = parse(xxxx);
                 recordBuffer = constructRecordBuffer({ chunk, chunkSize: retrieveRecordsOptions.chunkSize ?? DEFAULT_RECORD_BUFFER_SIZE });
                 parser.on('readable', () => {
                     try {
