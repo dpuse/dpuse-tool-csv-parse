@@ -8,7 +8,7 @@ import { type Options, parse, type Parser } from 'csv-parse/browser/esm';
 // Framework dependencies.
 import { buildFetchError, ignoreErrors } from '@dpuse/dpuse-shared/errors';
 import type { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@dpuse/dpuse-shared/component/dataView';
-import type { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@dpuse/dpuse-shared/component/connector';
+import type { RetrievalTypeId, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@dpuse/dpuse-shared/component/connector';
 
 /**
  * Parse text result.
@@ -89,7 +89,7 @@ class Tool {
         parseOptions: Options,
         url: string,
         abortController: AbortController,
-        chunk: (records: ParsingRecord[]) => void
+        chunk: (typeId: RetrievalTypeId, records: ParsingRecord[]) => void
     ): Promise<RetrieveRecordsSummary> {
         return new Promise<RetrieveRecordsSummary>((resolve, reject) => {
             let parser: Parser | undefined;

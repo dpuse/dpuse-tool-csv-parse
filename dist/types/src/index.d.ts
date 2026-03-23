@@ -1,6 +1,6 @@
 import { Options } from 'csv-parse/browser/esm';
 import { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@dpuse/dpuse-shared/component/dataView';
-import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@dpuse/dpuse-shared/component/connector';
+import { RetrievalTypeId, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@dpuse/dpuse-shared/component/connector';
 /**
  * Parse text result.
  */
@@ -16,7 +16,7 @@ declare class Tool {
     /**
      * Parse stream.
      */
-    parseStream(retrieveRecordsOptions: RetrieveRecordsOptions, parseOptions: Options, url: string, abortController: AbortController, chunk: (records: ParsingRecord[]) => void): Promise<RetrieveRecordsSummary>;
+    parseStream(retrieveRecordsOptions: RetrieveRecordsOptions, parseOptions: Options, url: string, abortController: AbortController, chunk: (typeId: RetrievalTypeId, records: ParsingRecord[]) => void): Promise<RetrieveRecordsSummary>;
     /**
      * Parse text.
      */
