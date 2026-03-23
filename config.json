@@ -1,5 +1,5 @@
 {
-    "id": "datapos-tool-csv-parse",
+    "id": "dpuse-tool-csv-parse",
     "label": {
         "en-gb": "CSV Parse"
     },
@@ -8,5 +8,5 @@
     },
     "statusId": "alpha",
     "typeId": "tool",
-    "version": "0.0.134"
+    "version": "0.0.135"
 }

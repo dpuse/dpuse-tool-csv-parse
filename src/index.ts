@@ -6,9 +6,9 @@
 import { type Options, parse, type Parser } from 'csv-parse/browser/esm';
 
 // Framework dependencies.
-import { buildFetchError, ignoreErrors } from '@datapos/datapos-shared/errors';
-import type { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
-import type { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
+import { buildFetchError, ignoreErrors } from '@dpuse/dpuse-shared/errors';
+import type { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@dpuse/dpuse-shared/component/dataView';
+import type { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@dpuse/dpuse-shared/component/connector';
 
 /**
  * Parse text result.
@@ -153,7 +153,7 @@ class Tool {
 
                 const response = await fetch(encodeURI(url), { signal: abortController.signal });
                 if (!response.ok || response.body == null) {
-                    throw await buildFetchError(response, `Failed to fetch '${url}' file.`, 'datapos-connector-file-store-emulator|Connector|retrieve');
+                    throw await buildFetchError(response, `Failed to fetch '${url}' file.`, 'dpuse-connector-file-store-emulator|Connector|retrieve');
                 }
 
                 reader = response.body.getReader();

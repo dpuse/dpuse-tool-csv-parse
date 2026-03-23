@@ -1,6 +1,6 @@
 import { Options } from 'csv-parse/browser/esm';
-import { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@datapos/datapos-shared/component/dataView';
-import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@datapos/datapos-shared/component/connector';
+import { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@dpuse/dpuse-shared/component/dataView';
+import { RetrieveRecordsOptions, RetrieveRecordsSummary } from '@dpuse/dpuse-shared/component/connector';
 /**
  * Parse text result.
  */

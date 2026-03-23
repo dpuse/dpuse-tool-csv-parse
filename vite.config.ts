@@ -21,7 +21,7 @@ export default defineConfig({
             formats: ['es']
         },
         rollupOptions: {
-            external: [/^https:\/\/engine-eu\.datapos\.app\//],
+            external: [/^https:\/\/engine-eu\.dpuse\.app\//],
             plugins: [
                 Sonda({ filename: 'index', format: 'html', gzip: true, brotli: true, open: false, outputDir: './bundle-analysis-reports/sonda' }),
                 visualizer({ filename: './bundle-analysis-reports/rollup-visualiser/index.html', open: false, gzipSize: true, brotliSize: true })
