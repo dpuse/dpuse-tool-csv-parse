@@ -2623,7 +2623,7 @@ function mr(e) {
 	let t = Math.max(1, Math.floor(e.chunkSize)), n = [], r = o(), i = 0, a = () => {
 		if (i === 0) return;
 		let t = r;
-		t.length = i, r = o(), i = 0, e.chunk(t), n.length < fr && n.push(t);
+		t.length = i, r = o(), i = 0, e.chunk("parsingRecordArray", t), n.length < fr && n.push(t);
 	};
 	return {
 		flush: a,

@@ -195,7 +195,7 @@ class Tool {
 /**
  * Construct record buffer.
  */
-function constructRecordBuffer(bufferOptions: { chunk: (records: ParsingRecord[]) => void; chunkSize: number }): StreamRecordBuffer {
+function constructRecordBuffer(bufferOptions: { chunk: (typeId: RetrievalTypeId, records: ParsingRecord[]) => void; chunkSize: number }): StreamRecordBuffer {
     const recordsPerChunk = Math.max(1, Math.floor(bufferOptions.chunkSize));
     const pool: ParsingRecord[][] = [];
     let records = allocateBuffer();
@@ -207,7 +207,7 @@ function constructRecordBuffer(bufferOptions: { chunk: (records: ParsingRecord[]
         recordsToEmit.length = recordCount; // Trim before handing off so consumers only see populated entries.
         records = allocateBuffer();
         recordCount = 0;
-        bufferOptions.chunk(recordsToEmit);
+        bufferOptions.chunk('parsingRecordArray', recordsToEmit);
         if (pool.length < DEFAULT_RECORD_BUFFER_POOL_SIZE) pool.push(recordsToEmit);
     };
 
