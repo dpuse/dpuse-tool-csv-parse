@@ -8,7 +8,7 @@ import { type Options, parse, type Parser } from 'csv-parse/browser/esm';
 // Framework dependencies.
 import { buildFetchError, ignoreErrors } from '@dpuse/dpuse-shared/errors';
 import type { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@dpuse/dpuse-shared/component/dataView';
-import type { RetrievalTypeId, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@dpuse/dpuse-shared/component/connector';
+import type { RetrievalTypeId, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@dpuse/dpuse-shared/component/module/connector';
 
 /**
  * Parse text result.

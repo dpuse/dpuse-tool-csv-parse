@@ -5,11 +5,11 @@
         "dataSource": [
 {
                 "name": "NVD API Last Checked",
-                "timestamp": "2026-03-23T11:47:03+01"
+                "timestamp": "2026-04-18T18:59:43+02"
             }
 ,{
                 "name": "NVD API Last Modified",
-                "timestamp": "2026-03-23T10:16:08Z"
+                "timestamp": "2026-04-18T15:16:18Z"
             }
         ]
 
@@ -17,7 +17,7 @@
     },
     "projectInfo": {
         "name": "@dpuse\/dpuse-tool-csv-parse",
-        "reportDate": "2026-03-23T11:25:08.891043Z",
+        "reportDate": "2026-04-18T17:06:05.486484Z",
         "credits": {
             "NVD": "This product uses the NVD API but is not endorsed or certified by the NVD. This report contains data retrieved from the National Vulnerability Database: https://nvd.nist.gov",
             "CISA": "This report may contain data retrieved from the CISA Known Exploited Vulnerability Catalog: https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
@@ -29,10 +29,10 @@
     "dependencies": [
 {
             "isVirtual": true,
-            "fileName": "@dpuse\/dpuse-shared:0.3.594",
-            "filePath": "\/Users\/jonathanterrell\/DPUse\/GitHub\/tools\/dpuse-tool-csv-parse\/package-lock.json?dpuse-tool-csv-parse:0.0.134\/@dpuse\/dpuse-shared:0.3.594"
+            "fileName": "@dpuse\/dpuse-shared:0.3.622",
+            "filePath": "\/Users\/jonathanterrell\/DPUse\/GitHub\/tools\/dpuse-tool-csv-parse\/package-lock.json?dpuse-tool-csv-parse:0.0.141\/@dpuse\/dpuse-shared:0.3.622"
 ,"description": "Common constants, types and utilities used across all DPUse projects.","license": "MIT"            ,"projectReferences": [
-                "@dpuse\/dpuse-tool-csv-parse:0.0.134"
+                "@dpuse\/dpuse-tool-csv-parse:0.0.141"
             ]
             ,"evidenceCollected": {
                 "vendorEvidence": [
@@ -94,21 +94,21 @@
                         "confidence": "HIGHEST",
                         "source": "package.json",
                         "name": "version",
-                        "value": "0.3.594"
+                        "value": "0.3.622"
                     }
                 ]
             }
                 ,"packages": [
                     {
-                        "id": "pkg:npm\/%40dpuse%2Fdpuse-shared@0.3.594"
+                        "id": "pkg:npm\/%40dpuse%2Fdpuse-shared@0.3.622"
 ,"confidence": "HIGHEST"                    }
             ]
         },{
             "isVirtual": true,
             "fileName": "csv-parse:6.2.1",
-            "filePath": "\/Users\/jonathanterrell\/DPUse\/GitHub\/tools\/dpuse-tool-csv-parse\/package-lock.json?dpuse-tool-csv-parse:0.0.134\/csv-parse:6.2.1"
+            "filePath": "\/Users\/jonathanterrell\/DPUse\/GitHub\/tools\/dpuse-tool-csv-parse\/package-lock.json?dpuse-tool-csv-parse:0.0.141\/csv-parse:6.2.1"
 ,"description": "CSV parsing implementing the Node.js `stream.Transform` API","license": "MIT"            ,"projectReferences": [
-                "@dpuse\/dpuse-tool-csv-parse:0.0.134"
+                "@dpuse\/dpuse-tool-csv-parse:0.0.141"
             ]
             ,"evidenceCollected": {
                 "vendorEvidence": [

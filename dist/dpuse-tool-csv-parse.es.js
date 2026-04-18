@@ -9,7 +9,7 @@ function o(e) {
 	i || a();
 	var t, o, s, c, l, u, d = e.length;
 	if (d % 4 > 0) throw Error("Invalid string. Length must be a multiple of 4");
-	l = e[d - 2] === "=" ? 2 : e[d - 1] === "=" ? 1 : 0, u = new r(d * 3 / 4 - l), s = l > 0 ? d - 4 : d;
+	l = e[d - 2] === "=" ? 2 : +(e[d - 1] === "="), u = new r(d * 3 / 4 - l), s = l > 0 ? d - 4 : d;
 	var f = 0;
 	for (t = 0, o = 0; t < s; t += 4, o += 3) c = n[e.charCodeAt(t)] << 18 | n[e.charCodeAt(t + 1)] << 12 | n[e.charCodeAt(t + 2)] << 6 | n[e.charCodeAt(t + 3)], u[f++] = c >> 16 & 255, u[f++] = c >> 8 & 255, u[f++] = c & 255;
 	return l === 2 ? (c = n[e.charCodeAt(t)] << 2 | n[e.charCodeAt(t + 1)] >> 4, u[f++] = c & 255) : l === 1 && (c = n[e.charCodeAt(t)] << 10 | n[e.charCodeAt(t + 1)] << 4 | n[e.charCodeAt(t + 2)] >> 2, u[f++] = c >> 8 & 255, u[f++] = c & 255), u;
@@ -36,8 +36,8 @@ function u(e, t, n, r, i) {
 	return (p ? -1 : 1) * o * 2 ** (a - r);
 }
 function d(e, t, n, r, i, a) {
-	var o, s, c, l = a * 8 - i - 1, u = (1 << l) - 1, d = u >> 1, f = i === 23 ? 2 ** -24 - 2 ** -77 : 0, p = r ? 0 : a - 1, m = r ? 1 : -1, h = t < 0 || t === 0 && 1 / t < 0 ? 1 : 0;
-	for (t = Math.abs(t), isNaN(t) || t === Infinity ? (s = isNaN(t) ? 1 : 0, o = u) : (o = Math.floor(Math.log(t) / Math.LN2), t * (c = 2 ** -o) < 1 && (o--, c *= 2), o + d >= 1 ? t += f / c : t += f * 2 ** (1 - d), t * c >= 2 && (o++, c /= 2), o + d >= u ? (s = 0, o = u) : o + d >= 1 ? (s = (t * c - 1) * 2 ** i, o += d) : (s = t * 2 ** (d - 1) * 2 ** i, o = 0)); i >= 8; e[n + p] = s & 255, p += m, s /= 256, i -= 8);
+	var o, s, c, l = a * 8 - i - 1, u = (1 << l) - 1, d = u >> 1, f = i === 23 ? 2 ** -24 - 2 ** -77 : 0, p = r ? 0 : a - 1, m = r ? 1 : -1, h = +(t < 0 || t === 0 && 1 / t < 0);
+	for (t = Math.abs(t), isNaN(t) || t === Infinity ? (s = +!!isNaN(t), o = u) : (o = Math.floor(Math.log(t) / Math.LN2), t * (c = 2 ** -o) < 1 && (o--, c *= 2), o + d >= 1 ? t += f / c : t += f * 2 ** (1 - d), t * c >= 2 && (o++, c /= 2), o + d >= u ? (s = 0, o = u) : o + d >= 1 ? (s = (t * c - 1) * 2 ** i, o += d) : (s = t * 2 ** (d - 1) * 2 ** i, o = 0)); i >= 8; e[n + p] = s & 255, p += m, s /= 256, i -= 8);
 	for (o = o << i | s, l += i; l > 0; e[n + p] = o & 255, p += m, o /= 256, l -= 8);
 	e[n + p - m] |= h * 128;
 }
@@ -133,7 +133,7 @@ _.compare = function(e, t) {
 		n = e[i], r = t[i];
 		break;
 	}
-	return n < r ? -1 : r < n ? 1 : 0;
+	return n < r ? -1 : +(r < n);
 }, _.isEncoding = function(e) {
 	switch (String(e).toLowerCase()) {
 		case "hex":
@@ -247,7 +247,7 @@ _.prototype.swap16 = function() {
 		a = c[u], o = l[u];
 		break;
 	}
-	return a < o ? -1 : o < a ? 1 : 0;
+	return a < o ? -1 : +(o < a);
 };
 function oe(e, t, n, r, i) {
 	if (e.length === 0) return -1;
@@ -2125,7 +2125,7 @@ var Bn = function(e) {
 						if (t !== 0) {
 							if (this.state.commenting && this.state.wasQuoting === !1 && this.state.record.length === 0 && this.state.field.length === 0) this.info.comment_lines++;
 							else {
-								if (this.state.enabled === !1 && this.info.lines + (this.state.wasRowDelimiter === !0 ? 1 : 0) >= s) {
+								if (this.state.enabled === !1 && this.info.lines + +(this.state.wasRowDelimiter === !0) >= s) {
 									this.state.enabled = !0, this.__resetField(), this.__resetRecord(), C += t - 1;
 									continue;
 								}

@@ -8,7 +8,7 @@
 <!-- DEPENDENCY_LICENSES_START -->
 |Name|Type|Installed|Latest|Latest Released|Deps|Document|
 |:-|:-|:-:|:-:|:-|-:|:-|
-|@dpuse/dpuse-shared|MIT|0.3.594|0.3.594|this month: 2026-03-22|0|⚠️ No license file|
+|@dpuse/dpuse-shared|MIT|0.3.622|0.3.622|this month: 2026-04-18|0|[LICENSE](https://raw.githubusercontent.com/dpuse/dpuse-shared/main/LICENSE)|
 |csv-parse|MIT|6.2.1|6.2.1|this month: 2026-03-20|0|[LICENSE](https://raw.githubusercontent.com/adaltas/node-csv/master/LICENSE)|
 
 <!-- DEPENDENCY_LICENSES_END -->

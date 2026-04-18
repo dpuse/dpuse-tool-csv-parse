@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "baseUrl": "./", // Makes relative imports like "src/..." resolve from the repo root.
         "declaration": true, // Emit .d.ts files so consumers get typings.
         "esModuleInterop": true, // Allow default-import syntax for CommonJS packages.
         "isolatedModules": true, // Treat each file as a separate module; keeps Vite happy.
@@ -12,8 +11,8 @@
         "outDir": "dist", // Place compiler output in dist/.
         "paths": {
             // Configure import aliases used across the project.
-            "~/*": ["*"],
-            "@/*": ["src/*"]
+            "~/*": ["./*"],
+            "@/*": ["./src/*"]
         },
         "resolveJsonModule": true, // Allow importing JSON modules directly.
         "skipLibCheck": true, // Skip type checking for .d.ts in node_modules to speed up builds.
