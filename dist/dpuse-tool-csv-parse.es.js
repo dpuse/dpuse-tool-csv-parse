@@ -1504,7 +1504,9 @@ function hn(e, t) {
 		return this.getBuffer();
 	}, "_writableState.buffer is deprecated. Use _writableState.getBuffer instead.") }), e ||= {}, this.objectMode = !!e.objectMode, t instanceof J && (this.objectMode = this.objectMode || !!e.writableObjectMode);
 	var n = e.highWaterMark, r = this.objectMode ? 16 : 16 * 1024;
-	this.highWaterMark = n || n === 0 ? n : r, this.highWaterMark = ~~this.highWaterMark, this.needDrain = !1, this.ending = !1, this.ended = !1, this.finished = !1, this.decodeStrings = e.decodeStrings !== !1, this.defaultEncoding = e.defaultEncoding || "utf8", this.length = 0, this.writing = !1, this.corked = 0, this.sync = !0, this.bufferProcessing = !1, this.onwrite = function(e) {
+	this.highWaterMark = n || n === 0 ? n : r, this.highWaterMark = ~~this.highWaterMark, this.needDrain = !1, this.ending = !1, this.ended = !1, this.finished = !1;
+	var i = e.decodeStrings === !1;
+	this.decodeStrings = !i, this.defaultEncoding = e.defaultEncoding || "utf8", this.length = 0, this.writing = !1, this.corked = 0, this.sync = !0, this.bufferProcessing = !1, this.onwrite = function(e) {
 		Cn(t, e);
 	}, this.writecb = null, this.writelen = 0, this.bufferedRequest = null, this.lastBufferedRequest = null, this.pendingcb = 0, this.prefinished = !1, this.errorEmitted = !1, this.bufferedRequestCount = 0, this.corkedRequestsFree = new jn(this);
 }
