@@ -2613,7 +2613,6 @@ function or(e) {
 //#region src/index.ts
 var sr = {
 	bom: !1,
-	cast: void 0,
 	cast_date: !1,
 	columns: !1,
 	comment: "",
@@ -2628,9 +2627,6 @@ var sr = {
 	info: !1,
 	ltrim: !1,
 	max_record_size: 0,
-	objname: void 0,
-	on_record: void 0,
-	on_skip: void 0,
 	quote: "\"",
 	raw: !1,
 	record_delimiter: [],
@@ -2642,7 +2638,6 @@ var sr = {
 	skip_empty_lines: !1,
 	skip_records_with_empty_values: !1,
 	skip_records_with_error: !1,
-	to: void 0,
 	to_line: -1,
 	trim: !1
 }, cr = 1e4, lr = 4, ur = class {

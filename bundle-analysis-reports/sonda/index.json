@@ -1,7 +1,7 @@
 {
   "metadata": {
     "version": "0.14.0",
-    "generatedAt": "2026-07-14T15:51:50.179Z",
+    "generatedAt": "2026-07-14T18:35:17.472Z",
     "integration": "vite",
     "sources": false,
     "gzip": false,
@@ -21,7 +21,7 @@
       "name": "[unassigned]",
       "type": "other",
       "format": "other",
-      "uncompressed": 5389,
+      "uncompressed": 5384,
       "gzip": 0,
       "brotli": 323,
       "parent": "dist/dpuse-tool-csv-parse.es.js"
@@ -30,9 +30,9 @@
       "kind": "asset",
       "name": "dist/dpuse-tool-csv-parse.es.js",
       "type": "script",
-      "uncompressed": 111877,
+      "uncompressed": 111793,
       "gzip": 0,
-      "brotli": 25095
+      "brotli": 25063
     },
     {
       "kind": "filesystem",
@@ -48,7 +48,7 @@
       "format": "esm",
       "uncompressed": 1122,
       "gzip": 0,
-      "brotli": 472,
+      "brotli": 471,
       "parent": "dist/dpuse-tool-csv-parse.es.js"
     },
     {
@@ -65,7 +65,7 @@
       "format": "esm",
       "uncompressed": 101590,
       "gzip": 0,
-      "brotli": 22857,
+      "brotli": 22846,
       "parent": "dist/dpuse-tool-csv-parse.es.js"
     },
     {
@@ -73,16 +73,16 @@
       "name": "src/index.ts",
       "type": "script",
       "format": "esm",
-      "uncompressed": 7764
+      "uncompressed": 8289
     },
     {
       "kind": "chunk",
       "name": "src/index.ts",
       "type": "script",
       "format": "esm",
-      "uncompressed": 3776,
+      "uncompressed": 3697,
       "gzip": 0,
-      "brotli": 1444,
+      "brotli": 1423,
       "parent": "dist/dpuse-tool-csv-parse.es.js"
     }
   ],

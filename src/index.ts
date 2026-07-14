@@ -8,7 +8,7 @@ import { type Options, parse, type Parser } from 'csv-parse/browser/esm';
 // Framework dependencies.
 import { buildFetchError, ignoreErrors } from '@dpuse/dpuse-shared/errors';
 import type { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@dpuse/dpuse-shared/component/dataView';
-import type { RetrievalTypeId, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@dpuse/dpuse-shared/component/module/connector';
+import type { RecordRetrievalTypeId, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@dpuse/dpuse-shared/component/module/connector';
 
 /**
  * Parse text result.
@@ -30,10 +30,16 @@ interface StreamRecordBuffer {
 /**
  * Baseline parser configuration pinned to explicit values to prevent behavioural drift across parser upgrades.
  * Intentionally exhaustive, even where values mirror current defaults. See: https://csv.js.org/parse/options/ for more information.
+ *
+ * `cast`, `objname`, `on_record`, `on_skip`, and `to` are intentionally omitted rather than set to `undefined`:
+ * their csv-parse types don't include `undefined` in the property's own type (only via the optional `?`), which
+ * `exactOptionalPropertyTypes` rejects as an explicit assignment. Omitting the key is equivalent at runtime — csv-parse
+ * treats "absent" and "explicitly undefined" identically — so this preserves the "pin every default explicitly"
+ * intent without a type error. (`to`'s documented default of 1 also can't be used regardless: it triggers
+ * `TypeError: "listener" argument must be a function`.)
  */
 const DEFAULT_OPTIONS: Options = {
     bom: false,
-    cast: undefined,
     cast_date: false,
     columns: false,
     comment: '',
@@ -48,9 +54,6 @@ const DEFAULT_OPTIONS: Options = {
     info: false,
     ltrim: false,
     max_record_size: 0,
-    objname: undefined,
-    on_record: undefined,
-    on_skip: undefined,
     quote: '"',
     raw: false,
     record_delimiter: [],
@@ -62,7 +65,6 @@ const DEFAULT_OPTIONS: Options = {
     skip_empty_lines: false,
     skip_records_with_empty_values: false,
     skip_records_with_error: false,
-    to: undefined, // Assigning documented default value of 1 triggers error `TypeError: "listener" argument must be a function`.
     to_line: -1,
     trim: false
 };
@@ -89,7 +91,7 @@ class Tool {
         parseOptions: Options,
         url: string,
         abortController: AbortController,
-        chunk: (typeId: RetrievalTypeId, records: ParsingRecord[]) => void
+        chunk: (typeId: RecordRetrievalTypeId, records: ParsingRecord[]) => void
     ): Promise<RetrieveRecordsSummary> {
         return new Promise<RetrieveRecordsSummary>((resolve, reject) => {
             let parser: Parser | undefined;
@@ -195,7 +197,7 @@ class Tool {
 /**
  * Construct record buffer.
  */
-function constructRecordBuffer(bufferOptions: { chunk: (typeId: RetrievalTypeId, records: ParsingRecord[]) => void; chunkSize: number }): StreamRecordBuffer {
+function constructRecordBuffer(bufferOptions: { chunk: (typeId: RecordRetrievalTypeId, records: ParsingRecord[]) => void; chunkSize: number }): StreamRecordBuffer {
     const recordsPerChunk = Math.max(1, Math.floor(bufferOptions.chunkSize));
     const pool: ParsingRecord[][] = [];
     let records = allocateBuffer();
