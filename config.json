@@ -1,12 +1,12 @@
 {
     "id": "dpuse-tool-csv-parse",
     "label": {
-        "en-gb": "CSV Parse"
+        "en": "CSV Parse"
     },
     "description": {
-        "en-gb": "..."
+        "en": "..."
     },
     "statusId": "alpha",
     "typeId": "tool",
-    "version": "0.0.143"
+    "version": "0.0.144"
 }
