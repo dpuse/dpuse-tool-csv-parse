@@ -1,11 +1,12 @@
 {
     "name": "@dpuse/dpuse-tool-csv-parse",
-    "version": "0.0.145",
+    "version": "0.0.146",
     "private": false,
     "description": "",
     "license": "MIT",
     "author": "Jonathan Terrell <terrell.jm@gmail.com>",
     "type": "module",
+    "sideEffects": false,
     "homepage": "https://www.dpuse.app",
     "bugs": {
         "url": "https://github.com/dpuse/dpuse-tool-csv-parse/issues"
@@ -26,7 +27,7 @@
         "dist"
     ],
     "engines": {
-        "node": ">=22",
+        "node": ">=23.11",
         "npm": ">=11"
     },
     "prettier": "@dpuse/dpuse-development/prettierrc",
@@ -35,7 +36,7 @@
         "fsevents@2.3.3": true,
         "sharp@0.34.5": true,
         "unrs-resolver@1.12.2": true,
-        "workerd@1.20260708.1": true
+        "workerd@1.20260710.1": true
     },
     "scripts": {
         "audit": "node -e \"import('@dpuse/dpuse-development').then(m => m.auditDependencies())\"",
@@ -50,11 +51,11 @@
     },
     "dependencies": {
         "@dpuse/dpuse-shared": "^0.3.743",
-        "@dpuse/eslint-config-dpuse": "^1.0.113",
         "csv-parse": "^7.0.1"
     },
     "devDependencies": {
         "@dpuse/dpuse-development": "^0.3.690",
+        "@dpuse/eslint-config-dpuse": "^1.0.113",
         "@types/node": "^26.1.1",
         "eslint": "^10.7.0",
         "prettier": "^3.9.5",
@@ -63,6 +64,6 @@
         "vite": "^8.1.4",
         "vite-plugin-dts": "^5.0.3",
         "vitest": "^4.1.10",
-        "wrangler": "^4.110.0"
+        "wrangler": "^4.111.0"
     }
 }

@@ -1,31 +1,26 @@
-/**
- * CSV Parse tool.
- */
-
-// Vendor dependencies.
+// ── External Dependencies & Registrations
 import { type Options, parse, type Parser } from 'csv-parse/browser/esm';
+export type { Options, Parser } from 'csv-parse/browser/esm';
 
-// Framework dependencies.
+// ── DPUse Framework
 import { buildFetchError, ignoreErrors } from '@dpuse/dpuse-shared/errors';
 import type { ParsingRecord, RecordDelimiterId, ValueDelimiterId } from '@dpuse/dpuse-shared/component/dataView';
 import type { RecordRetrievalTypeId, RetrieveRecordsOptions, RetrieveRecordsSummary } from '@dpuse/dpuse-shared/component/module/connector';
 
-/**
- * Parse text result.
- */
-interface ParseTextResult {
+// ── Types ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+export interface ParseTextResult {
     parsedRecords: ParsingRecord[];
     recordDelimiterId: RecordDelimiterId;
     valueDelimiterId: ValueDelimiterId;
 }
 
-/**
- * Stream record buffer.
- */
 interface StreamRecordBuffer {
     push: (record: ParsingRecord) => void;
     flush: () => void;
 }
+
+// ── Constants ────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 /**
  * Baseline parser configuration pinned to explicit values to prevent behavioural drift across parser upgrades.
@@ -69,20 +64,13 @@ const DEFAULT_OPTIONS: Options = {
     trim: false
 };
 
-/**
- *
- */
-const DEFAULT_RECORD_BUFFER_SIZE = 10_000;
-
-/**
- *
- */
 const DEFAULT_RECORD_BUFFER_POOL_SIZE = 4;
 
-/**
- * Tool.
- */
-class Tool {
+const DEFAULT_RECORD_BUFFER_SIZE = 10_000;
+
+// ── Tools ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+export class Tool {
     /**
      * Parse stream.
      */
@@ -123,7 +111,7 @@ class Tool {
                 hasErrored = true;
                 stopProcessing();
                 if (!abortController.signal.aborted) abortController.abort(error);
-                reject(error as Error);
+                reject(error instanceof Error ? error : new Error(String(error)));
             };
 
             const run = async (): Promise<void> => {
@@ -146,7 +134,9 @@ class Tool {
                         handleError(error);
                     }
                 });
-                parser.on('error', (error) => handleError(error));
+                parser.on('error', (error) => {
+                    handleError(error);
+                });
                 parser.on('end', () => {
                     if (hasErrored) return;
                     recordBuffer?.flush();
@@ -176,7 +166,9 @@ class Tool {
                 parser.end();
             };
 
-            void run().catch((error: unknown) => handleError(error));
+            void run().catch((error: unknown) => {
+                handleError(error);
+            });
         });
     }
 
@@ -190,9 +182,9 @@ class Tool {
     }
 }
 
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ── Helpers ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+
 //#region: Parse stream helpers.
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 /**
  * Construct record buffer.
@@ -245,11 +237,7 @@ function constructSummary(parser: Parser | undefined): RetrieveRecordsSummary {
     };
 }
 
-//#endregion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //#region: Parse text helpers.
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 /**
  * Determine record delimiter.
@@ -306,7 +294,9 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
                             pendingRecords.push(record);
                         }
                     });
-                    parser.on('error', (): void => resolve()); // Ignore errors. Assume invalid delimiter caused parsing error.
+                    parser.on('error', (): void => {
+                        resolve(); // Ignore errors. Assume invalid delimiter caused parsing error.
+                    });
                     parser.on('end', (): void => {
                         const averageValueCount = totalValueCount / recordCount;
                         if ((!priorSumCountDiffs || sumOfValueCountDiffs <= priorSumCountDiffs) && (!priorAverageCount || averageValueCount > priorAverageCount)) {
@@ -330,9 +320,3 @@ async function determineValueDelimiter(text: string, delimiters: ValueDelimiterI
 
     return { parsedRecords, valueDelimiterId: valueDelimiterId ?? ',' };
 }
-
-//#endregion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-// Exports.
-export type { Options, Parser } from 'csv-parse/browser/esm';
-export { type ParseTextResult, Tool };

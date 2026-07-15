@@ -2640,7 +2640,7 @@ var sr = {
 	skip_records_with_error: !1,
 	to_line: -1,
 	trim: !1
-}, cr = 1e4, lr = 4, ur = class {
+}, cr = 4, lr = 1e4, ur = class {
 	async parseStream(e, t, n, r, i) {
 		return new Promise((a, o) => {
 			let s, c, l, u = !1, d = !1, f = () => {
@@ -2651,7 +2651,7 @@ var sr = {
 			};
 			r.signal.addEventListener("abort", f, { once: !0 });
 			let p = (e) => {
-				u || (u = !0, f(), r.signal.aborted || r.abort(e), o(e));
+				u || (u = !0, f(), r.signal.aborted || r.abort(e), o(e instanceof Error ? e : Error(String(e))));
 			};
 			(async () => {
 				s = $n({
@@ -2663,7 +2663,7 @@ var sr = {
 					})
 				}), l = dr({
 					chunk: i,
-					chunkSize: e.chunkSize ?? cr
+					chunkSize: e.chunkSize ?? lr
 				}), s.on("readable", () => {
 					try {
 						if (s == null || l == null) return;
@@ -2675,7 +2675,9 @@ var sr = {
 					} catch (e) {
 						p(e);
 					}
-				}), s.on("error", (e) => p(e)), s.on("end", () => {
+				}), s.on("error", (e) => {
+					p(e);
+				}), s.on("end", () => {
 					u || (l?.flush(), a(fr(s)));
 				});
 				let o = await fetch(encodeURI(n), { signal: r.signal });
@@ -2691,7 +2693,9 @@ var sr = {
 				if (u) return;
 				let m = d.decode();
 				m.length > 0 && s.write(m), s.end();
-			})().catch((e) => p(e));
+			})().catch((e) => {
+				p(e);
+			});
 		});
 	}
 	async parseText(e, t) {
@@ -2707,7 +2711,7 @@ function dr(e) {
 	let t = Math.max(1, Math.floor(e.chunkSize)), n = [], r = o(), i = 0, a = () => {
 		if (i === 0) return;
 		let t = r;
-		t.length = i, r = o(), i = 0, e.chunk("parsingRecordArray", t), n.length < lr && n.push(t);
+		t.length = i, r = o(), i = 0, e.chunk("parsingRecordArray", t), n.length < cr && n.push(t);
 	};
 	return {
 		flush: a,
@@ -2758,7 +2762,9 @@ async function mr(e, t) {
 						let n = e.length;
 						s != null && (l += Math.abs(n - s)), s = n, t += n, f.push(e);
 					}
-				}), u.on("error", () => d()), u.on("end", () => {
+				}), u.on("error", () => {
+					d();
+				}), u.on("end", () => {
 					let e = t / c;
 					(!i || l <= i) && (!r || e > r) && (n = o, r = e, i = l, a = [...f]), d();
 				}), u.write(e), u.end();
