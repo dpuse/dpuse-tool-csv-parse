@@ -1,1 +1,16 @@
-[{"name":"@dpuse/dpuse-shared","installedVersion":"0.3.622","author":"Jonathan Terrell <terrell.jm@gmail.com>","licenseType":"MIT","link":"git+https://github.com/data-positioning/dpuse-shared.git","definedVersion":"^0.3.622","remoteVersion":"0.3.622","alias":"","department":"n/a","relatedTo":"n/a","licensePeriod":"n/a","material":"n/a"},{"name":"csv-parse","installedVersion":"6.2.1","author":"David Worms <david@adaltas.com> (https://www.adaltas.com)","licenseType":"MIT","link":"git+https://github.com/adaltas/node-csv.git","definedVersion":"^6.2.1","remoteVersion":"6.2.1","alias":"","department":"n/a","relatedTo":"n/a","licensePeriod":"n/a","material":"n/a"}]
+{
+  "version": "0.0.146",
+  "name": "@dpuse/dpuse-tool-csv-parse",
+  "dependencies": {
+    "@dpuse/dpuse-shared": {
+      "version": "0.3.743",
+      "resolved": "https://registry.npmjs.org/@dpuse/dpuse-shared/-/dpuse-shared-0.3.743.tgz",
+      "overridden": false
+    },
+    "csv-parse": {
+      "version": "7.0.1",
+      "resolved": "https://registry.npmjs.org/csv-parse/-/csv-parse-7.0.1.tgz",
+      "overridden": false
+    }
+  }
+}

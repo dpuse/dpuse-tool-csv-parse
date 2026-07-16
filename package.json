@@ -1,6 +1,6 @@
 {
     "name": "@dpuse/dpuse-tool-csv-parse",
-    "version": "0.0.146",
+    "version": "0.0.147",
     "private": false,
     "description": "",
     "license": "MIT",
@@ -40,9 +40,14 @@
     },
     "scripts": {
         "audit": "node -e \"import('@dpuse/dpuse-development').then(m => m.auditDependencies())\"",
-        "build": "node -e \"import('@dpuse/dpuse-development').then(m => m.buildProject())\" && node -e \"import('@dpuse/dpuse-development').then(m => m.documentBundleSizes())\"",
+        "build": "node -e \"import('@dpuse/dpuse-development').then(m => m.buildProject())\" && npm run documentBundleSizes",
         "check": "node -e \"import('@dpuse/dpuse-development').then(m => m.checkConfigFiles())\" && node -e \"import('@dpuse/dpuse-development').then(m => m.checkDependencies())\"",
-        "document": "node -e \"import('@dpuse/dpuse-development').then(m => m.documentDependencies('BSD-3-Clause;MIT'))\"",
+        "document": "npm run documentOpening && npm run documentUsage && npm run documentDependencies && npm run documentGovernance",
+        "documentBundleSizes": "node -e \"import('@dpuse/dpuse-development').then(m => m.documentBundleSizes())\"",
+        "documentDependencies": "node -e \"import('@dpuse/dpuse-development').then(m => m.documentDependencies('BSD-3-Clause;MIT'))\"",
+        "documentGovernance": "node -e \"import('@dpuse/dpuse-development').then(m => m.documentGovernance())\"",
+        "documentOpening": "node -e \"import('@dpuse/dpuse-development').then(m => m.documentOpening())\"",
+        "documentUsage": "node -e \"import('@dpuse/dpuse-development').then(m => m.documentUsage())\"",
         "format": "node -e \"import('@dpuse/dpuse-development').then(m => m.formatCode())\"",
         "lint": "node -e \"import('@dpuse/dpuse-development').then(m => m.lintCode())\"",
         "release": "op run --env-file=.env -- node -e \"import('@dpuse/dpuse-development').then(m => m.releaseProject())\"",
@@ -61,7 +66,7 @@
         "prettier": "^3.9.5",
         "sonda": "^0.14.0",
         "typescript": "^5.9.3",
-        "vite": "^8.1.4",
+        "vite": "^8.1.5",
         "vite-plugin-dts": "^5.0.3",
         "vitest": "^4.1.10",
         "wrangler": "^4.111.0"

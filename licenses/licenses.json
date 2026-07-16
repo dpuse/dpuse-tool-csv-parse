@@ -1,1 +1,18 @@
-[{"department":"kessler","relatedTo":"stuff","name":"@dpuse/dpuse-shared","licensePeriod":"perpetual","material":"material","licenseType":"MIT","link":"git+https://github.com/data-positioning/dpuse-shared.git","remoteVersion":"0.3.622","installedVersion":"0.3.622","definedVersion":"^0.3.622","author":"Jonathan Terrell <terrell.jm@gmail.com>","latestRemoteModified":"2026-04-18T16:41:13.795Z"},{"department":"kessler","relatedTo":"stuff","name":"csv-parse","licensePeriod":"perpetual","material":"material","licenseType":"MIT","link":"git+https://github.com/adaltas/node-csv.git","remoteVersion":"6.2.1","installedVersion":"6.2.1","definedVersion":"^6.2.1","author":"David Worms <david@adaltas.com> (https://www.adaltas.com)","latestRemoteModified":"2026-03-20T13:06:56.615Z"}]
+{
+    "@dpuse/dpuse-shared@0.3.743": {
+        "licenses": "MIT",
+        "repository": "https://github.com/dpuse/dpuse-shared",
+        "publisher": "Jonathan Terrell",
+        "email": "terrell.jm@gmail.com",
+        "path": "node_modules/@dpuse/dpuse-shared",
+        "licenseFile": "downloads/@dpuse/dpuse-shared@0.3.743-LICENSE.txt"
+    },
+    "csv-parse@7.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/adaltas/node-csv",
+        "publisher": "David Worms",
+        "email": "david@adaltas.com",
+        "path": "node_modules/csv-parse",
+        "licenseFile": "downloads/csv-parse@7.0.1-LICENSE.txt"
+    }
+}
