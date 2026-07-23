@@ -8,7 +8,9 @@
             "..."
         ]
     },
+    "icon": "<svg role=\"img\" viewBox=\"0 0 50 50\" preserveAspectRatio=\"xMidYMin slice\" class=\"h-[2.6rem]\"><title>Adaltas logo</title><use xlink:href=\"/static/layout-8e59f8c90d3f1273e1975ac05f3682dd.svg#logo_color\"></use></svg>",
+    "iconDark": "<svg role=\"img\" viewBox=\"0 0 50 50\" preserveAspectRatio=\"xMidYMin slice\" class=\"h-[2.6rem]\"><title>Adaltas logo</title><use xlink:href=\"/static/layout-8e59f8c90d3f1273e1975ac05f3682dd.svg#logo_color\"></use></svg>",
     "statusId": "alpha",
     "typeId": "tool",
-    "version": "0.0.148"
+    "version": "0.0.149"
 }
