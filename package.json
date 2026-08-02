@@ -1,6 +1,6 @@
 {
-    "name": "@dpuse/dpuse-tool-csv-parse",
-    "version": "0.0.152",
+    "name": "@dpuse/dpuse-tool-adaltas-csv-parser",
+    "version": "0.0.153",
     "private": false,
     "description": "",
     "license": "MIT",
@@ -9,17 +9,17 @@
     "sideEffects": false,
     "homepage": "https://www.dpuse.app",
     "bugs": {
-        "url": "https://github.com/dpuse/dpuse-tool-csv-parse/issues"
+        "url": "https://github.com/dpuse/dpuse-tool-adaltas-csv-parser/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/dpuse/dpuse-tool-csv-parse.git"
+        "url": "git+https://github.com/dpuse/dpuse-tool-adaltas-csv-parser.git"
     },
-    "module": "./dist/dpuse-tool-csv-parse.es.js",
+    "module": "./dist/dpuse-tool-adaltas-csv-parser.es.js",
     "types": "./dist/types/src/index.d.ts",
     "exports": {
         ".": {
-            "import": "./dist/dpuse-tool-csv-parse.es.js",
+            "import": "./dist/dpuse-tool-adaltas-csv-parser.es.js",
             "types": "./dist/types/src/index.d.ts"
         }
     },

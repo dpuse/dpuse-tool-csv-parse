@@ -1,7 +1,7 @@
 {
   "metadata": {
     "version": "0.14.0",
-    "generatedAt": "2026-08-02T09:40:30.170Z",
+    "generatedAt": "2026-08-02T09:45:11.203Z",
     "integration": "vite",
     "sources": false,
     "gzip": false,
@@ -21,18 +21,18 @@
       "name": "[unassigned]",
       "type": "other",
       "format": "other",
-      "uncompressed": 5410,
+      "uncompressed": 5419,
       "gzip": 0,
-      "brotli": 324,
-      "parent": "dist/dpuse-tool-csv-parse.es.js"
+      "brotli": 331,
+      "parent": "dist/dpuse-tool-adaltas-csv-parser.es.js"
     },
     {
       "kind": "asset",
-      "name": "dist/dpuse-tool-csv-parse.es.js",
+      "name": "dist/dpuse-tool-adaltas-csv-parser.es.js",
       "type": "script",
-      "uncompressed": 111816,
+      "uncompressed": 111825,
       "gzip": 0,
-      "brotli": 25079
+      "brotli": 25054
     },
     {
       "kind": "filesystem",
@@ -49,7 +49,7 @@
       "uncompressed": 1119,
       "gzip": 0,
       "brotli": 462,
-      "parent": "dist/dpuse-tool-csv-parse.es.js"
+      "parent": "dist/dpuse-tool-adaltas-csv-parser.es.js"
     },
     {
       "kind": "filesystem",
@@ -65,8 +65,8 @@
       "format": "esm",
       "uncompressed": 101535,
       "gzip": 0,
-      "brotli": 22858,
-      "parent": "dist/dpuse-tool-csv-parse.es.js"
+      "brotli": 22828,
+      "parent": "dist/dpuse-tool-adaltas-csv-parser.es.js"
     },
     {
       "kind": "filesystem",
@@ -82,14 +82,14 @@
       "format": "esm",
       "uncompressed": 3752,
       "gzip": 0,
-      "brotli": 1435,
-      "parent": "dist/dpuse-tool-csv-parse.es.js"
+      "brotli": 1433,
+      "parent": "dist/dpuse-tool-adaltas-csv-parser.es.js"
     }
   ],
   "connections": [
     {
       "kind": "entrypoint",
-      "source": "dist/dpuse-tool-csv-parse.es.js",
+      "source": "dist/dpuse-tool-adaltas-csv-parser.es.js",
       "target": "src/index.ts",
       "original": null
     }

@@ -1,6 +1,6 @@
 {
-  "version": "0.0.151",
-  "name": "@dpuse/dpuse-tool-csv-parse",
+  "version": "0.0.152",
+  "name": "@dpuse/dpuse-tool-adaltas-csv-parser",
   "dependencies": {
     "@dpuse/dpuse-shared": {
       "version": "0.3.758",
