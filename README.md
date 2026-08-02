@@ -45,7 +45,7 @@ License data is collected automatically on each release using [license-checker](
 
 |Dependency|Version|License(s)|Document|
 |:-|:-:|:-|:-|
-|[@dpuse/dpuse-shared](https://github.com/dpuse/dpuse-shared)|0.3.743|MIT|[LICENSE](licenses/downloads/@dpuse/dpuse-shared@0.3.743-LICENSE.txt)|
+|[@dpuse/dpuse-shared](https://github.com/dpuse/dpuse-shared)|0.3.758|MIT|[LICENSE](licenses/downloads/@dpuse/dpuse-shared@0.3.758-LICENSE.txt)|
 |[csv-parse](https://github.com/adaltas/node-csv)|7.0.1|MIT|[LICENSE](licenses/downloads/csv-parse@7.0.1-LICENSE.txt)|
 
 <!-- DEPENDENCY_LICENSES_END -->
@@ -56,8 +56,8 @@ License data is collected automatically on each release using [license-checker](
 
 The dependency tree below lists every package in this project — direct and transitive — along with its installed version, release date, and update status. Packages flagged ❗ have a newer version available; ⚠️ indicates a package that hasn't been updated in the last 6 months or longer. Neither flag necessarily indicates a problem: we let new releases stabilise before upgrading, and some packages are simply mature and stable, requiring no active development.
 
-- **[@dpuse/dpuse-shared](https://github.com/dpuse/dpuse-shared)** 0.3.743 — this month: 2026-07-14
-- **[csv-parse](https://github.com/adaltas/node-csv)** 7.0.1 — this month: 2026-07-02
+- **[@dpuse/dpuse-shared](https://github.com/dpuse/dpuse-shared)** 0.3.758 — this month: 2026-07-27
+- **[csv-parse](https://github.com/adaltas/node-csv)** 7.0.1 — **1 month** ago: 2026-07-02
 
 <!-- DEPENDENCY_TREE_END -->
 
@@ -67,13 +67,15 @@ The Bundle Analysis Report is generated automatically on each release using [Son
 
 _Note: Sonda's Vite reports currently exclude CSS files, since Vite does not generate source maps for CSS._
 
-| Chunk/Module/File                                                            | Composition                  |
-| :--------------------------------------------------------------------------- | :--------------------------- |
-| dist/dpuse-tool-csv-parse.es.js                                              | 109.2 kB · brotli 24.5 kB    |
-| &nbsp;&nbsp;&nbsp;&nbsp;csv-parse → dist/esm/index.js                        | `██████████████████░░` 90.9% |
-| &nbsp;&nbsp;&nbsp;&nbsp;(unassigned) → [unassigned]                          | `█░░░░░░░░░░░░░░░░░░░` 4.8%  |
-| &nbsp;&nbsp;&nbsp;&nbsp;src → index.ts                                       | `█░░░░░░░░░░░░░░░░░░░` 3.3%  |
-| &nbsp;&nbsp;&nbsp;&nbsp;@dpuse/dpuse-shared → dist/dpuse-shared-errors.es.js | `░░░░░░░░░░░░░░░░░░░░` 1.0%  |
+|Chunk/Module/File|Composition|
+|:------ |:-----------|
+| dist/dpuse-tool-csv-parse.es.js | 109.2 kB · brotli 24.5 kB |
+| &nbsp;&nbsp;&nbsp;&nbsp;csv-parse → dist/esm/index.js | `██████████████████░░` 90.8% |
+| &nbsp;&nbsp;&nbsp;&nbsp;(unassigned) → [unassigned] | `█░░░░░░░░░░░░░░░░░░░` 4.8% |
+| &nbsp;&nbsp;&nbsp;&nbsp;src → index.ts | `█░░░░░░░░░░░░░░░░░░░` 3.4% |
+| &nbsp;&nbsp;&nbsp;&nbsp;@dpuse/dpuse-shared → dist/dpuse-shared-errors.es.js | `░░░░░░░░░░░░░░░░░░░░` 1.0% |
+
+(unassigned) = bytes Sonda can't trace to a specific source line (whitespace, stray keywords, bundler-injected region markers) — not actual missing/unknown code.
 
 <!-- BUNDLE_END -->
 

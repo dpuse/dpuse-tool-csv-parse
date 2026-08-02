@@ -607,7 +607,8 @@ function Ae(e, t) {
 				if (n > 56319) {
 					(t -= 3) > -1 && a.push(239, 191, 189);
 					continue;
-				} else if (o + 1 === r) {
+				}
+				if (o + 1 === r) {
 					(t -= 3) > -1 && a.push(239, 191, 189);
 					continue;
 				}
@@ -1118,7 +1119,7 @@ U.prototype.push = function(e) {
 }, U.prototype.shift = function() {
 	if (this.length !== 0) {
 		var e = this.head.data;
-		return this.length === 1 ? this.head = this.tail = null : this.head = this.head.next, --this.length, e;
+		return this.head = this.length === 1 ? this.tail = null : this.head.next, --this.length, e;
 	}
 }, U.prototype.clear = function() {
 	this.head = this.tail = null, this.length = 0;
@@ -1237,7 +1238,7 @@ function Bt(e, t) {
 }
 function Vt(e, t) {
 	e ||= {}, this.objectMode = !!e.objectMode, t instanceof J && (this.objectMode = this.objectMode || !!e.readableObjectMode);
-	var n = e.highWaterMark, r = this.objectMode ? 16 : 16 * 1024;
+	var n = e.highWaterMark, r = this.objectMode ? 16 : 16384;
 	this.highWaterMark = n || n === 0 ? n : r, this.highWaterMark = ~~this.highWaterMark, this.buffer = new U(), this.length = 0, this.pipes = null, this.pipesCount = 0, this.flowing = null, this.ended = !1, this.endEmitted = !1, this.reading = !1, this.sync = !0, this.needReadable = !1, this.emittedReadable = !1, this.readableListening = !1, this.resumeScheduled = !1, this.defaultEncoding = e.defaultEncoding || "utf8", this.ranOut = !1, this.awaitDrain = 0, this.readingMore = !1, this.decoder = null, this.encoding = null, e.encoding && (this.decoder = new W(e.encoding), this.encoding = e.encoding);
 }
 function K(e) {
@@ -1331,9 +1332,7 @@ K.prototype._read = function(e) {
 		case 1:
 			r.pipes = [r.pipes, e];
 			break;
-		default:
-			r.pipes.push(e);
-			break;
+		default: r.pipes.push(e);
 	}
 	r.pipesCount += 1, G("pipe count=%d opts=%j", r.pipesCount, t);
 	var i = !t || t.end !== !1 ? o : l;
@@ -1460,7 +1459,7 @@ function sn(e, t) {
 	for (e -= i.length; n = n.next;) {
 		var a = n.data, o = e > a.length ? a.length : e;
 		if (o === a.length ? i += a : i += a.slice(0, e), e -= o, e === 0) {
-			o === a.length ? (++r, n.next ? t.head = n.next : t.head = t.tail = null) : (t.head = n, n.data = a.slice(o));
+			o === a.length ? (++r, t.head = n.next ? n.next : t.tail = null) : (t.head = n, n.data = a.slice(o));
 			break;
 		}
 		++r;
@@ -1472,7 +1471,7 @@ function cn(e, t) {
 	for (r.data.copy(n), e -= r.data.length; r = r.next;) {
 		var a = r.data, o = e > a.length ? a.length : e;
 		if (a.copy(n, n.length - e, 0, o), e -= o, e === 0) {
-			o === a.length ? (++i, r.next ? t.head = r.next : t.head = t.tail = null) : (t.head = r, r.data = a.slice(o));
+			o === a.length ? (++i, t.head = r.next ? r.next : t.tail = null) : (t.head = r, r.data = a.slice(o));
 			break;
 		}
 		++i;
@@ -1503,7 +1502,7 @@ function hn(e, t) {
 	Object.defineProperty(this, "buffer", { get: lt(function() {
 		return this.getBuffer();
 	}, "_writableState.buffer is deprecated. Use _writableState.getBuffer instead.") }), e ||= {}, this.objectMode = !!e.objectMode, t instanceof J && (this.objectMode = this.objectMode || !!e.writableObjectMode);
-	var n = e.highWaterMark, r = this.objectMode ? 16 : 16 * 1024;
+	var n = e.highWaterMark, r = this.objectMode ? 16 : 16384;
 	this.highWaterMark = n || n === 0 ? n : r, this.highWaterMark = ~~this.highWaterMark, this.needDrain = !1, this.ending = !1, this.ended = !1, this.finished = !1;
 	var i = e.decodeStrings === !1;
 	this.decodeStrings = !i, this.defaultEncoding = e.defaultEncoding || "utf8", this.length = 0, this.writing = !1, this.corked = 0, this.sync = !0, this.bufferProcessing = !1, this.onwrite = function(e) {
@@ -2483,7 +2482,8 @@ var Bn = function(e) {
 					return e;
 				}
 				return;
-			} else return i;
+			}
+			return i;
 		},
 		__infoDataSet: function() {
 			return {
@@ -2607,7 +2607,7 @@ function ar(e) {
 	return /* @__PURE__ */ Error("Unknown error");
 }
 function or(e) {
-	if (!(e == null || e === "")) return e.length > er ? `${e.slice(0, er)}... [truncated]` : e;
+	if (e != null && e !== "") return e.length > er ? `${e.slice(0, er)}... [truncated]` : e;
 }
 //#endregion
 //#region src/index.ts
