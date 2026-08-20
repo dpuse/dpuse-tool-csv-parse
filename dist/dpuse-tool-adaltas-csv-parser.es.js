@@ -254,8 +254,10 @@ function ae(e, t, n, r, i) {
 	if (typeof n == "string" ? (r = n, n = 0) : n > 2147483647 ? n = 2147483647 : n < -2147483648 && (n = -2147483648), n = +n, isNaN(n) && (n = i ? 0 : e.length - 1), n < 0 && (n = e.length + n), n >= e.length) {
 		if (i) return -1;
 		n = e.length - 1;
-	} else if (n < 0) if (i) n = 0;
-	else return -1;
+	} else if (n < 0) {
+		if (i) n = 0;
+		else return -1;
+	}
 	if (typeof t == "string" && (t = _.from(t, r)), C(t)) return t.length === 0 ? -1 : oe(e, t, n, r, i);
 	if (typeof t == "number") return t &= 255, _.TYPED_ARRAY_SUPPORT && typeof Uint8Array.prototype.indexOf == "function" ? i ? Uint8Array.prototype.indexOf.call(e, t, n) : Uint8Array.prototype.lastIndexOf.call(e, t, n) : oe(e, [t], n, r, i);
 	throw TypeError("val must be string, number or Buffer");
@@ -941,13 +943,15 @@ function lt(t, n) {
 }
 var ut = {}, dt;
 function ft(e) {
-	if (V(dt) && (dt = ot.env.NODE_DEBUG || ""), e = e.toUpperCase(), !ut[e]) if (RegExp("\\b" + e + "\\b", "i").test(dt)) {
-		var t = 0;
-		ut[e] = function() {
-			var n = ct.apply(null, arguments);
-			console.error("%s %d: %s", e, t, n);
-		};
-	} else ut[e] = function() {};
+	if (V(dt) && (dt = ot.env.NODE_DEBUG || ""), e = e.toUpperCase(), !ut[e]) {
+		if (RegExp("\\b" + e + "\\b", "i").test(dt)) {
+			var t = 0;
+			ut[e] = function() {
+				var n = ct.apply(null, arguments);
+				console.error("%s %d: %s", e, t, n);
+			};
+		} else ut[e] = function() {};
+	}
 	return ut[e];
 }
 function B(e, t) {
@@ -1258,17 +1262,18 @@ function Ht(e, t, n, r, i) {
 	var a = qt(t, n);
 	if (a) e.emit("error", a);
 	else if (n === null) t.reading = !1, Jt(e, t);
-	else if (t.objectMode || n && n.length > 0) if (t.ended && !i) {
-		var o = /* @__PURE__ */ Error("stream.push() after EOF");
-		e.emit("error", o);
-	} else if (t.endEmitted && i) {
-		var s = /* @__PURE__ */ Error("stream.unshift() after end event");
-		e.emit("error", s);
-	} else {
-		var c;
-		t.decoder && !i && !r && (n = t.decoder.write(n), c = !t.objectMode && n.length === 0), i || (t.reading = !1), c || (t.flowing && t.length === 0 && !t.sync ? (e.emit("data", n), e.read(0)) : (t.length += t.objectMode ? 1 : n.length, i ? t.buffer.unshift(n) : t.buffer.push(n), t.needReadable && Yt(e))), Zt(e, t);
-	}
-	else i || (t.reading = !1);
+	else if (t.objectMode || n && n.length > 0) {
+		if (t.ended && !i) {
+			var o = /* @__PURE__ */ Error("stream.push() after EOF");
+			e.emit("error", o);
+		} else if (t.endEmitted && i) {
+			var s = /* @__PURE__ */ Error("stream.unshift() after end event");
+			e.emit("error", s);
+		} else {
+			var c;
+			t.decoder && !i && !r && (n = t.decoder.write(n), c = !t.objectMode && n.length === 0), i || (t.reading = !1), c || (t.flowing && t.length === 0 && !t.sync ? (e.emit("data", n), e.read(0)) : (t.length += t.objectMode ? 1 : n.length, i ? t.buffer.unshift(n) : t.buffer.push(n), t.needReadable && Yt(e))), Zt(e, t);
+		}
+	} else i || (t.reading = !1);
 	return Ut(t);
 }
 function Ut(e) {
@@ -1796,7 +1801,7 @@ var Bn = function(e) {
 		this.buf.copy(t, 0, 0, e), this.buf = t;
 	}
 	toString(e) {
-		return e ? this.buf.slice(0, this.length).toString(e) : Uint8Array.prototype.slice.call(this.buf.slice(0, this.length));
+		return e ? this.buf.toString(e, 0, this.length) : Uint8Array.prototype.slice.call(this.buf.slice(0, this.length));
 	}
 	toJSON() {
 		return this.toString("utf8");
@@ -1993,8 +1998,10 @@ var Bn = function(e) {
 	if (t.info === void 0 || t.info === null || t.info === !1) t.info = !1;
 	else if (t.info !== !0) throw Error(`Invalid Option: info must be true, got ${JSON.stringify(t.info)}`);
 	if (t.max_record_size === void 0 || t.max_record_size === null || t.max_record_size === !1) t.max_record_size = 0;
-	else if (!(Number.isInteger(t.max_record_size) && t.max_record_size >= 0)) if (typeof t.max_record_size == "string" && /\d+/.test(t.max_record_size)) t.max_record_size = parseInt(t.max_record_size);
-	else throw Error(`Invalid Option: max_record_size must be a positive integer, got ${JSON.stringify(t.max_record_size)}`);
+	else if (!(Number.isInteger(t.max_record_size) && t.max_record_size >= 0)) {
+		if (typeof t.max_record_size == "string" && /\d+/.test(t.max_record_size)) t.max_record_size = parseInt(t.max_record_size);
+		else throw Error(`Invalid Option: max_record_size must be a positive integer, got ${JSON.stringify(t.max_record_size)}`);
+	}
 	if (t.objname === void 0 || t.objname === null || t.objname === !1) t.objname = void 0;
 	else if (O(t.objname)) {
 		if (t.objname.length === 0) throw Error("Invalid Option: objname must be a non empty buffer");
@@ -2045,20 +2052,34 @@ var Bn = function(e) {
 			`got ${JSON.stringify(e)}`
 		], t);
 		return typeof e == "string" && (e = _.from(e, t.encoding)), e;
-	}), typeof t.relax_column_count != "boolean") if (t.relax_column_count === void 0 || t.relax_column_count === null) t.relax_column_count = !1;
-	else throw Error(`Invalid Option: relax_column_count must be a boolean, got ${JSON.stringify(t.relax_column_count)}`);
-	if (typeof t.relax_column_count_less != "boolean") if (t.relax_column_count_less === void 0 || t.relax_column_count_less === null) t.relax_column_count_less = !1;
-	else throw Error(`Invalid Option: relax_column_count_less must be a boolean, got ${JSON.stringify(t.relax_column_count_less)}`);
-	if (typeof t.relax_column_count_more != "boolean") if (t.relax_column_count_more === void 0 || t.relax_column_count_more === null) t.relax_column_count_more = !1;
-	else throw Error(`Invalid Option: relax_column_count_more must be a boolean, got ${JSON.stringify(t.relax_column_count_more)}`);
-	if (typeof t.relax_quotes != "boolean") if (t.relax_quotes === void 0 || t.relax_quotes === null) t.relax_quotes = !1;
-	else throw Error(`Invalid Option: relax_quotes must be a boolean, got ${JSON.stringify(t.relax_quotes)}`);
-	if (typeof t.skip_empty_lines != "boolean") if (t.skip_empty_lines === void 0 || t.skip_empty_lines === null) t.skip_empty_lines = !1;
-	else throw Error(`Invalid Option: skip_empty_lines must be a boolean, got ${JSON.stringify(t.skip_empty_lines)}`);
-	if (typeof t.skip_records_with_empty_values != "boolean") if (t.skip_records_with_empty_values === void 0 || t.skip_records_with_empty_values === null) t.skip_records_with_empty_values = !1;
-	else throw Error(`Invalid Option: skip_records_with_empty_values must be a boolean, got ${JSON.stringify(t.skip_records_with_empty_values)}`);
-	if (typeof t.skip_records_with_error != "boolean") if (t.skip_records_with_error === void 0 || t.skip_records_with_error === null) t.skip_records_with_error = !1;
-	else throw Error(`Invalid Option: skip_records_with_error must be a boolean, got ${JSON.stringify(t.skip_records_with_error)}`);
+	}), typeof t.relax_column_count != "boolean") {
+		if (t.relax_column_count === void 0 || t.relax_column_count === null) t.relax_column_count = !1;
+		else throw Error(`Invalid Option: relax_column_count must be a boolean, got ${JSON.stringify(t.relax_column_count)}`);
+	}
+	if (typeof t.relax_column_count_less != "boolean") {
+		if (t.relax_column_count_less === void 0 || t.relax_column_count_less === null) t.relax_column_count_less = !1;
+		else throw Error(`Invalid Option: relax_column_count_less must be a boolean, got ${JSON.stringify(t.relax_column_count_less)}`);
+	}
+	if (typeof t.relax_column_count_more != "boolean") {
+		if (t.relax_column_count_more === void 0 || t.relax_column_count_more === null) t.relax_column_count_more = !1;
+		else throw Error(`Invalid Option: relax_column_count_more must be a boolean, got ${JSON.stringify(t.relax_column_count_more)}`);
+	}
+	if (typeof t.relax_quotes != "boolean") {
+		if (t.relax_quotes === void 0 || t.relax_quotes === null) t.relax_quotes = !1;
+		else throw Error(`Invalid Option: relax_quotes must be a boolean, got ${JSON.stringify(t.relax_quotes)}`);
+	}
+	if (typeof t.skip_empty_lines != "boolean") {
+		if (t.skip_empty_lines === void 0 || t.skip_empty_lines === null) t.skip_empty_lines = !1;
+		else throw Error(`Invalid Option: skip_empty_lines must be a boolean, got ${JSON.stringify(t.skip_empty_lines)}`);
+	}
+	if (typeof t.skip_records_with_empty_values != "boolean") {
+		if (t.skip_records_with_empty_values === void 0 || t.skip_records_with_empty_values === null) t.skip_records_with_empty_values = !1;
+		else throw Error(`Invalid Option: skip_records_with_empty_values must be a boolean, got ${JSON.stringify(t.skip_records_with_empty_values)}`);
+	}
+	if (typeof t.skip_records_with_error != "boolean") {
+		if (t.skip_records_with_error === void 0 || t.skip_records_with_error === null) t.skip_records_with_error = !1;
+		else throw Error(`Invalid Option: skip_records_with_error must be a boolean, got ${JSON.stringify(t.skip_records_with_error)}`);
+	}
 	if (t.rtrim === void 0 || t.rtrim === null || t.rtrim === !1) t.rtrim = !1;
 	else if (t.rtrim !== !0) throw Error(`Invalid Option: rtrim must be a boolean, got ${JSON.stringify(t.rtrim)}`);
 	if (t.ltrim === void 0 || t.ltrim === null || t.ltrim === !1) t.ltrim = !1;
@@ -2066,13 +2087,17 @@ var Bn = function(e) {
 	if (t.trim === void 0 || t.trim === null || t.trim === !1) t.trim = !1;
 	else if (t.trim !== !0) throw Error(`Invalid Option: trim must be a boolean, got ${JSON.stringify(t.trim)}`);
 	if (t.trim === !0 && e.ltrim !== !1 ? t.ltrim = !0 : t.ltrim !== !0 && (t.ltrim = !1), t.trim === !0 && e.rtrim !== !1 ? t.rtrim = !0 : t.rtrim !== !0 && (t.rtrim = !1), t.to === void 0 || t.to === null) t.to = -1;
-	else if (t.to !== -1) if (typeof t.to == "string" && /\d+/.test(t.to) && (t.to = parseInt(t.to)), Number.isInteger(t.to)) {
-		if (t.to <= 0) throw Error(`Invalid Option: to must be a positive integer greater than 0, got ${JSON.stringify(e.to)}`);
-	} else throw Error(`Invalid Option: to must be an integer, got ${JSON.stringify(e.to)}`);
+	else if (t.to !== -1) {
+		if (typeof t.to == "string" && /\d+/.test(t.to) && (t.to = parseInt(t.to)), Number.isInteger(t.to)) {
+			if (t.to <= 0) throw Error(`Invalid Option: to must be a positive integer greater than 0, got ${JSON.stringify(e.to)}`);
+		} else throw Error(`Invalid Option: to must be an integer, got ${JSON.stringify(e.to)}`);
+	}
 	if (t.to_line === void 0 || t.to_line === null) t.to_line = -1;
-	else if (t.to_line !== -1) if (typeof t.to_line == "string" && /\d+/.test(t.to_line) && (t.to_line = parseInt(t.to_line)), Number.isInteger(t.to_line)) {
-		if (t.to_line <= 0) throw Error(`Invalid Option: to_line must be a positive integer greater than 0, got ${JSON.stringify(e.to_line)}`);
-	} else throw Error(`Invalid Option: to_line must be an integer, got ${JSON.stringify(e.to_line)}`);
+	else if (t.to_line !== -1) {
+		if (typeof t.to_line == "string" && /\d+/.test(t.to_line) && (t.to_line = parseInt(t.to_line)), Number.isInteger(t.to_line)) {
+			if (t.to_line <= 0) throw Error(`Invalid Option: to_line must be a positive integer greater than 0, got ${JSON.stringify(e.to_line)}`);
+		} else throw Error(`Invalid Option: to_line must be an integer, got ${JSON.stringify(e.to_line)}`);
+	}
 	return t;
 }, Kn = function(e, t) {
 	t || ({delimiter_auto: t} = Gn({ delimiter_auto: !0 })), typeof e == "string" && (e = _.from(e)), O(e) && (e = ((e) => {
@@ -2136,30 +2161,34 @@ var Bn = function(e) {
 				}
 			}
 			let { previousBuf: C } = this.state, w;
-			if (C === void 0) if (e === void 0) {
-				r();
-				return;
-			} else w = e;
-			else w = C !== void 0 && e === void 0 ? C : _.concat([C, e]);
-			if (ee === !1) if (i === !1) this.state.bomSkipped = !0;
-			else if (w.length < 3) {
-				if (t === !1) {
-					this.state.previousBuf = w;
+			if (C === void 0) {
+				if (e === void 0) {
+					r();
 					return;
 				}
-			} else {
-				for (let e in $) if ($[e].compare(w, 0, $[e].length) === 0) {
-					let t = $[e].length;
-					this.state.bufBytesStart += t, w = w.slice(t);
-					let n = Gn({
-						...this.original_options,
-						encoding: e
-					});
-					for (let e in n) this.options[e] = n[e];
-					({comment: v, escape: y, quote: b} = this.options);
-					break;
+				w = e;
+			} else w = C !== void 0 && e === void 0 ? C : _.concat([C, e]);
+			if (ee === !1) {
+				if (i === !1) this.state.bomSkipped = !0;
+				else if (w.length < 3) {
+					if (t === !1) {
+						this.state.previousBuf = w;
+						return;
+					}
+				} else {
+					for (let e in $) if ($[e].compare(w, 0, $[e].length) === 0) {
+						let t = $[e].length;
+						this.state.bufBytesStart += t, w = w.slice(t);
+						let n = Gn({
+							...this.original_options,
+							encoding: e
+						});
+						for (let e in n) this.options[e] = n[e];
+						({comment: v, escape: y, quote: b} = this.options);
+						break;
+					}
+					this.state.bomSkipped = !0;
 				}
-				this.state.bomSkipped = !0;
 			}
 			let ie = w.length, T;
 			for (T = 0; T < ie && !this.__needMoreData(T, ie, t); T++) {
@@ -2171,43 +2200,47 @@ var Bn = function(e) {
 				let e = w[T];
 				if (d === !0 && ne.append(e), (e === Yn || e === Xn) && this.state.wasRowDelimiter === !1 && (this.state.wasRowDelimiter = !0), this.state.escaping === !0) this.state.escaping = !1;
 				else {
-					if (y !== null && this.state.quoting === !0 && this.__isEscape(w, T, e) && T + y.length < ie) if (re) {
-						if (this.__isQuote(w, T + y.length)) {
+					if (y !== null && this.state.quoting === !0 && this.__isEscape(w, T, e) && T + y.length < ie) {
+						if (re) {
+							if (this.__isQuote(w, T + y.length)) {
+								this.state.escaping = !0, T += y.length - 1;
+								continue;
+							}
+						} else {
 							this.state.escaping = !0, T += y.length - 1;
 							continue;
 						}
-					} else {
-						this.state.escaping = !0, T += y.length - 1;
-						continue;
 					}
-					if (this.state.commenting === !1 && this.__isQuote(w, T)) if (this.state.quoting === !0) {
-						let t = w[T + b.length], n = p && this.__isCharTrimable(w, T + b.length), r = v !== null && this.__compareBytes(v, w, T + b.length, t), i = this.__isDelimiter(w, T + b.length, t), a = x.length === 0 ? this.__autoDiscoverRecordDelimiter(w, T + b.length) : this.__isRecordDelimiter(t, w, T + b.length);
-						if (y !== null && this.__isEscape(w, T, e) && this.__isQuote(w, T + y.length)) T += y.length - 1;
-						else if (!t || i || a || r || n) {
-							this.state.quoting = !1, this.state.wasQuoting = !0, T += b.length - 1;
+					if (this.state.commenting === !1 && this.__isQuote(w, T)) {
+						if (this.state.quoting === !0) {
+							let t = w[T + b.length], n = p && this.__isCharTrimable(w, T + b.length), r = v !== null && this.__compareBytes(v, w, T + b.length, t), i = this.__isDelimiter(w, T + b.length, t), a = x.length === 0 ? this.__autoDiscoverRecordDelimiter(w, T + b.length) : this.__isRecordDelimiter(t, w, T + b.length);
+							if (y !== null && this.__isEscape(w, T, e) && this.__isQuote(w, T + y.length)) T += y.length - 1;
+							else if (!t || i || a || r || n) {
+								this.state.quoting = !1, this.state.wasQuoting = !0, T += b.length - 1;
+								continue;
+							} else if (f === !1) {
+								let e = this.__error(new Q("CSV_INVALID_CLOSING_QUOTE", [
+									"Invalid Closing Quote:",
+									`got "${String.fromCharCode(t)}"`,
+									`at line ${this.info.lines}`,
+									"instead of delimiter, record delimiter, trimable character",
+									"(if activated) or comment"
+								], this.options, this.__infoField()));
+								if (e !== void 0) return e;
+							} else this.state.quoting = !1, this.state.wasQuoting = !0, this.state.field.prepend(b), T += b.length - 1;
+						} else if (this.state.field.length !== 0) {
+							if (f === !1) {
+								let e = this.__infoField(), t = Object.keys($).map((e) => $[e].equals(this.state.field.toString()) ? e : !1).filter(Boolean)[0], n = this.__error(new Q("INVALID_OPENING_QUOTE", [
+									"Invalid Opening Quote:",
+									`a quote is found on field ${JSON.stringify(e.column)} at line ${e.lines}, value is ${JSON.stringify(this.state.field.toString(s))}`,
+									t ? `(${t} bom)` : void 0
+								], this.options, e, { field: this.state.field }));
+								if (n !== void 0) return n;
+							}
+						} else {
+							this.state.quoting = !0, T += b.length - 1;
 							continue;
-						} else if (f === !1) {
-							let e = this.__error(new Q("CSV_INVALID_CLOSING_QUOTE", [
-								"Invalid Closing Quote:",
-								`got "${String.fromCharCode(t)}"`,
-								`at line ${this.info.lines}`,
-								"instead of delimiter, record delimiter, trimable character",
-								"(if activated) or comment"
-							], this.options, this.__infoField()));
-							if (e !== void 0) return e;
-						} else this.state.quoting = !1, this.state.wasQuoting = !0, this.state.field.prepend(b), T += b.length - 1;
-					} else if (this.state.field.length !== 0) {
-						if (f === !1) {
-							let e = this.__infoField(), t = Object.keys($).map((e) => $[e].equals(this.state.field.toString()) ? e : !1).filter(Boolean)[0], n = this.__error(new Q("INVALID_OPENING_QUOTE", [
-								"Invalid Opening Quote:",
-								`a quote is found on field ${JSON.stringify(e.column)} at line ${e.lines}, value is ${JSON.stringify(this.state.field.toString(s))}`,
-								t ? `(${t} bom)` : void 0
-							], this.options, e, { field: this.state.field }));
-							if (n !== void 0) return n;
 						}
-					} else {
-						this.state.quoting = !0, T += b.length - 1;
-						continue;
 					}
 					if (this.state.quoting === !1) {
 						let t = this.__isRecordDelimiter(e, w, T);
@@ -2269,17 +2302,18 @@ var Bn = function(e) {
 					continue;
 				}
 			}
-			if (t === !0) if (this.state.quoting === !0) {
-				let e = this.__error(new Q("CSV_QUOTE_NOT_CLOSED", ["Quote Not Closed:", `the parsing is finished with an opening quote at line ${this.info.lines}`], this.options, this.__infoField()));
-				if (e !== void 0) return e;
-			} else if (this.state.wasQuoting === !0 || this.state.record.length !== 0 || this.state.field.length !== 0) {
-				this.info.bytes = this.state.bufBytesStart + T;
-				let e = this.__onField();
-				if (e !== void 0) return e;
-				let t = this.__onRecord(n);
-				if (t !== void 0) return t;
-			} else this.state.wasRowDelimiter === !0 ? this.info.empty_lines++ : this.state.commenting === !0 && this.info.comment_lines++;
-			else this.state.bufBytesStart += T, this.state.previousBuf = w.slice(T);
+			if (t === !0) {
+				if (this.state.quoting === !0) {
+					let e = this.__error(new Q("CSV_QUOTE_NOT_CLOSED", ["Quote Not Closed:", `the parsing is finished with an opening quote at line ${this.info.lines}`], this.options, this.__infoField()));
+					if (e !== void 0) return e;
+				} else if (this.state.wasQuoting === !0 || this.state.record.length !== 0 || this.state.field.length !== 0) {
+					this.info.bytes = this.state.bufBytesStart + T;
+					let e = this.__onField();
+					if (e !== void 0) return e;
+					let t = this.__onRecord(n);
+					if (t !== void 0) return t;
+				} else this.state.wasRowDelimiter === !0 ? this.info.empty_lines++ : this.state.commenting === !0 && this.info.comment_lines++;
+			} else this.state.bufBytesStart += T, this.state.previousBuf = w.slice(T);
 			this.state.wasRowDelimiter === !0 && (this.info.lines++, this.state.wasRowDelimiter = !1);
 		},
 		__onRecord: function(e) {
@@ -2321,7 +2355,12 @@ var Bn = function(e) {
 				let { objname: a } = this.options;
 				if (t !== !1) {
 					let o = {};
-					for (let e = 0, r = f.length; e < r; e++) t[e] === void 0 || t[e].disabled || (n === !0 && o[t[e].name] !== void 0 ? Array.isArray(o[t[e].name]) ? o[t[e].name] = o[t[e].name].concat(f[e]) : o[t[e].name] = [o[t[e].name], f[e]] : o[t[e].name] = f[e]);
+					for (let e = 0, r = f.length; e < r; e++) t[e] === void 0 || t[e].disabled || (n === !0 && Object.hasOwn(o, t[e].name) ? Array.isArray(o[t[e].name]) ? o[t[e].name] = o[t[e].name].concat(f[e]) : o[t[e].name] = [o[t[e].name], f[e]] : Object.defineProperty(o, t[e].name, {
+						value: f[e],
+						enumerable: !0,
+						writable: !0,
+						configurable: !0
+					}));
 					if (l === !0 || i === !0) {
 						let t = Object.assign({ record: o }, l === !0 ? { raw: this.state.rawBuffer.toString(r) } : {}, i === !0 ? { info: this.__infoRecord() } : {}), n = this.__push(a === void 0 ? t : [o[a], t], e);
 						if (n) return n;
@@ -2780,5 +2819,3 @@ async function mr(e, t) {
 }
 //#endregion
 export { ur as Tool };
-
-//# sourceMappingURL=dpuse-tool-adaltas-csv-parser.es.js.map
